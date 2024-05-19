@@ -63,7 +63,7 @@ languages:
             weight: 2
           - identifier: posts
             name: Blogs
-            url: /content/posts
+            url: posts/
             weight: 3
           - identifier: archives
             name: Archives
@@ -130,7 +130,7 @@ params:
         - name: email
           url: "chzhyangchn@163.com"
         - name: linkedin
-          url: 'https://www.linkedin.com/in/yunyitang820/'
+          url: 'https://www.linkedin.com/in/victoryang/'
         - name: RSS
           url: "index.xml"
 
