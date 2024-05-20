@@ -2,44 +2,221 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/en/tags/blog/</loc>
-    <lastmod>2024-05-19T21:51:24+00:00</lastmod>
+    <loc>https://chzhyang.github.io/posts/life/</loc>
+    <lastmod>2024-05-20T20:41:43+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/posts/life/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/posts/life/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/posts/deploy-blog/</loc>
-    <lastmod>2024-05-19T21:51:24+00:00</lastmod>
+    <loc>https://chzhyang.github.io/posts/</loc>
+    <lastmod>2024-05-20T20:45:35+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/posts/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/posts/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/posts/</loc>
-    <lastmod>2024-05-19T21:51:24+00:00</lastmod>
+    <loc>https://chzhyang.github.io/</loc>
+    <lastmod>2024-05-20T20:45:35+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/tags/</loc>
+    <loc>https://chzhyang.github.io/tags/blog/</loc>
     <lastmod>2024-05-19T21:51:24+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/tags/blog/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/tags/blog/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/</loc>
+    <loc>https://chzhyang.github.io/posts/deploy-blog/</loc>
     <lastmod>2024-05-19T21:51:24+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/posts/deploy-blog/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/posts/deploy-blog/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/about/</loc>
+    <loc>https://chzhyang.github.io/tags/</loc>
+    <lastmod>2024-05-19T21:51:24+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/tags/"
+                />
+  </url><url>
+    <loc>https://chzhyang.github.io/about/</loc>
     <lastmod>2024-05-19T21:26:03+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/about/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/about/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/categories/</loc>
+    <loc>https://chzhyang.github.io/categories/</loc>
     <lastmod>2024-05-19T21:26:03+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/categories/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/categories/%E5%88%86%E7%B1%BB1/</loc>
+    <loc>https://chzhyang.github.io/categories/%E5%88%86%E7%B1%BB1/</loc>
     <lastmod>2024-05-19T21:26:03+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/categories/%E5%88%86%E7%B1%BB1/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/categories/%E5%88%86%E7%B1%BB1/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/categories/%E5%88%86%E7%B1%BB2/</loc>
+    <loc>https://chzhyang.github.io/categories/%E5%88%86%E7%B1%BB2/</loc>
     <lastmod>2024-05-19T21:26:03+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/categories/%E5%88%86%E7%B1%BB2/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/categories/%E5%88%86%E7%B1%BB2/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/tags/mytag/</loc>
+    <loc>https://chzhyang.github.io/tags/mytag/</loc>
     <lastmod>2024-05-19T17:07:19+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/tags/mytag/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/tags/mytag/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/posts/test/</loc>
+    <loc>https://chzhyang.github.io/posts/test/</loc>
     <lastmod>2024-05-19T17:07:19+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/posts/test/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/posts/test/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/tags/%E6%A0%87%E7%AD%BE1/</loc>
+    <loc>https://chzhyang.github.io/tags/%E6%A0%87%E7%AD%BE1/</loc>
     <lastmod>2024-05-19T17:07:19+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/tags/%E6%A0%87%E7%AD%BE1/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/tags/%E6%A0%87%E7%AD%BE1/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/posts/no_index/</loc>
+    <loc>https://chzhyang.github.io/archives/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/archives/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/archives/"
+                />
   </url><url>
-    <loc>http://localhost:1313/en/series/</loc>
+    <loc>https://chzhyang.github.io/search/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/search/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/search/"
+                />
+  </url><url>
+    <loc>https://chzhyang.github.io/series/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/series/"
+                />
+  </url><url>
+    <loc>https://chzhyang.github.io/tag/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://chzhyang.github.io/zh/tag/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://chzhyang.github.io/tag/"
+                />
   </url>
 </urlset>
