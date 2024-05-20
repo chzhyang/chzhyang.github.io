@@ -30,5 +30,12 @@
       <guid>https://chzhyang.github.io/posts/test/</guid>
       <description>test des</description>
     </item>
+    <item>
+      <title>Tags</title>
+      <link>https://chzhyang.github.io/tag/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chzhyang.github.io/tag/</guid>
+      <description>tags</description>
+    </item>
   </channel>
 </rss>
