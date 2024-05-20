@@ -2,25 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>blogs on Victor&#39;s Blog</title>
-    <link>https://chzhyang.github.io/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in blogs on Victor&#39;s Blog</description>
     <generator>Hugo -- 0.126.1</generator>
     <language>en</language>
     <copyright>Victor Yang</copyright>
-    <lastBuildDate>Sun, 19 May 2024 21:51:24 +0000</lastBuildDate>
-    <atom:link href="https://chzhyang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 May 2024 20:45:35 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Test2</title>
+      <link>http://localhost:1313/posts/test2/</link>
+      <pubDate>Mon, 20 May 2024 20:45:35 +0000</pubDate>
+      <guid>http://localhost:1313/posts/test2/</guid>
+      <description>abac</description>
+    </item>
     <item>
       <title>Deploy Blog</title>
-      <link>https://chzhyang.github.io/posts/deploy-blog/</link>
+      <link>http://localhost:1313/posts/deploy-blog/</link>
       <pubDate>Sun, 19 May 2024 21:51:24 +0000</pubDate>
-      <guid>https://chzhyang.github.io/posts/deploy-blog/</guid>
+      <guid>http://localhost:1313/posts/deploy-blog/</guid>
       <description>How to deploy a blog using Hugo and Github Pages</description>
     </item>
     <item>
       <title>Test</title>
-      <link>https://chzhyang.github.io/posts/test/</link>
+      <link>http://localhost:1313/posts/test/</link>
       <pubDate>Sun, 19 May 2024 17:07:19 +0000</pubDate>
-      <guid>https://chzhyang.github.io/posts/test/</guid>
+      <guid>http://localhost:1313/posts/test/</guid>
       <description>test des</description>
     </item>
   </channel>
