@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Mytag on Victor&#39;s Blog</title>
+    <link>http://localhost:1313/tags/mytag/</link>
+    <description>Recent content in Mytag on Victor&#39;s Blog</description>
+    <generator>Hugo -- 0.126.1</generator>
+    <language>zh-cn</language>
+    <copyright>Victor Yang</copyright>
+    <lastBuildDate>Sun, 19 May 2024 17:07:19 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/mytag/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Test</title>
+      <link>http://localhost:1313/chinese/posts/test/</link>
+      <pubDate>Sun, 19 May 2024 17:07:19 +0000</pubDate>
+      <guid>http://localhost:1313/chinese/posts/test/</guid>
+      <description>test des</description>
+    </item>
+    <item>
+      <title>Test</title>
+      <link>http://localhost:1313/english/posts/test/</link>
+      <pubDate>Sun, 19 May 2024 17:07:19 +0000</pubDate>
+      <guid>http://localhost:1313/english/posts/test/</guid>
+      <description>test des</description>
+    </item>
+    <item>
+      <title>Test</title>
+      <link>http://localhost:1313/posts/test/</link>
+      <pubDate>Sun, 19 May 2024 17:07:19 +0000</pubDate>
+      <guid>http://localhost:1313/posts/test/</guid>
+      <description>test des</description>
+    </item>
+  </channel>
+</rss>
