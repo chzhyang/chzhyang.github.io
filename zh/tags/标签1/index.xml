@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>标签1 on Victor&#39;s Blog</title>
-    <link>http://localhost:1313/zh/tags/%E6%A0%87%E7%AD%BE1/</link>
+    <link>https://chzhyang.github.io/zh/tags/%E6%A0%87%E7%AD%BE1/</link>
     <description>Recent content in 标签1 on Victor&#39;s Blog</description>
     <generator>Hugo -- 0.126.1</generator>
     <language>zh</language>
     <copyright>Victor Yang</copyright>
     <lastBuildDate>Mon, 20 May 2024 20:45:35 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/zh/tags/%E6%A0%87%E7%AD%BE1/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://chzhyang.github.io/zh/tags/%E6%A0%87%E7%AD%BE1/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test2</title>
-      <link>http://localhost:1313/zh/posts/test2/</link>
+      <link>https://chzhyang.github.io/zh/posts/test2/</link>
       <pubDate>Mon, 20 May 2024 20:45:35 +0000</pubDate>
-      <guid>http://localhost:1313/zh/posts/test2/</guid>
+      <guid>https://chzhyang.github.io/zh/posts/test2/</guid>
       <description>abac</description>
     </item>
     <item>
       <title>TestLife</title>
-      <link>http://localhost:1313/zh/posts/life/test/</link>
+      <link>https://chzhyang.github.io/zh/posts/life/test/</link>
       <pubDate>Mon, 20 May 2024 20:41:43 +0000</pubDate>
-      <guid>http://localhost:1313/zh/posts/life/test/</guid>
+      <guid>https://chzhyang.github.io/zh/posts/life/test/</guid>
       <description></description>
     </item>
     <item>
       <title>Test</title>
-      <link>http://localhost:1313/zh/posts/test/</link>
+      <link>https://chzhyang.github.io/zh/posts/test/</link>
       <pubDate>Sun, 19 May 2024 17:07:19 +0000</pubDate>
-      <guid>http://localhost:1313/zh/posts/test/</guid>
+      <guid>https://chzhyang.github.io/zh/posts/test/</guid>
       <description>test des</description>
     </item>
   </channel>
