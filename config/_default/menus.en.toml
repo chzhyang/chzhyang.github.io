@@ -15,47 +15,20 @@
  pageRef = "posts"
  weight = 10
 
-#[[main]]
-#  name = "Parent"
-#  weight = 20
-
-#[[main]]
-#  name = "example sub-menu 1"
-#  parent = "Parent"
-#  pageRef = "posts"
-#  weight = 20
-
-#[[main]]
-#  name = "example sub-menu 2"
-#  parent = "Parent"
-#  pageRef = "posts"
-#  weight = 20
-
-#[[subnavigation]]
-#  name = "An interesting topic"
-#  pageRef = "tags/interesting-topic"
-#  weight = 10
-
-#[[subnavigation]]
-#  name = "My Awesome Category"
-#  pre = "github"
-#  pageRef = "categories/awesome"
-#  weight = 20
-
-#[[main]]
-#  name = "Categories"
-#  pageRef = "categories"
-#  weight = 20
-
 [[main]]
  name = "Tags"
  pageRef = "tags"
  weight = 20
 
 [[main]]
+ name = "About"
+ pageRef = "about"
+ weight = 30
+
+[[main]]
   pre = "github"
   name = "GitHub"
-  url = "https://github.com/chzhyang/chzhyang.github.git/"
+  url = "https://github.com/chzhyang/"
   weight = 100
 
 # -- Footer Menu --
