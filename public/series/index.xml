@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Series on Victor&#39;s Blog</title>
-    <link>http://localhost:1313/series/</link>
+    <link>https://chzhyang.github.com/series/</link>
     <description>Recent content in Series on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Wed, 19 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/series/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/series/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Documentation</title>
-      <link>http://localhost:1313/series/documentation/</link>
-      <pubDate>Wed, 19 Jan 2022 00:00:00 +0000</pubDate>
+      <title>Attention</title>
+      <link>https://chzhyang.github.com/series/attention/</link>
+      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:1313/series/documentation/</guid>
+      <guid>https://chzhyang.github.com/series/attention/</guid>
       <description></description>
       
     </item>

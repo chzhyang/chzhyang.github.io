@@ -2,59 +2,49 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Victor&#39;s Blog</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://chzhyang.github.com/tags/</link>
     <description>Recent content in Tags on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Thu, 23 May 2024 14:02:18 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Attention</title>
+      <link>https://chzhyang.github.com/tags/attention/</link>
+      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tags/attention/</guid>
+      <description></description>
+      
+    </item>
+    
     <item>
       <title>LLM</title>
-      <link>http://localhost:1313/tags/llm/</link>
-      <pubDate>Thu, 23 May 2024 14:02:18 +0000</pubDate>
+      <link>https://chzhyang.github.com/tags/llm/</link>
+      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/llm/</guid>
+      <guid>https://chzhyang.github.com/tags/llm/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>NLP</title>
-      <link>http://localhost:1313/tags/nlp/</link>
-      <pubDate>Thu, 23 May 2024 14:02:18 +0000</pubDate>
+      <link>https://chzhyang.github.com/tags/nlp/</link>
+      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/nlp/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>Docs</title>
-      <link>http://localhost:1313/tags/docs/</link>
-      <pubDate>Wed, 19 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/docs/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>New</title>
-      <link>http://localhost:1313/tags/new/</link>
-      <pubDate>Wed, 19 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/new/</guid>
+      <guid>https://chzhyang.github.com/tags/nlp/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Advanced</title>
-      <link>http://localhost:1313/tags/advanced/</link>
+      <link>https://chzhyang.github.com/tags/advanced/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/advanced/</guid>
-      <description>This is the advanced tag.</description>
+      <guid>https://chzhyang.github.com/tags/advanced/</guid>
+      <description>This is the advanced tag. Just like other listing pages in Blowfish, you can add custom content to individual taxonomy terms and it will be displayed at the top of the term listing.</description>
       
     </item>
     

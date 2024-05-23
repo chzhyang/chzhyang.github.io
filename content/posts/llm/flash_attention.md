@@ -1,12 +1,13 @@
-+++
-title = 'Flash Attention'
-date = 2024-05-23T14:02:18Z
-draft = false
-# description: "Discover what's new in Blowfish version 2.0."
-tags = ["LLM", "NLP"]
-# series: ["Documentation"]
-# series_order: 1
-+++
+---
+title: 'Flash Attention'
+date: 2024-05-23T14:02:18Z
+lastmod: 2024-05-23
+draft: false
+tags: ["NLP", "LLM", "Attention"]
+series: ["Attention"]
+series_order: 1
+# layout: "simple"
+---
 
 FlashAttention: [Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135)
 
@@ -83,18 +84,9 @@ FlashAttention的 FLOPs 为\\(𝑂(𝑁^2𝑑)\\)，除了input和output，额�
 
 > PyTorch 2.0已将 FlashAttention 集成到官方库中，可以直接调用[torch.nn.functional.scaled_dot_product_attention](https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html)
 
-## FlashAttention V2
-Todo
 
 ## 总结
 
 FlashAttention V1:
 - 通过切块技术减少了内存访问次数，提高了计算速度和内存利用率。
 - 内存访问复杂度为\\(𝑂(𝑁^2𝑑^2𝑀^{−1})\\), 比标准 Attention 的\\(O(Nd+N^2)\)更高效
-
-FlashAttention V2:
-- 在V1的基础上减少了非矩阵乘法运算的FLOPs。
-- 通过并行化和任务分配优化提高了计算速度和GPU利用率，性能提升了2-3倍。
-- Flash-Decoding借鉴了FlashAttention的优点，将并行化维度扩展到keys/values序列长度，提高了推理速度。
-- Flash-Decoding几乎不用额外存储大量数据到全局内存中，减少了内存开销。
-- Flash-Decoding++通过异步softmax和统一最大值、flat GEMM优化和双缓冲、启发式数据流和硬件资源适应等方法进一步提高了LLM推理的性能。

@@ -10,12 +10,13 @@ defaultContentLanguage = "en"
 
 enableRobotsTXT = true
 paginate = 10
-summaryLength = 0
+summaryLength = 20 # 当扉页参数中没有提供文章摘要时，此参数定义了自动生成文章摘要的单词数量
 
 buildDrafts = false
 buildFuture = false
 
 # googleAnalytics = "G-XXXXXXXXX"
+hasCJKLanguage = true
 
 [imaging]
   anchor = 'Center'
