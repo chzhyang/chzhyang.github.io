@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
-  <title>Welcome to Blowfish &middot; Victor&#39;s Blog</title>
-  <meta name="title" content="Welcome to Blowfish &middot; Victor&#39;s Blog" />
-  
-  <meta name="description" content="Discover what&#39;s new in Blowfish version 2.0." />
-  <meta name="keywords" content="new, docs, " />
+  <title>Flash Attention &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="Flash Attention &middot; Victor&#39;s Blog" />
   
   
-  <link rel="canonical" href="http://localhost:1313/posts/welcome/" />
+  <meta name="keywords" content="LLM, NLP, " />
+  
+  
+  <link rel="canonical" href="http://localhost:1313/posts/llm/flash_attention/" />
   
   
   
@@ -60,22 +60,22 @@
   
   
   
-  <meta property="og:url" content="http://localhost:1313/posts/welcome/">
+  <meta property="og:url" content="http://localhost:1313/posts/llm/flash_attention/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
-  <meta property="og:title" content="Welcome to Blowfish">
-  <meta property="og:description" content="Discover what&#39;s new in Blowfish version 2.0.">
+  <meta property="og:title" content="Flash Attention">
+  <meta property="og:description" content="FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2022-01-19T00:00:00+00:00">
-    <meta property="article:modified_time" content="2022-01-19T00:00:00+00:00">
-    <meta property="article:tag" content="New">
-    <meta property="article:tag" content="Docs">
+    <meta property="article:published_time" content="2024-05-23T14:02:18+00:00">
+    <meta property="article:modified_time" content="2024-05-23T14:02:18+00:00">
+    <meta property="article:tag" content="LLM">
+    <meta property="article:tag" content="NLP">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Welcome to Blowfish">
-  <meta name="twitter:description" content="Discover what&#39;s new in Blowfish version 2.0.">
+  <meta name="twitter:title" content="Flash Attention">
+  <meta name="twitter:description" content="FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness">
 
   
   <script type="application/ld+json">
@@ -83,26 +83,26 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "Blogs",
-    "name": "Welcome to Blowfish",
-    "headline": "Welcome to Blowfish",
-    "description": "Discover what\u0027s new in Blowfish version 2.0.",
-    "abstract": "Blowfish is packed with tons of features.",
+    "name": "Flash Attention",
+    "headline": "Flash Attention",
+    
+    "abstract": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
     "inLanguage": "en",
-    "url" : "http:\/\/localhost:1313\/posts\/welcome\/",
+    "url" : "http:\/\/localhost:1313\/posts\/llm\/flash_attention\/",
     "author" : {
       "@type": "Person",
       "name": "Victor Yang"
     },
-    "copyrightYear": "2022",
-    "dateCreated": "2022-01-19T00:00:00\u002b00:00",
-    "datePublished": "2022-01-19T00:00:00\u002b00:00",
+    "copyrightYear": "2024",
+    "dateCreated": "2024-05-23T14:02:18\u002b00:00",
+    "datePublished": "2024-05-23T14:02:18\u002b00:00",
     
-    "dateModified": "2022-01-19T00:00:00\u002b00:00",
+    "dateModified": "2024-05-23T14:02:18\u002b00:00",
     
-    "keywords": ["new","docs"],
+    "keywords": ["LLM","NLP"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "595"
+    "wordCount": "184"
   }]
   </script>
 
@@ -126,6 +126,139 @@
   
 
 <script src="/lib/jquery/jquery.slim.min.js" integrity=""></script>
+
+
+
+
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2&#43;FkHzf1u0&#43;SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3&#43;jMqG/zPtRor/q4qaUCYQpmSjTw8M&#43;g==" />
+
+
+<script defer src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4&#43;aQiLo9/uaQqckDpdJ8Zm3M0QBs&#43;Pktg4pz0kEklUg=="></script>
+
+
+<script defer src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF&#43;NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w=="
+  onload="renderMathInElement(document.body);"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -457,7 +590,7 @@
   <header id="single_header" class="mt-5 max-w-prose">
     
     <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-      Welcome to Blowfish
+      Flash Attention
     </h1>
     <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
       
@@ -500,7 +633,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <span>595 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
+  <span>184 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span>
   
 
   
@@ -542,206 +675,169 @@
       <div class="min-w-0 min-h-0 max-w-fit">
         
         
-<details style="margin-left:0px" class="mt-2 mb-5 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5" >
-    
-    <summary
-        class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
-        Documentation - This article is part of a series.
-    </summary>
-    
-    
-    
-    <div
-        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        Part 1: This Article
-    </div>
-    
-    
-
-
-</details>
-
 
 
         <div class="article-content max-w-prose mb-20">
-          <div class="lead text-neutral-500 dark:text-neutral-400 !mb-9 text-xl">
-  Blowfish is packed with tons of features.
-</div>
+          <p>FlashAttention: <a href="https://arxiv.org/abs/2205.14135"   target="_blank">
+    Fast and Memory-Efficient Exact Attention with IO-Awareness</a></p>
+<p>与标准 attention 相比，Flash Attention 有以下三点特点：</p>
+<ul>
+<li>运算速度更快 (Fast)</li>
+<li>更节省显存 (Memory-Efficient)</li>
+<li>计算结果相同 (Exact)</li>
+</ul>
+<blockquote>
+<p>FlashAttention 目的不是节约 FLOPs，而是减少对HBM的访问。它没有改变原有的计算公式，整体计算复杂度并未降低。</p>
+</blockquote>
 
-<p>The original aim of Blowfish was to develop a theme that was simple and lightweight. The theme is a fork of <a target="_blank" href="https://github.com/nunocoracao/congo">Congo</a> and expands its initial vision.</p>
 
-
-<h2 class="relative group">Tailwind CSS 3.0 
-    <div id="tailwind-css-30" class="anchor"></div>
+<h2 class="relative group">背景 
+    <div id="%E8%83%8C%E6%99%AF" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#tailwind-css-30" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#%E8%83%8C%E6%99%AF" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
-<p>Tailwind CSS is at the heart of Blowfish and this release contains the very latest <a href="https://tailwindcss.com/blog/tailwindcss-v3"   target="_blank">
-    Tailwind CSS version 3</a>. It brings with it performance optimisations and support for some great new CSS features.</p>
+<p>GPU中存储单元主要有 HBM 和 SRAM：HBM 容量大但是访问速度慢，SRAM容量小却有着较高的访问速度。例如：A100 GPU有40-80GB的HBM，带宽为1.5-2.0TB/s；每108个流式多核处理器各有192KB的片上SRAM，带宽估计约为 19TB/s。可以看出，片上的SRAM比HBM快一个数量级，但尺寸要小许多数量级。</p>
+<p>当输入序列（sequence length）较长时，Transformer的计算过程缓慢且耗费内存，这是因为 self-attention 的 time 和 memory complexity 会随着 sequence length 的增加成二次增长。</p>
+<p>标准Attention的计算过程：
 
 
-    
-    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-      <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/TmWIrBPE6Bc?autoplay=0&controls=1&end=0&loop=0&mute=0&start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"
-      ></iframe>
-    </div>
+$$
+S=Q K^T \in \mathbb{R}^{N \times N}
+$$
+$$
+P=\operatorname{softmax}(S) \in \mathbb{R}^{N \times N}
+$$
+$$
+O=P V \in \mathbb{R}^{N \times N}
+$$</p>
+<p>标准Attention的中间结果 𝑆, 𝑃 通常需要通过高带宽内存（HBM）进行存取，两者所需内存空间复杂度为\(O(Nd+N^2)), 对 HBM 的重复读写是主要瓶颈。要解决这个问题，需要做两件事：</p>
+<ul>
+<li>在不访问整个输入的情况下计算 softmax</li>
+<li>不为反向传播存储大的中间 attention 矩阵(\(N^2\))</li>
+</ul>
 
 
-
-<h2 class="relative group">Multilingual support 
-    <div id="multilingual-support" class="anchor"></div>
+<h2 class="relative group">FlashAttention V1 
+    <div id="flashattention-v1" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#multilingual-support" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#flashattention-v1" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
-<p>A highly requested feature, Blowfish is now multilingual! If you publish your content in multiple languages, the site will be built with all the translations available.</p>
-<div class="text-2xl text-center" style="font-size: 2.8rem">🇬🇧 🇩🇪 🇫🇷 🇪🇸 🇨🇳 🇧🇷 🇹🇷 🇧🇩</div>
-<p>Thanks to submissions from the community, Blowfish has already been translated into <a href="https://github.com/nunocoracao/blowfish/tree/main/i18n"   target="_blank">
-    twenty-six languages</a> with more to be added over time. By the way, <a href="https://github.com/nunocoracao/blowfish/pulls"   target="_blank">
-    pull requests</a> for new languages are always welcome!</p>
+<p>FlashAttention 提出了两种方法来解决上述问题：tiling 和 recomputation。</p>
+<ul>
+<li>tiling - <strong>注意力计算被重新构造</strong>，将输入分割成块，并通过在输入块上进行多次传递来递增地执行softmax操作。</li>
+<li>recomputation - 存储来自前向的 softmax 归一化因子，以便在反向中快速重新计算芯片上的 attention，这比从HBM读取中间矩阵的标准注意力方法更快。可以把它看作基于 tiling 的特殊的 gradient checkpointing</li>
+</ul>
+<p>正常的softmax计算：</p>
+<p>$$m(x):=\max _i x i$$
+$$f(x):=\left[e^{x_1-m(x)} \ldots e^{x_B-m(x)}\right]$$
+$$\ell(x):=\sum_i f(x)_i$$
+$$\operatorname{softmax}(x):=\frac{f(x)}{\ell(x)}$$</p>
+<p>softmax 伪代码:
 
 
-<h2 class="relative group">RTL language support 
-    <div id="rtl-language-support" class="anchor"></div>
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://pic4.zhimg.com/80/v2-b5b221b2a8ef9b3602adef912668ea27_1440w.webp" alt="softmax" />
     
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#rtl-language-support" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<p>One of the benefits of the new Tailwind and Multilingual features is the ability to add RTL language support. When enabled, the entire site will reflow content from right-to-left. Every element in the theme has been restyled to ensure it looks great in this mode which aids authors who wish to generate content in RTL languages.</p>
-<p>RTL is controlled on a per-language basis so you can mix and match both RTL and LTR content in your projects and the theme will respond accordingly.</p>
-
-
-<h2 class="relative group">Automatic image resizing 
-    <div id="automatic-image-resizing" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#automatic-image-resizing" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<p>A big change in Blowfish 2.0 is the addition of automatic image resizing. Using the power of Hugo Pipes, images in Markdown content are now automatically scaled to different output sizes. These are then presented using HTML <code>srcset</code> attributes enabling optimised file sizes to be served to your site visitors.</p>
-<p>
-
-
-
-
-  
-  
-  
-    <figure>
-      <img class="my-0 rounded-md" loading="lazy" src="image-resizing.png" alt="" />
-      
-    </figure>
-  
+  </figure>
 
 </p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- Markdown: ![My image](image.jpg) --&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">img</span>
-</span></span><span class="line"><span class="cl">  <span class="na">srcset</span><span class="o">=</span><span class="s">&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s">    /image_320x0_resize_q75_box.jpg 320w,
-</span></span></span><span class="line"><span class="cl"><span class="s">    /image_635x0_resize_q75_box.jpg 635w,
-</span></span></span><span class="line"><span class="cl"><span class="s">    /image_1024x0_resize_q75_box.jpg 1024w,
-</span></span></span><span class="line"><span class="cl"><span class="s">    /image_1270x0_resize_q75_box.jpg 2x&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="na">src</span><span class="o">=</span><span class="s">&#34;/image_635x0_resize_q75_box.jpg&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="na">alt</span><span class="o">=</span><span class="s">&#34;My image&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">/&gt;</span>
-</span></span></code></pre></div><p>Best of all there&rsquo;s nothing you need to change! Simply insert standard Markdown image syntax and let the theme do the rest. If you want a little more control, the <code>figure</code> shortcode has been completely rewritten to provide the same resizing benefits.</p>
+<p>softmax 函数需要三个循环，第一个循环计算数组的最大值，第二个循环计算 softmax 的分母，第三个循环计算 softmax 输出。</p>
+<p>分块的 softmax 计算(假设分2块并行计算)：</p>
+<p>$$m(x)=m\left(\left[x^{(1)} x^{(2)}\right]\right)=\max \left(m\left(x^{(1)}\right), m\left(x^{(2)}\right)\right) $$
+$$f(x)=\left[e^{m\left(x^{(1)}\right)-m(x)} f\left(x^{(1)}\right) \quad e^{m\left(x^{(2)}\right)-m(x)} f\left(x^{(2)}\right)\right] $$
+$$\ell(x)=\ell\left(\left[x^{(1)} x^{(2)}\right]\right)=e^{m\left(x^{(1)}\right)-m(x)} \ell\left(x^{(1)}\right)+e^{m\left(x^{(2)}\right)-m(x)} \ell\left(x^{(2)}\right) $$
+$$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
+<p>分块的 softmax 伪代码:
 
 
-<h2 class="relative group">Site search 
-    <div id="site-search" class="anchor"></div>
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://pic2.zhimg.com/80/v2-97d9313fbc337b46c171bc722dcafdbd_1440w.webp" alt="tilling softmax" />
+    
+  </figure>
+
+</p>
+<p>在第一个循环中同时对最大值\(m\)以及 softmax 的分母\(d\)进行更新，从而减少了一个循环。通过 tiling 的方式，softmax 的循环数从三个减到了两个，从而可以降低内存消耗。</p>
+<p>flashattention 伪代码：
+
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8ed46b76-4667-4e7d-a1e8-9c10de04c82a%2FUntitled.png?table=block&amp;id=af426072-791a-449d-86e7-8ccb82240c17&amp;t=af426072-791a-449d-86e7-8ccb82240c17" alt="flashattention" />
+    
+  </figure>
+
+</p>
+<p>中间变量：\(O_i\)(最终乘积)、\(l_i\)（softmax的分母，即累加和）、\(m_i\)（遍历到当前块为止的最大值），再也不用保存全部的S和P了。</p>
+<blockquote>
+<p>由于重新计算导致FLOPs增加，但是由于大量减少HBM访问，FlashAttention运行速度更快</p>
+</blockquote>
+<p>FlashAttention的 FLOPs 为\(𝑂(𝑁^2𝑑)\)，除了input和output，额外需要的内存为\(𝑂(𝑁)\), 对HBM访问的次数为\(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 比标准 Attention 的\(O(Nd+N^2))更高效</p>
+<blockquote>
+<p>PyTorch 2.0已将 FlashAttention 集成到官方库中，可以直接调用<a href="https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html"   target="_blank">
+    torch.nn.functional.scaled_dot_product_attention</a></p>
+</blockquote>
+
+
+<h2 class="relative group">FlashAttention V2 
+    <div id="flashattention-v2" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#site-search" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#flashattention-v2" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
-<p>Powered by <a href="https://fusejs.io"   target="_blank">
-    Fuse.js</a>, site search allows visitors to quickly and easily find your content. All searches are performed client-side meaning there&rsquo;s nothing to configure on the server and queries are performed super fast. Simply enable the feature in your site configuration and you&rsquo;re all set. Oh, and it also supports full keyboard navigation!</p>
+<p>Todo</p>
 
 
-<h2 class="relative group">Tables of contents 
-    <div id="tables-of-contents" class="anchor"></div>
+<h2 class="relative group">总结 
+    <div id="%E6%80%BB%E7%BB%93" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#tables-of-contents" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#%E6%80%BB%E7%BB%93" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
-<p>A highly requested feature, Blowfish now supports tables of contents on article pages. You can see it in action on this page. The contents are fully responsive and will adjust to take advantage of the space available at different screen resolutions.</p>
-<p>Available on a global or per article basis, the table of contents can be fully customised using standard Hugo configuration values, allowing you to adjust the behaviour to suit your project.</p>
-
-
-<h2 class="relative group">Accessibility improvements 
-    <div id="accessibility-improvements" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#accessibility-improvements" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<p>From adding ARIA descriptions to more items or simply adjusting the contrast of certain text elements, this release is the most accessible yet.</p>
-<p>Version 2 also introduces &ldquo;skip to content&rdquo; and &ldquo;scroll to top&rdquo; links that enable quick navigation. There&rsquo;s also keyboard shortcuts for enabling items like search without reaching for the mouse.</p>
-<p>The new image resizing features also provide full control over <code>alt</code> and <code>title</code> elements enabling an accessible experience for all visitors.</p>
-
-
-<h2 class="relative group">A whole lot more 
-    <div id="a-whole-lot-more" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#a-whole-lot-more" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<p>There&rsquo;s countless other features to explore. From being able to display taxonomies on articles and list pages, to using the new <code>headline</code> author parameter to customise your homepage. There&rsquo;s also improved JSON-LD structured data which further optimises SEO performance.</p>
+<p>FlashAttention V1:</p>
+<ul>
+<li>通过切块技术减少了内存访问次数，提高了计算速度和内存利用率。</li>
+<li>内存访问复杂度为\(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 比标准 Attention 的\(O(Nd+N^2))更高效</li>
+</ul>
+<p>FlashAttention V2:</p>
+<ul>
+<li>在V1的基础上减少了非矩阵乘法运算的FLOPs。</li>
+<li>通过并行化和任务分配优化提高了计算速度和GPU利用率，性能提升了2-3倍。</li>
+<li>Flash-Decoding借鉴了FlashAttention的优点，将并行化维度扩展到keys/values序列长度，提高了推理速度。</li>
+<li>Flash-Decoding几乎不用额外存储大量数据到全局内存中，减少了内存开销。</li>
+<li>Flash-Decoding++通过异步softmax和统一最大值、flat GEMM优化和双缓冲、启发式数据流和硬件资源适应等方法进一步提高了LLM推理的性能。</li>
+</ul>
 
         </div>
         
         
 
         
-<details style="margin-left:0px" class="mt-2 mb-5 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5">
-    
-    <summary
-        class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
-        Documentation - This article is part of a series.
-    </summary>
-    
-    
-    
-    <div
-        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        Part 1: This Article
-    </div>
-    
-    
-
-
-</details>
-
         
 
           
@@ -755,8 +851,8 @@
           
         
       <script>
-        var oid = "views_posts\/welcome\/index.md"
-        var oid_likes = "likes_posts\/welcome\/index.md"
+        var oid = "views_posts\/llm\/flash_attention.md"
+        var oid_likes = "likes_posts\/llm\/flash_attention.md"
       </script>
       
       
@@ -767,44 +863,6 @@
   <footer class="pt-8 max-w-prose print:hidden">
 
     
-  
-    
-    
-    
-      
-      
-    
-    <div class="pt-8">
-      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
-      <div class="flex justify-between pt-3">
-        <span>
-          
-        </span>
-        <span>
-          
-            <a class="flex text-right group ml-3" href="/posts/_index.zh-cn/">
-              <span class="flex flex-col">
-                <span
-                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >博客</span
-                >
-                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
-                  
-                </span>
-              </span>
-              <span
-                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
-                >&rarr;</span
-              >
-              <span
-                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
-                >&larr;</span
-              >
-            </a>
-          
-        </span>
-      </div>
-    </div>
   
 
 
