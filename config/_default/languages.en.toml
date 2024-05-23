@@ -20,8 +20,8 @@ title = "Victor's Blog"
 # bio = "A little bit about you"
 links = [
   { github = "https://github.com/chzhyang" },
-  { linkedin = "www.linkedin.com/in/victor-yang-0101x" },
-  { email = "chzhyangchn@gmail.com" },
+  { linkedin = "https://www.linkedin.com/in/victor-yang-0101x" },
+  { email = "mailto:chzhyangchn@gmail.com" },
 ]
 #   links = [
 #     { email = "mailto:hello@your_domain.com" },
