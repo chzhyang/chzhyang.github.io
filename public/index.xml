@@ -7,7 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Thu, 23 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 May 2024 09:47:15 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CUDA 编程</title>
+      <link>https://chzhyang.github.com/posts/cuda/cuda_1/</link>
+      <pubDate>Fri, 24 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/posts/cuda/cuda_1/</guid>
+      <description>CUDA 程序的基本步骤 # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory</description>
+      
+    </item>
+    
+    <item>
+      <title>GPU 结构</title>
+      <link>https://chzhyang.github.com/posts/cuda/gpu/</link>
+      <pubDate>Fri, 24 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/posts/cuda/gpu/</guid>
+      <description>GPU # Reference: NVIDIA CUDA Docs</description>
+      
+    </item>
+    
     <item>
       <title>Flash Attention V2</title>
       <link>https://chzhyang.github.com/posts/llm/flash_attention_2/</link>

@@ -104,7 +104,7 @@
     "keywords": ["NLP","LLM","Attention"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1231"
+    "wordCount": "1225"
   }]
   </script>
 
@@ -635,7 +635,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <span>1231 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
+  <span>1225 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
   
 
   
@@ -899,9 +899,9 @@ $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
 </p>
 <p>中间变量：\(O_i\)(最终乘积)、\(l_i\)（softmax的分母，即累加和）、\(m_i\)（遍历到当前块为止的最大值），再也不用保存全部的S和P了。</p>
 <blockquote>
-<p>由于重新计算导致FLOPs增加，但是由于大量减少HBM访问，FlashAttention运行速度更快</p>
+<p>由于重新计算导致 FLOPs 增加，但是由于大量减少HBM访问，FlashAttention 运行速度更快</p>
 </blockquote>
-<p>FlashAttention的 FLOPs 为\(𝑂(𝑁^2𝑑)\)，除了input和output，额外需要的内存为\(𝑂(𝑁)\), 对HBM访问的次数为\(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 比标准 Attention 的\(O(Nd+N^2))更高效</p>
+<p>FlashAttention的 FLOPs 为 \(𝑂(𝑁^2𝑑)\)，除了 input 和 output，额外需要的内存为 \(𝑂(𝑁)\), 对HBM访问的次数为 \(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 比标准 Attention 的 \(O(Nd+N^2)\)更高效</p>
 <blockquote>
 <p>PyTorch 2.0已将 FlashAttention 集成到官方库中，可以直接调用<a href="https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html"   target="_blank">
     torch.nn.functional.scaled_dot_product_attention</a></p>
@@ -921,7 +921,7 @@ $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
 <p>FlashAttention V1:</p>
 <ul>
 <li>通过切块技术减少了内存访问次数，提高了计算速度和内存利用率。</li>
-<li>内存访问复杂度为\(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 比标准 Attention 的\(O(Nd+N^2))更高效</li>
+<li>内存访问复杂度为 \(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 比标准 Attention 的 \(O(Nd+N^2)\)更高效</li>
 </ul>
 
         </div>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CUDA Parallel Programming on Victor&#39;s Blog</title>
+    <link>https://chzhyang.github.com/posts/cuda/</link>
+    <description>Recent content in CUDA Parallel Programming on Victor&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© 2024 Victor Yang</copyright>
+    <lastBuildDate>Fri, 24 May 2024 09:47:15 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/posts/cuda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CUDA 编程</title>
+      <link>https://chzhyang.github.com/posts/cuda/cuda_1/</link>
+      <pubDate>Fri, 24 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/posts/cuda/cuda_1/</guid>
+      <description>CUDA 程序的基本步骤 # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory</description>
+      
+    </item>
+    
+    <item>
+      <title>GPU 结构</title>
+      <link>https://chzhyang.github.com/posts/cuda/gpu/</link>
+      <pubDate>Fri, 24 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/posts/cuda/gpu/</guid>
+      <description>GPU # Reference: NVIDIA CUDA Docs</description>
+      
+    </item>
+    
+  </channel>
+</rss>
