@@ -1,12 +1,13 @@
 ---
 title: 'Flash Attention'
-date: 2024-05-15T14:02:18Z
-lastmod: 2024-05-23
+date: 2024-05-05T22:43:31Z
+lastmod: 2024-05-06
 draft: false
-tags: ["NLP", "LLM", "Attention"]
+tags: ["NLP", "Transformer", "LLM", "Attention"]
 series: ["Attention"]
 series_order: 1
 # layout: "simple"
+showDate: true
 ---
 
 FlashAttention: [Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135)

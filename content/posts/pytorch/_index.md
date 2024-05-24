@@ -1,4 +1,4 @@
 ---
-title: "AI Framework"
+title: "PyTorch"
 # description: "Blogs"
 ---

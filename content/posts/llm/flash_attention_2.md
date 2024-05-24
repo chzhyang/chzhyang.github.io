@@ -3,10 +3,11 @@ title: "Flash Attention V2"
 date: 2024-05-23T22:43:31Z
 draft: false
 description: ""
-tags: ["NLP", "LLM", "Attention"]
+tags: ["NLP", "Transformer", "LLM", "Attention"]
 series: ["Attention"]
 series_order: 2
 # layout: "simple"
+showDate: true
 ---
 
 [WIP]

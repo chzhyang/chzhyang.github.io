@@ -7,6 +7,7 @@ tags: ["CUDA"]
 series: ["CUDA Parallel Programming"]
 series_order: 2
 # layout: "simple"
+showDate: true
 ---
 
 ## Steps of CUDA Program

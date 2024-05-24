@@ -7,6 +7,7 @@ tags: ["CUDA", "Conv"]
 series: ["CUDA Parallel Programming"]
 series_order: 3
 # layout: "simple"
+showDate: true
 ---
 
 ## CUDA Conv
