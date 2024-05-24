@@ -1,6 +1,6 @@
 ---
 title: "CUDA Programming"
-date: 2024-05-24T09:47:15Z
+date: 2024-05-18T09:47:15Z
 draft: false
 description: ""
 tags: ["CUDA"]

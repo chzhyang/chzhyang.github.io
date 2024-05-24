@@ -1,6 +1,6 @@
 ---
 title: "CUDA Conv"
-date: 2024-05-24T13:57:32Z
+date: 2024-05-20T13:57:32Z
 draft: false
 description: ""
 tags: ["CUDA", "Conv"]

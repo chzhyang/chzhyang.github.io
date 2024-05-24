@@ -28,5 +28,15 @@
       
     </item>
     
+    <item>
+      <title>PyTorch</title>
+      <link>http://localhost:1313/series/pytorch/</link>
+      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>http://localhost:1313/series/pytorch/</guid>
+      <description></description>
+      
+    </item>
+    
   </channel>
 </rss>

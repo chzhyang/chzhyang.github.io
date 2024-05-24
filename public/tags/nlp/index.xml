@@ -21,7 +21,7 @@
     <item>
       <title>Flash Attention</title>
       <link>http://localhost:1313/posts/llm/flash_attention/</link>
-      <pubDate>Thu, 23 May 2024 14:02:18 +0000</pubDate>
+      <pubDate>Wed, 15 May 2024 14:02:18 +0000</pubDate>
       
       <guid>http://localhost:1313/posts/llm/flash_attention/</guid>
       <description>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness 与标准 attention 相比，Flash</description>

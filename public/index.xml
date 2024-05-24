@@ -9,33 +9,12 @@
     <copyright>© 2024 Victor Yang</copyright>
     <lastBuildDate>Fri, 24 May 2024 13:57:32 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>CUDA Conv</title>
-      <link>http://localhost:1313/posts/cuda/cuda_conv/</link>
-      <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
-      
-      <guid>http://localhost:1313/posts/cuda/cuda_conv/</guid>
-      <description>CUDA Conv # Steps:
-Check Get thread info Memory allocation Copy data to device Call conv kernel Copy data to host Free memory //file: conv.</description>
-      
-    </item>
-    
-    <item>
       <title>CUDA Optimization</title>
       <link>http://localhost:1313/posts/cuda/cuda_optimize/</link>
       <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
       
       <guid>http://localhost:1313/posts/cuda/cuda_optimize/</guid>
       <description>[Todo]</description>
-      
-    </item>
-    
-    <item>
-      <title>CUDA Programming</title>
-      <link>http://localhost:1313/posts/cuda/cuda_1/</link>
-      <pubDate>Fri, 24 May 2024 09:47:15 +0000</pubDate>
-      
-      <guid>http://localhost:1313/posts/cuda/cuda_1/</guid>
-      <description>Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host</description>
       
     </item>
     
@@ -60,12 +39,22 @@ Check Get thread info Memory allocation Copy data to device Call conv kernel Cop
     </item>
     
     <item>
-      <title>Flash Attention</title>
-      <link>http://localhost:1313/posts/llm/flash_attention/</link>
-      <pubDate>Thu, 23 May 2024 14:02:18 +0000</pubDate>
+      <title>PyTorch Architecture</title>
+      <link>http://localhost:1313/posts/ai-framework/pytorch/</link>
+      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/llm/flash_attention/</guid>
-      <description>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness 与标准 attention 相比，Flash</description>
+      <guid>http://localhost:1313/posts/ai-framework/pytorch/</guid>
+      <description>pytorch 代码结构 # PyTroch 主要由C10、ATen、t</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Conv</title>
+      <link>http://localhost:1313/posts/cuda/cuda_conv/</link>
+      <pubDate>Mon, 20 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/cuda/cuda_conv/</guid>
+      <description>CUDA Conv # 在 PyTorch 上实现Conv很简单 import torch from torch.nn.functional import</description>
       
     </item>
     
@@ -76,6 +65,26 @@ Check Get thread info Memory allocation Copy data to device Call conv kernel Cop
       
       <guid>http://localhost:1313/about/</guid>
       <description>class Me: def __init__(self): self.names = &amp;#34;Victor Yang&amp;#34; self.prefer_name = &amp;#34;Victor&amp;#34; self.profession = &amp;#34;Programmer&amp;#34; self.hometown = &amp;#34;Shandong, CN&amp;#34; self.current_location = &amp;#34;Beijing, CN&amp;#34; self.</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Programming</title>
+      <link>http://localhost:1313/posts/cuda/cuda_1/</link>
+      <pubDate>Sat, 18 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/cuda/cuda_1/</guid>
+      <description>Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host</description>
+      
+    </item>
+    
+    <item>
+      <title>Flash Attention</title>
+      <link>http://localhost:1313/posts/llm/flash_attention/</link>
+      <pubDate>Wed, 15 May 2024 14:02:18 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/llm/flash_attention/</guid>
+      <description>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness 与标准 attention 相比，Flash</description>
       
     </item>
     

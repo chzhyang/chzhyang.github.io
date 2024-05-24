@@ -9,17 +9,6 @@
     <copyright>© 2024 Victor Yang</copyright>
     <lastBuildDate>Fri, 24 May 2024 13:57:32 +0000</lastBuildDate><atom:link href="http://localhost:1313/series/cuda-parallel-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>CUDA Conv</title>
-      <link>http://localhost:1313/posts/cuda/cuda_conv/</link>
-      <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
-      
-      <guid>http://localhost:1313/posts/cuda/cuda_conv/</guid>
-      <description>CUDA Conv # Steps:
-Check Get thread info Memory allocation Copy data to device Call conv kernel Copy data to host Free memory //file: conv.</description>
-      
-    </item>
-    
-    <item>
       <title>CUDA Optimization</title>
       <link>http://localhost:1313/posts/cuda/cuda_optimize/</link>
       <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
@@ -30,22 +19,32 @@ Check Get thread info Memory allocation Copy data to device Call conv kernel Cop
     </item>
     
     <item>
-      <title>CUDA Programming</title>
-      <link>http://localhost:1313/posts/cuda/cuda_1/</link>
-      <pubDate>Fri, 24 May 2024 09:47:15 +0000</pubDate>
-      
-      <guid>http://localhost:1313/posts/cuda/cuda_1/</guid>
-      <description>Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host</description>
-      
-    </item>
-    
-    <item>
       <title>GPU 结构</title>
       <link>http://localhost:1313/posts/cuda/gpu/</link>
       <pubDate>Fri, 24 May 2024 09:47:15 +0000</pubDate>
       
       <guid>http://localhost:1313/posts/cuda/gpu/</guid>
       <description>CPU 与 GPU 的不同 # CPU，4个 ALU，主要负</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Conv</title>
+      <link>http://localhost:1313/posts/cuda/cuda_conv/</link>
+      <pubDate>Mon, 20 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/cuda/cuda_conv/</guid>
+      <description>CUDA Conv # 在 PyTorch 上实现Conv很简单 import torch from torch.nn.functional import</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Programming</title>
+      <link>http://localhost:1313/posts/cuda/cuda_1/</link>
+      <pubDate>Sat, 18 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/cuda/cuda_1/</guid>
+      <description>Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host</description>
       
     </item>
     
