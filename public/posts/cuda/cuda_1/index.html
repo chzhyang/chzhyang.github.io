@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" class="scroll-smooth" data-default-appearance="light"
-  data-auto-appearance="true"><head>
+  data-auto-appearance="true"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8" />
   
   <meta http-equiv="content-language" content="en" />
@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
-  <title>CUDA 编程 &middot; Victor&#39;s Blog</title>
-  <meta name="title" content="CUDA 编程 &middot; Victor&#39;s Blog" />
+  <title>CUDA Programming &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="CUDA Programming &middot; Victor&#39;s Blog" />
   
   
   <meta name="keywords" content="CUDA, " />
   
   
-  <link rel="canonical" href="https://chzhyang.github.com/posts/cuda/cuda_1/" />
+  <link rel="canonical" href="http://localhost:1313/posts/cuda/cuda_1/" />
   
   
   
@@ -60,22 +60,24 @@
   
   
   
-  <meta property="og:url" content="https://chzhyang.github.com/posts/cuda/cuda_1/">
+  <meta property="og:url" content="http://localhost:1313/posts/cuda/cuda_1/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
-  <meta property="og:title" content="CUDA 编程">
-  <meta property="og:description" content="CUDA 程序的基本步骤 # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory">
+  <meta property="og:title" content="CUDA Programming">
+  <meta property="og:description" content="Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2024-05-24T09:47:15+00:00">
     <meta property="article:modified_time" content="2024-05-24T09:47:15+00:00">
     <meta property="article:tag" content="CUDA">
-      <meta property="og:see_also" content="https://chzhyang.github.com/posts/cuda/gpu/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_conv/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_optimize/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/gpu/">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="CUDA 编程">
-  <meta name="twitter:description" content="CUDA 程序的基本步骤 # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory">
+  <meta name="twitter:title" content="CUDA Programming">
+  <meta name="twitter:description" content="Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host">
 
   
   <script type="application/ld+json">
@@ -83,12 +85,12 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "Blogs",
-    "name": "CUDA 编程",
-    "headline": "CUDA 编程",
+    "name": "CUDA Programming",
+    "headline": "CUDA Programming",
     
-    "abstract": "CUDA 程序的基本步骤 # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory",
+    "abstract": "Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host",
     "inLanguage": "en",
-    "url" : "https:\/\/chzhyang.github.com\/posts\/cuda\/cuda_1\/",
+    "url" : "http:\/\/localhost:1313\/posts\/cuda\/cuda_1\/",
     "author" : {
       "@type": "Person",
       "name": "Victor Yang"
@@ -102,7 +104,7 @@
     "keywords": ["CUDA"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "988"
+    "wordCount": "1262"
   }]
   </script>
 
@@ -457,7 +459,7 @@
   <header id="single_header" class="mt-5 max-w-prose">
     
     <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-      CUDA 编程
+      CUDA Programming
     </h1>
     <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
       
@@ -500,7 +502,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <span>988 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">2 mins</span>
+  <span>1262 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
   
 
   
@@ -576,8 +578,9 @@
     class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#cuda-程序的基本步骤">CUDA 程序的基本步骤</a></li>
+    <li><a href="#steps-of-cuda-program">Steps of CUDA Program</a></li>
     <li><a href="#cuda-kernel-and-parrallel-computing">CUDA Kernel and Parrallel Computing</a></li>
+    <li><a href="#cuda-kernel-for-conv">CUDA Kernel for Conv</a></li>
     <li><a href="#cuda-code-profiling">CUDA Code Profiling</a></li>
   </ul>
 </nav>
@@ -592,8 +595,9 @@
     class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#cuda-程序的基本步骤">CUDA 程序的基本步骤</a></li>
+    <li><a href="#steps-of-cuda-program">Steps of CUDA Program</a></li>
     <li><a href="#cuda-kernel-and-parrallel-computing">CUDA Kernel and Parrallel Computing</a></li>
+    <li><a href="#cuda-kernel-for-conv">CUDA Kernel for Conv</a></li>
     <li><a href="#cuda-code-profiling">CUDA Code Profiling</a></li>
   </ul>
 </nav>
@@ -619,7 +623,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="https://chzhyang.github.com/posts/cuda/gpu/">
+        <a href="http://localhost:1313/posts/cuda/gpu/">
             Part 1: GPU 结构
         </a>
     </div>
@@ -632,6 +636,24 @@
     </div>
     
     
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_conv/">
+            Part 3: CUDA Conv
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_optimize/">
+            Part 4: CUDA Optimization
+        </a>
+    </div>
+    
+    
 
 
 </details>
@@ -641,13 +663,13 @@
         <div class="article-content max-w-prose mb-20">
           
 
-<h2 class="relative group">CUDA 程序的基本步骤 
-    <div id="cuda-%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4" class="anchor"></div>
+<h2 class="relative group">Steps of CUDA Program 
+    <div id="steps-of-cuda-program" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#cuda-%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#steps-of-cuda-program" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
@@ -725,17 +747,18 @@
 <blockquote>
 <p>前置知识: 理解 GPU 结构, Grid, Block, Thread 这几个逻辑概念之间的关系</p>
 </blockquote>
-<p>用关键字描述符 <code>__global__</code> 声明kernel: <code>__global__ void add(){}</code></p>
-<p>调用kernel: <code>add &lt;&lt; &lt;blockNumber, threadNumber &gt;&gt; &gt; (dx);</code></p>
+<p><strong>CUDA kernel 的编程模型</strong></p>
 <p>[Todo] Dim and size detail</p>
-<p><code>threadIdx.x</code>：the index of the thread within the block</p>
-<p><code>blockDim.x</code>：the size of block（number of threads in the thread block, blockSize = block中的线程数量</p>
-<p>Kernel examples(下面的code)</p>
+<p>调用kernel: <code>add &lt;&lt; &lt;blockNumber, threadNumber &gt;&gt; &gt; (dx);</code></p>
+<p>编写kernel：</p>
 <ul>
-<li>1个block,1个线程: add_1()</li>
-<li>1个block,多个线程: add_2()</li>
-<li>多个block,多个线程: add_3()</li>
+<li>用关键字描述符 <code>__global__</code> 声明kernel: <code>__global__ void add(){}</code></li>
+<li>调用 kernel 时的参数 <code>&lt;&lt;&lt;blockNumber per grid, threadNumber per block&gt;&gt;&gt;</code> 决定了共有 <code>TotalThreadNum = blockNumber * threadNumber</code> 个线程可以并行执行任务</li>
+<li>kernel 内的每一次迭代，意味着 <code>TotalThreadNum</code> 个线程并行执行了一次循环体中的任务（即每个线程完成对一份数据的处理），也就是每次迭代能处理 <code>TotalThreadNum</code> 份数据，<code>TotalThreadNum</code> 也等价于<code>跨步(stride)</code>的大小</li>
+<li>kernel 中 <code>threadIdx.x</code> 代表 the index of the thread within the block， <code>blockDim.x</code> 代表 the size of block（number of threads in block（假设 这里的 grid 和 block 的 dim 只有一维）</li>
+<li>kernel 内 <code>threadIdx.x</code> 和 <code>blockIdx.x</code> 的组合对应<strong>线程的唯一标识</strong></li>
 </ul>
+<p>以<code>add_3</code>这个 kernel 为例，可以用 <code>index = blockIdx.x * blockDim.x + threadIdx.x</code> 获得当前线程的要处理的数据的数组下标（见下图），</p>
 <p>
 
 
@@ -747,7 +770,22 @@
   </figure>
 
 </p>
-<p>多个block，多个线程也称为网格跨步循环，其中每次循环的跨步(stride)为 grid 的线程总数: stride = <code>blockDim.x * gridDim.x</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">__global__</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">add_3</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// stride为grid的线程总数:blockDim.x*gridDim.x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">stride</span> <span class="o">=</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">gridDim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span> <span class="o">+=</span> <span class="n">stride</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Kernel examples(下面的 C++ Example)</p>
+<ul>
+<li>1个block,1个线程: add_1()</li>
+<li>1个block,多个线程: add_2()</li>
+<li>多个block,多个线程: add_3()</li>
+</ul>
+<p>多个block，多个线程也称为<strong>网格跨步循环</strong>，其中每次循环的跨步(stride)为 grid 的线程总数: stride = <code>blockDim.x * gridDim.x</code></p>
 <p>C++ Example:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// file: add.cu
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
@@ -775,11 +813,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__global__</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">add_3</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">y</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="c1">// stride为grid的线程总数:blockDim.x*gridDim.x
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">stride</span> <span class="o">=</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">gridDim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span> <span class="o">+=</span> <span class="n">stride</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// stride为grid的线程总数:blockDim.x*gridDim.x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">stride</span> <span class="o">=</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">gridDim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span> <span class="o">+=</span> <span class="n">stride</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
@@ -826,6 +864,18 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div>
 
+<h2 class="relative group">CUDA Kernel for Conv 
+    <div id="cuda-kernel-for-conv" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#cuda-kernel-for-conv" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+
+
 <h2 class="relative group">CUDA Code Profiling 
     <div id="cuda-code-profiling" class="anchor"></div>
     
@@ -859,7 +909,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="https://chzhyang.github.com/posts/cuda/gpu/">
+        <a href="http://localhost:1313/posts/cuda/gpu/">
             Part 1: GPU 结构
         </a>
     </div>
@@ -869,6 +919,24 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         Part 2: This Article
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_conv/">
+            Part 3: CUDA Conv
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_optimize/">
+            Part 4: CUDA Optimization
+        </a>
     </div>
     
     
@@ -912,6 +980,26 @@
       <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
       <div class="flex justify-between pt-3">
         <span>
+          
+            <a class="flex group mr-3" href="/posts/cuda/cuda_optimize/">
+              <span
+                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >CUDA Optimization</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+            </a>
           
         </span>
         <span>
@@ -998,7 +1086,7 @@
 </footer><div
   id="search-wrapper"
   class="invisible fixed inset-0 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
-  data-url="https://chzhyang.github.com/"
+  data-url="http://localhost:1313/"
   style="z-index:500"
 >
   <div

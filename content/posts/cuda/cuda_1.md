@@ -1,5 +1,5 @@
 ---
-title: "CUDA 编程"
+title: "CUDA Programming"
 date: 2024-05-24T09:47:15Z
 draft: false
 description: ""
@@ -9,7 +9,7 @@ series_order: 2
 # layout: "simple"
 ---
 
-## CUDA 程序的基本步骤
+## Steps of CUDA Program
 
 1. Config GPU(device), `cudaSetDevice()`
 2. Allocate device memory, `cudaMalloc()`, `cudaMallocManaged()`
@@ -79,24 +79,44 @@ nvcc sample.cu - o sample
 
 > 前置知识: 理解 GPU 结构, Grid, Block, Thread 这几个逻辑概念之间的关系
 
-用关键字描述符 `__global__` 声明kernel: `__global__ void add(){}`
 
-调用kernel: `add << <blockNumber, threadNumber >> > (dx);`
+**CUDA kernel 的编程模型**
 
 [Todo] Dim and size detail
 
-`threadIdx.x`：the index of the thread within the block
+调用kernel: `add << <blockNumber, threadNumber >> > (dx);`
 
-`blockDim.x`：the size of block（number of threads in the thread block, blockSize = block中的线程数量
+编写kernel：
+- 用关键字描述符 `__global__` 声明kernel: `__global__ void add(){}`
+- 调用 kernel 时的参数 `<<<blockNumber per grid, threadNumber per block>>>` 决定了共有 `TotalThreadNum = blockNumber * threadNumber` 个线程可以并行执行任务
+- kernel 内的每一次迭代，意味着 `TotalThreadNum` 个线程并行执行了一次循环体中的任务（即每个线程完成对一份数据的处理），也就是每次迭代能处理 `TotalThreadNum` 份数据，`TotalThreadNum` 也等价于`跨步(stride)`的大小
+- kernel 中 `threadIdx.x` 代表 the index of the thread within the block， `blockDim.x` 代表 the size of block（number of threads in block（假设 这里的 grid 和 block 的 dim 只有一维）
+- kernel 内 `threadIdx.x` 和 `blockIdx.x` 的组合对应**线程的唯一标识**
 
-Kernel examples(下面的code)
+以`add_3`这个 kernel 为例，可以用 `index = blockIdx.x * blockDim.x + threadIdx.x` 获得当前线程的要处理的数据的数组下标（见下图），
+
+![cuda_indexing](https://developer-blogs.nvidia.com/wp-content/uploads/2017/01/cuda_indexing.png)
+
+
+
+```C++
+__global__
+void add_3(int n, float *x, float *y)
+{
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    // stride为grid的线程总数:blockDim.x*gridDim.x
+    int stride = blockDim.x * gridDim.x;
+    for (int i = index; i < n; i += stride)
+        y[i] = x[i] + y[i];
+}
+```
+
+Kernel examples(下面的 C++ Example)
 - 1个block,1个线程: add_1()
 - 1个block,多个线程: add_2()
 - 多个block,多个线程: add_3()
 
-![cuda_indexing](https://developer-blogs.nvidia.com/wp-content/uploads/2017/01/cuda_indexing.png)
-
-多个block，多个线程也称为网格跨步循环，其中每次循环的跨步(stride)为 grid 的线程总数: stride = `blockDim.x * gridDim.x`
+多个block，多个线程也称为**网格跨步循环**，其中每次循环的跨步(stride)为 grid 的线程总数: stride = `blockDim.x * gridDim.x`
 
 C++ Example:
 
@@ -127,11 +147,11 @@ void add_2(int n, float *x, float *y)
 __global__
 void add_3(int n, float *x, float *y)
 {
-  int index = blockIdx.x * blockDim.x + threadIdx.x;
-  // stride为grid的线程总数:blockDim.x*gridDim.x
-  int stride = blockDim.x * gridDim.x;
-  for (int i = index; i < n; i += stride)
-    y[i] = x[i] + y[i];
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    // stride为grid的线程总数:blockDim.x*gridDim.x
+    int stride = blockDim.x * gridDim.x;
+    for (int i = index; i < n; i += stride)
+        y[i] = x[i] + y[i];
 }
 
 int main(void)
@@ -177,6 +197,8 @@ int main(void)
     return 0;
 }
 ```
+
+## CUDA Kernel for Conv
 
 ## CUDA Code Profiling
 
