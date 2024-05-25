@@ -3,7 +3,7 @@ title: 'Flash Attention'
 date: 2024-05-05T22:43:31Z
 lastmod: 2024-05-06
 draft: false
-tags: ["NLP", "Transformer", "LLM", "Attention"]
+tags: ["NLP", "Transformer", "LLM", "Flash Attention"]
 series: ["Attention"]
 series_order: 1
 # layout: "simple"
@@ -37,7 +37,7 @@ $$
 O=P V \in \mathbb{R}^{N \times N}
 $$
 
-标准Attention的中间结果 𝑆, 𝑃 通常需要通过高带宽内存（HBM）进行存取，两者所需内存空间复杂度为\\(O(Nd+N^2)\), 对 HBM 的重复读写是主要瓶颈。要解决这个问题，需要做两件事：
+标准Attention的中间结果 𝑆, 𝑃 通常需要通过高带宽内存（HBM）进行存取，两者所需内存空间复杂度为\\(O(Nd+N^2)\\), 对 HBM 的重复读写是主要瓶颈。要解决这个问题，需要做两件事：
 
 - 在不访问整个输入的情况下计算 softmax
 - 不为反向传播存储大的中间 attention 矩阵(\\(N^2\\))

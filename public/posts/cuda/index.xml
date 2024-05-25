@@ -29,22 +29,22 @@
     </item>
     
     <item>
-      <title>CUDA Programming</title>
-      <link>http://localhost:1313/posts/cuda/cuda_1/</link>
-      <pubDate>Sat, 18 May 2024 09:47:15 +0000</pubDate>
-      
-      <guid>http://localhost:1313/posts/cuda/cuda_1/</guid>
-      <description>Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host</description>
-      
-    </item>
-    
-    <item>
       <title>GPU 结构</title>
       <link>http://localhost:1313/posts/cuda/gpu/</link>
       <pubDate>Sat, 18 May 2024 09:47:15 +0000</pubDate>
       
       <guid>http://localhost:1313/posts/cuda/gpu/</guid>
       <description>CPU 与 GPU 的不同 # CPU，4个 ALU，主要负</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Programming</title>
+      <link>http://localhost:1313/posts/cuda/cuda_1/</link>
+      <pubDate>Fri, 10 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/cuda/cuda_1/</guid>
+      <description>Main Concepts # gridDim gridDim.x、gridDi</description>
       
     </item>
     

@@ -63,12 +63,12 @@
   <meta property="og:url" content="http://localhost:1313/posts/cuda/cuda_1/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="CUDA Programming">
-  <meta property="og:description" content="Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host">
+  <meta property="og:description" content="Main Concepts # gridDim gridDim.x、gridDi">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-05-18T09:47:15+00:00">
-    <meta property="article:modified_time" content="2024-05-18T09:47:15+00:00">
+    <meta property="article:published_time" content="2024-05-10T09:47:15+00:00">
+    <meta property="article:modified_time" content="2024-05-20T00:00:00+00:00">
     <meta property="article:tag" content="CUDA">
       <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_optimize/">
       <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_conv/">
@@ -77,7 +77,7 @@
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CUDA Programming">
-  <meta name="twitter:description" content="Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host">
+  <meta name="twitter:description" content="Main Concepts # gridDim gridDim.x、gridDi">
 
   
   <script type="application/ld+json">
@@ -88,7 +88,7 @@
     "name": "CUDA Programming",
     "headline": "CUDA Programming",
     
-    "abstract": "Steps of CUDA Program # Config GPU(device), cudaSetDevice() Allocate device memory, cudaMalloc(), cudaMallocManaged() Allocate CPU(Host) memory Copy data from host",
+    "abstract": "Main Concepts # gridDim gridDim.x、gridDi",
     "inLanguage": "en",
     "url" : "http:\/\/localhost:1313\/posts\/cuda\/cuda_1\/",
     "author" : {
@@ -96,15 +96,15 @@
       "name": "Victor Yang"
     },
     "copyrightYear": "2024",
-    "dateCreated": "2024-05-18T09:47:15\u002b00:00",
-    "datePublished": "2024-05-18T09:47:15\u002b00:00",
+    "dateCreated": "2024-05-10T09:47:15\u002b00:00",
+    "datePublished": "2024-05-10T09:47:15\u002b00:00",
     
-    "dateModified": "2024-05-18T09:47:15\u002b00:00",
+    "dateModified": "2024-05-20T00:00:00\u002b00:00",
     
     "keywords": ["CUDA"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1262"
+    "wordCount": "1674"
   }]
   </script>
 
@@ -459,6 +459,8 @@
 
 
 
+  
+
 
 
   
@@ -482,7 +484,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-18 09:47:15 &#43;0000 UTC">2024-05-18</time><span class="px-2 text-primary-500">&middot;</span><span>1262 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
+  <time datetime="2024-05-10 09:47:15 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-20 00:00:00 &#43;0000 UTC">Updated: 2024-05-20</time><span class="px-2 text-primary-500">&middot;</span><span>1674 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span>
   
 
   
@@ -558,6 +560,7 @@
     class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#main-concepts">Main Concepts</a></li>
     <li><a href="#steps-of-cuda-program">Steps of CUDA Program</a></li>
     <li><a href="#cuda-kernel-and-parrallel-computing">CUDA Kernel and Parrallel Computing</a></li>
     <li><a href="#cuda-kernel-for-conv">CUDA Kernel for Conv</a></li>
@@ -575,6 +578,7 @@
     class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#main-concepts">Main Concepts</a></li>
     <li><a href="#steps-of-cuda-program">Steps of CUDA Program</a></li>
     <li><a href="#cuda-kernel-and-parrallel-computing">CUDA Kernel and Parrallel Computing</a></li>
     <li><a href="#cuda-kernel-for-conv">CUDA Kernel for Conv</a></li>
@@ -642,6 +646,35 @@
 
         <div class="article-content max-w-prose mb-20">
           
+
+<h2 class="relative group">Main Concepts 
+    <div id="main-concepts" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#main-concepts" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>gridDim</p>
+<p>gridDim.x、gridDim.y、gridDim.z分别表示 grid 各个维度的大小</p>
+<p>blockDim</p>
+<p>blockDim.x、blockDim.y、blockDim.z分别表示 block 各个维度的大小</p>
+<p>blockIdx</p>
+<p>blockIdx.x、blockIdx.y、blockIdx.z分别表示当前 block 在 grid 中的坐标</p>
+<p>threadIdx</p>
+<p>threadIdx.x、threadIdx.y、threadIdx.z分别表示当前 thread 在 block 的坐标</p>
+<p>grid 里总的线程个数 N = gridDim.x * gridDim.y * gridDim.z * blockDim.x * blockDim.y * blockDim.z</p>
+<p>通过 blockIdx.x、blockIdx.y、blockIdx.z、threadIdx.x、threadIdx.y、threadIdx.z 可以定位一个线程的坐标。</p>
+<p>将所有的线程排成一个序列，序列号为 0 , 1 , 2 , … , N ，如何找到当前 thread 的序列号 ?</p>
+<ul>
+<li>先找到该thread所在的 block的序号 blockId = blockIdx.x + blockIdx.y<em>gridDim.x + blockIdx.z</em>gridDim.x*gridDim.y</li>
+<li>然后找到当前 thread 在 block 中的序号 threadId = threadIdx.x + threadIdx.y<em>blockDim.x + threadIdx.z</em>blockDim.x*blockDim.y</li>
+<li>计算一个 block 中一共有多少个 thread， M = blockDim.x<em>blockDim.y</em>blockDim.z</li>
+<li>求得当前的线程的序列号 idx = threadId + M*blockId</li>
+</ul>
+
 
 <h2 class="relative group">Steps of CUDA Program 
     <div id="steps-of-cuda-program" class="anchor"></div>
@@ -961,7 +994,7 @@
       <div class="flex justify-between pt-3">
         <span>
           
-            <a class="flex group mr-3" href="/posts/cuda/cuda_conv/">
+            <a class="flex group mr-3" href="/posts/cuda/gpu/">
               <span
                 class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
                 >&larr;</span
@@ -973,23 +1006,6 @@
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >CUDA Conv</span
-                >
-                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
-                  
-                    <time datetime="2024-05-20 13:57:32 &#43;0000 UTC">2024-05-20</time>
-                  
-                </span>
-              </span>
-            </a>
-          
-        </span>
-        <span>
-          
-            <a class="flex text-right group ml-3" href="/posts/cuda/gpu/">
-              <span class="flex flex-col">
-                <span
-                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
                   >GPU 结构</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
@@ -998,15 +1014,10 @@
                   
                 </span>
               </span>
-              <span
-                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
-                >&rarr;</span
-              >
-              <span
-                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
-                >&larr;</span
-              >
             </a>
+          
+        </span>
+        <span>
           
         </span>
       </div>

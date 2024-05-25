@@ -30,6 +30,16 @@
     
     <item>
       <title>PyTorch Architecture</title>
+      <link>http://localhost:1313/posts/pytorch-copy/pytorch/</link>
+      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/pytorch-copy/pytorch/</guid>
+      <description>PyTorch 代码结构 # PyTroch 主要由C10、ATen、t</description>
+      
+    </item>
+    
+    <item>
+      <title>PyTorch Architecture</title>
       <link>http://localhost:1313/posts/pytorch/pytorch/</link>
       <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
       

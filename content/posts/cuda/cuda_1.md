@@ -1,6 +1,7 @@
 ---
 title: "CUDA Programming"
-date: 2024-05-18T09:47:15Z
+date: 2024-05-10T09:47:15Z
+lastmod: 2024-05-20
 draft: false
 description: ""
 tags: ["CUDA"]
@@ -9,6 +10,35 @@ series_order: 2
 # layout: "simple"
 showDate: true
 ---
+
+## Main Concepts
+
+gridDim
+
+gridDim.x、gridDim.y、gridDim.z分别表示 grid 各个维度的大小
+
+blockDim
+
+blockDim.x、blockDim.y、blockDim.z分别表示 block 各个维度的大小
+
+blockIdx
+
+blockIdx.x、blockIdx.y、blockIdx.z分别表示当前 block 在 grid 中的坐标
+
+threadIdx
+
+threadIdx.x、threadIdx.y、threadIdx.z分别表示当前 thread 在 block 的坐标
+
+grid 里总的线程个数 N = gridDim.x * gridDim.y * gridDim.z * blockDim.x * blockDim.y * blockDim.z
+
+通过 blockIdx.x、blockIdx.y、blockIdx.z、threadIdx.x、threadIdx.y、threadIdx.z 可以定位一个线程的坐标。
+
+将所有的线程排成一个序列，序列号为 0 , 1 , 2 , … , N ，如何找到当前 thread 的序列号 ?
+
+- 先找到该thread所在的 block的序号 blockId = blockIdx.x + blockIdx.y*gridDim.x + blockIdx.z*gridDim.x*gridDim.y
+- 然后找到当前 thread 在 block 中的序号 threadId = threadIdx.x + threadIdx.y*blockDim.x + threadIdx.z*blockDim.x*blockDim.y
+- 计算一个 block 中一共有多少个 thread， M = blockDim.x*blockDim.y*blockDim.z
+- 求得当前的线程的序列号 idx = threadId + M*blockId
 
 ## Steps of CUDA Program
 
