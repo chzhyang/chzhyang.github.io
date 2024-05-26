@@ -74,7 +74,9 @@
     <meta property="article:tag" content="LLM">
     <meta property="article:tag" content="Vllm">
     <meta property="article:tag" content="Paged Attention">
+      <meta property="og:see_also" content="http://localhost:1313/posts/llm/flash_attention_2/">
       <meta property="og:see_also" content="http://localhost:1313/posts/llm/flash_attention/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/llm/attention/">
 
   
   <meta name="twitter:card" content="summary">
@@ -106,7 +108,7 @@
     "keywords": ["NLP","Transformer","LLM","vLLM","Paged Attention"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "2539"
+    "wordCount": "3217"
   }]
   </script>
 
@@ -619,7 +621,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-20 15:15:49 &#43;0000 UTC">2024-05-20</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-24 00:00:00 &#43;0000 UTC">Updated: 2024-05-24</time><span class="px-2 text-primary-500">&middot;</span><span>2539 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">6 mins</span>
+  <time datetime="2024-05-20 15:15:49 &#43;0000 UTC">2024-05-20</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-24 00:00:00 &#43;0000 UTC">Updated: 2024-05-24</time><span class="px-2 text-primary-500">&middot;</span><span>3217 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">7 mins</span>
   
 
   
@@ -729,7 +731,8 @@
   <ul>
     <li><a href="#vllm">vLLM</a></li>
     <li><a href="#paged-attentionpa">Paged Attention(PA)</a></li>
-    <li><a href="#paged-attention-v1-and-cuda-kernel">Paged Attention V1 and CUDA Kernel</a></li>
+    <li><a href="#paged-attention-v1">Paged Attention V1</a></li>
+    <li><a href="#paged-attention-v1-cuda-kernelvllm">Paged Attention V1 CUDA Kernel(vLLM)</a></li>
     <li><a href="#pa-v1-和-flash-attention-的区别">PA V1 和 Flash Attention 的区别</a></li>
     <li><a href="#pa-v1-的缺陷">PA V1 的缺陷</a></li>
   </ul>
@@ -747,7 +750,8 @@
   <ul>
     <li><a href="#vllm">vLLM</a></li>
     <li><a href="#paged-attentionpa">Paged Attention(PA)</a></li>
-    <li><a href="#paged-attention-v1-and-cuda-kernel">Paged Attention V1 and CUDA Kernel</a></li>
+    <li><a href="#paged-attention-v1">Paged Attention V1</a></li>
+    <li><a href="#paged-attention-v1-cuda-kernelvllm">Paged Attention V1 CUDA Kernel(vLLM)</a></li>
     <li><a href="#pa-v1-和-flash-attention-的区别">PA V1 和 Flash Attention 的区别</a></li>
     <li><a href="#pa-v1-的缺陷">PA V1 的缺陷</a></li>
   </ul>
@@ -774,7 +778,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        Part [1 1]: This Article
+        Part [1 4]: This Article
     </div>
     
     
@@ -786,6 +790,8 @@
 
         <div class="article-content max-w-prose mb-20">
           
+
+
 
 <h2 class="relative group">vLLM 
     <div id="vllm" class="anchor"></div>
@@ -820,21 +826,62 @@
 </ul>
 
 
-<h2 class="relative group">Paged Attention V1 and CUDA Kernel 
-    <div id="paged-attention-v1-and-cuda-kernel" class="anchor"></div>
+<h2 class="relative group">Paged Attention V1 
+    <div id="paged-attention-v1" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#paged-attention-v1-and-cuda-kernel" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#paged-attention-v1" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>Block table in PA</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://blog.vllm.ai/assets/figures/annimation1.gif" alt="Example generation process for a request with PagedAttention" />
+    
+  </figure>
+
+</p>
+<p>一个 req 中包含多个 seq 时，可以共享blocks</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://blog.vllm.ai/assets/figures/annimation3.gif" alt="Example generation process for a request that samples multiple outputs" />
+    
+  </figure>
+
+</p>
+
+
+<h2 class="relative group">Paged Attention V1 CUDA Kernel(vLLM) 
+    <div id="paged-attention-v1-cuda-kernelvllm" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#paged-attention-v1-cuda-kernelvllm" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
 <p><a href="https://github1s.com/vllm-project/vllm/blob/main/csrc/attention/attention_kernels.cu#L90-L91"   target="_blank">
     csrc/attention/attention_kernels.cu</a></p>
+<p>Dispatch逻辑：</p>
+<ul>
+<li>CALL_KERNEL_LAUNCHER_BLOCK_SIZE 根据存储的kv blocksize进行派发，分别是 8， 16， 32</li>
+<li>LAUNCH_ATTENTION_KERNEL 根据注意力头大小HEADSIZE静态派发</li>
+</ul>
 <p>并行任务的划分：</p>
 <ul>
-<li>dim3 grid(num_heads, num_seqs)</li>
+<li>dim3 grid(num_heads, num_seqs， 1)</li>
 <li>dim3 block(NUM_THREADS), 线程数是128，每个 block 负责完成 output 矩阵一行（head_size个元素）结果的 attention 计算</li>
 <li>block 的线程划分为若干个 Warp, 每个 Warp 的32个线程划分为 blk_size 个 thread group</li>
 </ul>
@@ -862,9 +909,8 @@ blk_size # block_size，每个page block存储的元素数量，每个page存(bl
 <li>NUM_ROWS_PER_ITER = WARP_SIZE / NUM_V_VECS_PER_ROW 表示一个warp可以处理多少行</li>
 <li>NUM_ROWS_PER_THREAD 表示每个thread需要负责多少行</li>
 </ul>
-
-
-<p>从显存读取\(Q\)到 shared memory：</p>
+<p>Kernel 代码逻辑：</p>
+<p>（1）循环从显存读取\(Q\)到 shared memory：</p>
 <p>迭代读取，每 CUDA block 负责读取\(Q\)的一行（head_size 个元素）存入 shared memory。其中，block 的每个 Warp 负责读取 16<em>blk_size 字节的 Q，即每个 thread group 会读取16字节的 Q，16</em>blk_size 字节的 Q 对应 sequence 的一个 head。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">thread_group_idx</span> <span class="o">=</span> <span class="n">thread_idx</span> <span class="o">/</span> <span class="n">THREAD_GROUP_SIZE</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">thread_group_offset</span> <span class="o">=</span> <span class="n">thread_idx</span> <span class="o">%</span> <span class="n">THREAD_GROUP_SIZE</span><span class="p">;</span>
@@ -885,7 +931,7 @@ blk_size # block_size，每个page block存储的元素数量，每个page存(bl
 </span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">Q_vec</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">q_ptr</span> <span class="o">+</span> <span class="n">vec_idx</span> <span class="o">*</span> <span class="n">VEC_SIZE</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="n">__syncthreads</span><span class="p">();</span>
-</span></span></code></pre></div><p>从显存读取\(K\)到 register：</p>
+</span></span></code></pre></div><p>（2）循环从显存读取\(K\)到 register，并计算QK：</p>
 <ul>
 <li>每个 seq 包含 cxt_length * num_kv_heads * head_size 个元素</li>
 <li>每个 CUDA block 负责计算一个 seq 的一个 head 的 \(QK^T\)， 只需要读取 ctx_length * head_size 个 K 的元素</li>
@@ -899,8 +945,48 @@ blk_size # block_size，每个page block存储的元素数量，每个page存(bl
 </ul>
 </li>
 </ul>
-<p>从显存读取\(K\)到 register：</p>
-<p>和K Cache一样，CUDA thread block依次访问num_blk个物理块到寄存器，每个warp负责blk_size个token的page内存，page的真实物理地址同样需要进行索引。不过这里不需要以thread group为单位访问16字节，而是每个thread访问16字节的元素。访问完就可以与shared memory的softmax(QK^T)中间结果对应位置16字节的数据进行点乘，得到一个float结果，写到output对应位置中。</p>
+<p>代码步骤：</p>
+<ul>
+<li>每个warp负责计算一个block key，而每个block key shape为 [block_size, num_head, head_size]</li>
+<li>每个thread_group取一个key，即num_head个元素，计算QK dot</li>
+<li>只有thread_group的第一个thread负责将QK结果写入shared memory</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">//  每个warp负责 blocksize * headsize个元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">block_idx</span> <span class="o">=</span> <span class="n">warp_idx</span><span class="p">;</span> <span class="n">block_idx</span> <span class="o">&lt;</span> <span class="n">num_blocks</span><span class="p">;</span> <span class="n">block_idx</span> <span class="o">+=</span> <span class="n">NUM_WARPS</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// TODO(Zhengzekang)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">const</span> <span class="kt">int</span> <span class="n">physical_block_number</span> <span class="o">=</span> <span class="n">block_table</span><span class="p">[</span><span class="n">block_idx</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">K_vec</span> <span class="n">k_vecs</span><span class="p">[</span><span class="n">NUM_VECS_PER_THREAD</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// 遍历每个thread_group处理多少个token
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM_TOKENS_PER_THREAD_GROUP</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="kt">int</span> <span class="n">physical_block_offset</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="n">thread_group_idx</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">WARP_SIZE</span><span class="p">)</span> <span class="o">%</span> <span class="n">BLOCK_SIZE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="kt">int</span> <span class="n">token_idx</span> <span class="o">=</span> <span class="n">block_idx</span> <span class="o">*</span> <span class="n">BLOCK_SIZE</span> <span class="o">+</span> <span class="n">physical_block_offset</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">K_vec</span> <span class="n">k_vecs</span><span class="p">[</span><span class="n">NUM_VECS_PER_THREAD</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 遍历每个thread需要处理多少个VEC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NUM_VECS_PER_THREAD</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">//  vectorized取到key
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">k_vecs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">xxxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 计算QKdot，里面包含了一个thread_groupsize的WarpReduceSum，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">float</span> <span class="n">qk</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">Qk_dot</span><span class="o">&lt;</span><span class="n">scalar_t</span><span class="p">,</span> <span class="n">THREAD_GROUP_SIZE</span><span class="o">&gt;::</span><span class="n">dot</span><span class="p">(</span><span class="n">q_vecs</span><span class="p">,</span> <span class="n">k_vecs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 只有thread_group的第一个thread负责将QK结果写入shared memory
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 并且维护一个qk_max，用于后续softmax
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">thread_group_offset</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// Store the partial reductions to shared memory.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="c1">// NOTE(woosuk): It is required to zero out the masked logits.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">const</span> <span class="kt">bool</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">token_idx</span> <span class="o">&gt;=</span> <span class="n">context_len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">logits</span><span class="p">[</span><span class="n">token_idx</span> <span class="o">-</span> <span class="n">start_token_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">?</span> <span class="mf">0.f</span> <span class="o">:</span> <span class="n">qk</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// Update the max value.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">qk_max</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">?</span> <span class="nl">qk_max</span> <span class="p">:</span> <span class="n">fmaxf</span><span class="p">(</span><span class="n">qk_max</span><span class="p">,</span> <span class="n">qk</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>此时各个thread_group已经完成了自己的qk_dot操作，并且都维护了qk_max。下面就需要和其他thread_group做warp shuffle操作，得到一个warp内的qk max值。</p>
+<p>（3）从显存读取\(V\)到 register：</p>
+<p>和KCache一样，CUDA thread block依次访问num_blk个物理块到寄存器，每个warp负责blk_size个token的page内存，page的真实物理地址同样需要进行索引。不过这里不需要以thread group为单位访问16字节，而是每个thread访问16字节的元素。访问完就可以与shared memory的softmax(QK^T)中间结果对应位置16字节的数据进行点乘，得到一个float结果，写到output对应位置中。</p>
 <blockquote>
 <p>为什么 VCache 的 layout 是 [num_blocks, num_kv_heads, head_size, block_size]，和 KCache layout 不一样？ 因为 V 要去做点乘的对象在shared memory，只需要读，不涉及并行写。</p>
 </blockquote>
@@ -963,7 +1049,7 @@ blk_size # block_size，每个page block存储的元素数量，每个page存(bl
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        Part [1 1]: This Article
+        Part [1 4]: This Article
     </div>
     
     

@@ -4,8 +4,8 @@ date: 2024-05-23T22:43:31Z
 draft: false
 description: ""
 tags: ["NLP", "Transformer", "LLM", "Attention"]
-series: ["Attention"]
-series_order: 2
+series: ["Attention and Optimization"]
+series_order: 3
 # layout: "simple"
 showDate: true
 ---

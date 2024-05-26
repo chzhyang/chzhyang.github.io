@@ -5,7 +5,7 @@ lastmod: 2024-05-06
 draft: false
 tags: ["NLP", "Transformer", "LLM", "Flash Attention"]
 series: ["Attention and Optimization"]
-series_order: 1
+series_order: 2
 # layout: "simple"
 showDate: true
 ---

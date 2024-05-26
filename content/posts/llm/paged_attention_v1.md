@@ -6,10 +6,12 @@ draft: false
 description: ""
 tags: ["NLP", "Transformer", "LLM", "vLLM", "Paged Attention"]
 series: ["vLLM", "Attention and Optimization"]
-series_order: [1, 1]
+series_order: [1, 4]
 # layout: "simple"
 showDate: true
 ---
+
+{{< katex >}}
 
 ## vLLM
 
@@ -27,16 +29,30 @@ vLLM中有两个版本的 PA，其中：
 - V2 参考了 Flash Decoding方式，对 sequence 的维度进行切分来增加并行粒度
 
 
-## Paged Attention V1 and CUDA Kernel
+## Paged Attention V1 
+
+Block table in PA
+
+![Example generation process for a request with PagedAttention](https://blog.vllm.ai/assets/figures/annimation1.gif)
+
+一个 req 中包含多个 seq 时，可以共享blocks
+
+![Example generation process for a request that samples multiple outputs](https://blog.vllm.ai/assets/figures/annimation3.gif)
+## Paged Attention V1 CUDA Kernel(vLLM)
 
 [csrc/attention/attention_kernels.cu](https://github1s.com/vllm-project/vllm/blob/main/csrc/attention/attention_kernels.cu#L90-L91)
 
+Dispatch逻辑：
+- CALL_KERNEL_LAUNCHER_BLOCK_SIZE 根据存储的kv blocksize进行派发，分别是 8， 16， 32
+- LAUNCH_ATTENTION_KERNEL 根据注意力头大小HEADSIZE静态派发
+
 并行任务的划分：
-- dim3 grid(num_heads, num_seqs)
+- dim3 grid(num_heads, num_seqs， 1)
 - dim3 block(NUM_THREADS), 线程数是128，每个 block 负责完成 output 矩阵一行（head_size个元素）结果的 attention 计算
 - block 的线程划分为若干个 Warp, 每个 Warp 的32个线程划分为 blk_size 个 thread group
 
 Kernel 输入参数
+
 ```python
 out[num_seqs, num_heads, head_size]
 q[num_seqs, num_heads, head_size]
@@ -46,11 +62,13 @@ head_mapping[num_heads] # 使用MQA, GQA时的kv_head
 block_tables[num_seqs, max_num_blocks_per_seq] # 维护各个Q对应KVCache的哪些block
 context_lens[num_seqs] # 用于变长
 ```
+
 num_head： Q 的 head 数
 num_kv_heads：K, V 的 head 数，MHA 的 num_kv_heads = num_head，GQA、MQA 的 num_kv_heads < num_head
 blk_size # block_size，每个page block存储的元素数量，每个page存(blk_size, num_head，head_size)个K、V的元素
 
 Kernel 的常量定义：
+
 - THREAD_GROUP_SIZE = MAX(WARP_SIZE / BLOCK_SIZE, 1) 通过WARPSIZE / BLOCKSIZE 得到一个thread_group大小。注意这里的BLOCKSIZE不是cuda blocksize，而是一个kv block的大小(默认值16)
 - NUM_TOKENS_PER_THREAD_GROUP = (BLOCK_SIZE + WARP_SIZE - 1) / - WARP_SIZE 表示每个thread_group处理多少个token
 - NUM_WARPS 表示一个threadblock有多少个warp
@@ -63,9 +81,9 @@ Kernel 的常量定义：
 - NUM_ROWS_PER_THREAD 表示每个thread需要负责多少行
 
 
-{{< katex >}}
+Kernel 代码逻辑：
 
-从显存读取\\(Q\\)到 shared memory：
+（1）循环从显存读取\\(Q\\)到 shared memory：
 
 迭代读取，每 CUDA block 负责读取\\(Q\\)的一行（head_size 个元素）存入 shared memory。其中，block 的每个 Warp 负责读取 16*blk_size 字节的 Q，即每个 thread group 会读取16字节的 Q，16*blk_size 字节的 Q 对应 sequence 的一个 head。
 ```c++
@@ -90,7 +108,7 @@ q_vecs[thread_group_offset][i] =
 __syncthreads();
 ```
 
-从显存读取\\(K\\)到 register：
+（2）循环从显存读取\\(K\\)到 register，并计算QK：
 
 - 每个 seq 包含 cxt_length * num_kv_heads * head_size 个元素
 - 每个 CUDA block 负责计算一个 seq 的一个 head 的 \\(QK^T\\)， 只需要读取 ctx_length * head_size 个 K 的元素
@@ -101,9 +119,55 @@ __syncthreads();
     - 寄存器中的Q和K元素进行点乘，结果写入shared memory。一个 CUDA block 的 shared memory 存储了一行 QK^T 的结果，共 ctx_length 个元素
     - CUDA block 对 shared memory 中元素进行 max，sum 方式 reduction，然后计算得到 softmax 的结果
 
-从显存读取\\(K\\)到 register：
+代码步骤：
 
-和K Cache一样，CUDA thread block依次访问num_blk个物理块到寄存器，每个warp负责blk_size个token的page内存，page的真实物理地址同样需要进行索引。不过这里不需要以thread group为单位访问16字节，而是每个thread访问16字节的元素。访问完就可以与shared memory的softmax(QK^T)中间结果对应位置16字节的数据进行点乘，得到一个float结果，写到output对应位置中。
+- 每个warp负责计算一个block key，而每个block key shape为 [block_size, num_head, head_size]
+- 每个thread_group取一个key，即num_head个元素，计算QK dot
+- 只有thread_group的第一个thread负责将QK结果写入shared memory
+
+```C++
+//  每个warp负责 blocksize * headsize个元素
+for (int block_idx = warp_idx; block_idx < num_blocks; block_idx += NUM_WARPS) {
+    // TODO(Zhengzekang)
+    const int physical_block_number = block_table[block_idx];
+    // ...
+    K_vec k_vecs[NUM_VECS_PER_THREAD];
+    
+    // 遍历每个thread_group处理多少个token
+    for (int i = 0; i < NUM_TOKENS_PER_THREAD_GROUP; i++) {
+        const int physical_block_offset =
+            (thread_group_idx + i * WARP_SIZE) % BLOCK_SIZE;
+        const int token_idx = block_idx * BLOCK_SIZE + physical_block_offset;
+        K_vec k_vecs[NUM_VECS_PER_THREAD];
+        // 遍历每个thread需要处理多少个VEC
+        for (int j = 0; j < NUM_VECS_PER_THREAD; j++) {
+            //  vectorized取到key
+            k_vecs[j] = xxxx;
+        }
+        // 计算QKdot，里面包含了一个thread_groupsize的WarpReduceSum，
+        float qk = scale * Qk_dot<scalar_t, THREAD_GROUP_SIZE>::dot(q_vecs, k_vecs);
+
+        // 只有thread_group的第一个thread负责将QK结果写入shared memory
+        // 并且维护一个qk_max，用于后续softmax
+        if (thread_group_offset == 0) {
+            // Store the partial reductions to shared memory.
+            // NOTE(woosuk): It is required to zero out the masked logits.
+            const bool mask = token_idx >= context_len;
+            logits[token_idx - start_token_idx] = mask ? 0.f : qk;
+            // Update the max value.
+            qk_max = mask ? qk_max : fmaxf(qk_max, qk);
+        }
+    }
+}
+```
+
+此时各个thread_group已经完成了自己的qk_dot操作，并且都维护了qk_max。下面就需要和其他thread_group做warp shuffle操作，得到一个warp内的qk max值。
+
+
+
+（3）从显存读取\\(V\\)到 register：
+
+和KCache一样，CUDA thread block依次访问num_blk个物理块到寄存器，每个warp负责blk_size个token的page内存，page的真实物理地址同样需要进行索引。不过这里不需要以thread group为单位访问16字节，而是每个thread访问16字节的元素。访问完就可以与shared memory的softmax(QK^T)中间结果对应位置16字节的数据进行点乘，得到一个float结果，写到output对应位置中。
 
 > 为什么 VCache 的 layout 是 [num_blocks, num_kv_heads, head_size, block_size]，和 KCache layout 不一样？ 因为 V 要去做点乘的对象在shared memory，只需要读，不涉及并行写。
 
