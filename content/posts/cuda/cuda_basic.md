@@ -11,7 +11,7 @@ series_order: 2
 showDate: true
 ---
 
-## Main Concepts
+## Kernel Function
 
 gridDim
 
@@ -33,12 +33,65 @@ grid 里总的线程个数 N = gridDim.x * gridDim.y * gridDim.z * blockDim.x * 
 
 通过 blockIdx.x、blockIdx.y、blockIdx.z、threadIdx.x、threadIdx.y、threadIdx.z 可以定位一个线程的坐标。
 
+主流架构一个block三个唯独的设置最多为(1024， 1024， 64)，同时总线程数最多只能有 1024 个。
+
 将所有的线程排成一个序列，序列号为 0 , 1 , 2 , … , N ，如何找到当前 thread 的序列号 ?
 
 - 先找到该thread所在的 block的序号 blockId = blockIdx.x + blockIdx.y*gridDim.x + blockIdx.z*gridDim.x*gridDim.y
 - 然后找到当前 thread 在 block 中的序号 threadId = threadIdx.x + threadIdx.y*blockDim.x + threadIdx.z*blockDim.x*blockDim.y
 - 计算一个 block 中一共有多少个 thread， M = blockDim.x*blockDim.y*blockDim.z
 - 求得当前的线程的序列号 idx = threadId + M*blockId
+
+## Device function
+kernel 可以调用不带执行配置的自定义函数，这样的自定义函数称为设备函数（devicefunction）。它是在设备中执行，并在设备中被调用的。与之相比，核函数是在设备中执行，但在主机端被调用的。
+
+```c++
+double __device__ add1_device(const double x, const double y)
+{
+    return (x + y);
+}
+void __global__ add1(const double *x, const double *y, double *z,
+const int N)
+{
+    const int n = blockDim.x * blockIdx.x + threadIdx.x;
+    if (n < N)
+    {
+        z[n] = add1_device(x[n], y[n]);
+    }
+}
+```
+
+## CUDA 常用的函数
+
+同步函数 `__syncthreads`: 只能用在核函数中 `__syncthreads()`,该函数可保证一个线程块中的所有线程（或者说所有线程束）在执行该语句后面的语句之前都完全执行了该语句前面的语句。然而，该函数只是针对同一个线程块中的线程的，不同线程块中线程的执行次序依然是不确定的。
+
+
+## CUDA Event Record
+
+
+在 C++ 中，有多种可以对一段代码进行计时的方法，如使用 GCC 的 clock 函数和与头文件 <chrono> 对应的时间库、GCC 中的 gettimeofday 函数。
+
+CUDA 提供了一种基于 CUDA 事件（CUDA event）的计时方式，可用来给一段 CUDA 代码（可能包含了主机代码和设备代码）计时。下面的例子涵盖了计时的基本流程：
+
+```c++
+//creat
+CHECK(cudaEventCreate(&start));
+CHECK(cudaEventCreate(&stop));
+//record
+CHECK(cudaEventRecord(start));
+cudaEvent_t start, stop;
+cudaEventQuery(start)
+//+需要计时的代码块
+CHECK(cudaEventRecord(stop));
+CHECK(cudaEventSynchronize(stop));
+float elapsed_time;
+//compute
+CHECK(cudaEventElapsedTime(&elapsed_time, start, stop));
+printf("Time = %g ms.\n", elapsed_time);
+//clean
+CHECK(cudaEventDestroy(start));
+CHECK(cudaEventDestroy(stop));
+```
 
 ## Steps of CUDA Program
 
@@ -229,7 +282,6 @@ int main(void)
 }
 ```
 
-## CUDA Kernel for Conv
 
 ## CUDA Code Profiling
 
@@ -238,3 +290,5 @@ nvprof是CUDA工具包附带的命令行GPU分析器
 Reference:
 
 - [NVIDIA CUDA Docs](https://developer.nvidia.com/blog/even-easier-introduction-cuda/)
+- [CUDA C++ Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/)
+- [CUDA 矩阵乘法终极优化指南](https://www.cnblogs.com/megengine/p/15272175.html)

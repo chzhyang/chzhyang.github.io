@@ -38,9 +38,13 @@ Block table in PA
 一个 req 中包含多个 seq 时，可以共享blocks
 
 ![Example generation process for a request that samples multiple outputs](https://blog.vllm.ai/assets/figures/annimation3.gif)
+
+
 ## Paged Attention V1 CUDA Kernel(vLLM)
 
 [csrc/attention/attention_kernels.cu](https://github1s.com/vllm-project/vllm/blob/main/csrc/attention/attention_kernels.cu#L90-L91)
+
+single_query attention 函数
 
 Dispatch逻辑：
 - CALL_KERNEL_LAUNCHER_BLOCK_SIZE 根据存储的kv blocksize进行派发，分别是 8， 16， 32
@@ -120,15 +124,23 @@ __syncthreads();
     - CUDA block 对 shared memory 中元素进行 max，sum 方式 reduction，然后计算得到 softmax 的结果
 
 代码步骤：
-
-- 每个warp负责计算一个block key，而每个block key shape为 [block_size, num_head, head_size]
+- group是由block大小决定的，当block>32时，每个warp实现了一个group,否则在一个warp中实现多个group
+- 每个warp负责计算一个block KCache，而每个block key shape为 [block_size, num_head, head_size]
 - 每个thread_group取一个key，即num_head个元素，计算QK dot
 - 只有thread_group的第一个thread负责将QK结果写入shared memory
 
+- head_idx标记GPU BLOCKs，也即每个GPU Blocks计算一个head
+- num_heads标记使用的GPU BLOCKs总数，也即head num
+- seq_idx标记的是第二维GPU BLOCKs， 也即seq的位置
+
+分配red_smem[2*NUM_WARPS]为reduce所用，保留的是warp内的局部最大值。后面计算了qvec的dot结果保存为qk，先在group内reduce计算得到局部最大值，然后在每个warp内reduce计算得到全局最大值为qk_max。
+
 ```C++
-//  每个warp负责 blocksize * headsize个元素
+// 每个warp负责 blocksize * headsize个元素
+// block_idx是block cache中的序号（逻辑序号）
 for (int block_idx = warp_idx; block_idx < num_blocks; block_idx += NUM_WARPS) {
     // TODO(Zhengzekang)
+    // 定位物理块
     const int physical_block_number = block_table[block_idx];
     // ...
     K_vec k_vecs[NUM_VECS_PER_THREAD];
@@ -153,7 +165,7 @@ for (int block_idx = warp_idx; block_idx < num_blocks; block_idx += NUM_WARPS) {
             // Store the partial reductions to shared memory.
             // NOTE(woosuk): It is required to zero out the masked logits.
             const bool mask = token_idx >= context_len;
-            logits[token_idx - start_token_idx] = mask ? 0.f : qk;
+            logits[token_idx] = mask ? 0.f : qk;
             // Update the max value.
             qk_max = mask ? qk_max : fmaxf(qk_max, qk);
         }
@@ -163,11 +175,144 @@ for (int block_idx = warp_idx; block_idx < num_blocks; block_idx += NUM_WARPS) {
 
 此时各个thread_group已经完成了自己的qk_dot操作，并且都维护了qk_max。下面就需要和其他thread_group做warp shuffle操作，得到一个warp内的qk max值。
 
+由于每个thread_group里的thread内维护的qk_max是一样的，所以warp shuffle只需到 thread_group_size即可停止。并由lane_id = 0的线程将warp里的qk_max存储到smem，最后再做一次warpreduce，得到一个block里的qkmax值，通过shfl_sync广播操作，让每个线程都拿到max
 
+```c++
+#pragma unroll
+  for (int mask = WARP_SIZE / 2; mask >= THREAD_GROUP_SIZE; mask /= 2) {
+    qk_max = fmaxf(qk_max, __shfl_xor_sync(uint32_t(-1), qk_max, mask));
+  }
+  if (lane == 0) {
+    red_smem[warp_idx] = qk_max;
+  }
+  __syncthreads();
 
-（3）从显存读取\\(V\\)到 register：
+  // TODO(woosuk): Refactor this part.
+  // Get the max qk value for the sequence.
+  qk_max = lane < NUM_WARPS ? red_smem[lane] : -FLT_MAX;
+#pragma unroll
+  for (int mask = NUM_WARPS / 2; mask >= 1; mask /= 2) {
+    qk_max = fmaxf(qk_max, __shfl_xor_sync(uint32_t(-1), qk_max, mask));
+  }
+  // Broadcast the max qk value to all threads.
+  qk_max = __shfl_sync(uint32_t(-1), qk_max, 0);
+```
 
-和KCache一样，CUDA thread block依次访问num_blk个物理块到寄存器，每个warp负责blk_size个token的page内存，page的真实物理地址同样需要进行索引。不过这里不需要以thread group为单位访问16字节，而是每个thread访问16字节的元素。访问完就可以与shared memory的softmax(QK^T)中间结果对应位置16字节的数据进行点乘，得到一个float结果，写到output对应位置中。
+接下来就是常规的softmax
+
+执行exp(x-qk_max)并得到每个warp上的exp_sum，规约得全局（所有warp）的exp_sum,计算每个节点上的softmax
+
+```c++
+// Get the sum of the exp values.
+float exp_sum = 0.f;
+for (int i = thread_idx; i < context_len; i += NUM_THREADS) {
+    float val = __expf(logits[i] - qk_max);
+    logits[i] = val;
+    exp_sum += val;
+}
+exp_sum = block_sum<NUM_WARPS>(&red_smem[NUM_WARPS], exp_sum);
+
+// Compute softmax.
+const float inv_sum = __fdividef(1.f, exp_sum + 1e-6f);
+for (int i = thread_idx; i < context_len; i += NUM_THREADS) {
+    logits[i] *= inv_sum;
+}
+__syncthreads();
+```
+
+（3）从显存读取\\(V\\)到 register, 计算 softmax(QK^T)V
+
+和KCache一样，CUDA block 依次访问 num_blk 个 VCahce block 到寄存器，每个 warp 负责 1 个 VCache block，。不过这里不需要以 thread group 为单位访问16字节，而是每个 thread 读取16字节的元素到寄存器，然后与shared memory的 softmax(QK^T)中间结果 对应位置16字节的数据进行点乘，得到一个 float 结果，写到 output 的对应位置中。
+
+> 为了读写连续，将V_cache转置，shape为：[num_blocks, num_kv_heads, head_size, block_size]
+
+> 注意这里使用了fp32模式以防止累加过程中的精度损失
+
+```c++
+// 每个线程一次性读16bytes数据
+  constexpr int V_VEC_SIZE = MIN(16 / sizeof(scalar_t), BLOCK_SIZE);
+  using V_vec = typename Vec<scalar_t, V_VEC_SIZE>::Type;
+  using L_vec = typename Vec<scalar_t, V_VEC_SIZE>::Type;
+  using Float_L_vec = typename FloatVec<L_vec>::Type;
+  
+  // 每一行有多少个V_VEC，假设BLOCK_SIZE=8，那么NUM_V_VECS_PER_ROW=1
+  constexpr int NUM_V_VECS_PER_ROW = BLOCK_SIZE / V_VEC_SIZE;
+  // 一个WARP一次处理多少行，按照上面假设，这里是32
+  constexpr int NUM_ROWS_PER_ITER = WARP_SIZE / NUM_V_VECS_PER_ROW;
+  // 每个thread需要负责多少行，假设headsize=128，那么每个thread要处理4行
+  constexpr int NUM_ROWS_PER_THREAD = (HEAD_SIZE + NUM_ROWS_PER_ITER - 1) / NUM_ROWS_PER_ITER;
+
+  // 提前分配accumulate buffer，用float累加
+  float accs[NUM_ROWS_PER_THREAD];
+#pragma unroll
+  for (int i = 0; i < NUM_ROWS_PER_THREAD; i++) {
+    accs[i] = 0.f;
+  }
+
+for (int block_idx = warp_idx; block_idx < num_blocks; block_idx += NUM_WARPS) {
+    // ...
+#pragma unroll
+    for (int i = 0; i < NUM_ROWS_PER_THREAD; i++) {
+      const int row_idx = lane / NUM_V_VECS_PER_ROW + i * NUM_ROWS_PER_ITER;
+      if (row_idx < HEAD_SIZE) {
+        const int offset = row_idx * BLOCK_SIZE + physical_block_offset;
+        V_vec v_vec = *reinterpret_cast<const V_vec*>(v_ptr + offset);
+        accs[i] += dot(logits_vec, v_vec);
+      }
+    }
+  }
+```
+（4）更新最终的结果
+
+将一个block分成上半部分warp和下半部分warp。上半部分warp(warp_id > mid)将自己累加的结果写到shared memory。下半部分warp将之前上半部分warp存到shared_memory 的结果取出，进行累加。这样重复，当warp_idx==0时，将所有结果写回到每一行中。
+
+```c++
+  // Perform reduction across warps.
+  float* out_smem = reinterpret_cast<float*>(shared_mem);
+#pragma unroll
+  for (int i = NUM_WARPS; i > 1; i /= 2) {
+    int mid = i / 2;
+    // Upper warps write to shared memory.
+    if (warp_idx >= mid && warp_idx < i) {
+      float* dst = &out_smem[(warp_idx - mid) * HEAD_SIZE];
+#pragma unroll
+      for (int i = 0; i < NUM_ROWS_PER_THREAD; i++) {
+        const int row_idx = lane / NUM_V_VECS_PER_ROW + i * NUM_ROWS_PER_ITER;
+        if (row_idx < HEAD_SIZE && lane % NUM_V_VECS_PER_ROW == 0) {
+          dst[row_idx] = accs[i];
+        }
+      }
+    }
+  }
+    __syncthreads();
+    // Lower warps update the output.
+    if (warp_idx < mid) {
+      const float* src = &out_smem[warp_idx * HEAD_SIZE];
+#pragma unroll
+      for (int i = 0; i < NUM_ROWS_PER_THREAD; i++) {
+        const int row_idx = lane / NUM_V_VECS_PER_ROW + i * NUM_ROWS_PER_ITER;
+        if (row_idx < HEAD_SIZE && lane % NUM_V_VECS_PER_ROW == 0) {
+          accs[i] += src[row_idx];
+        }
+      }
+    }
+    __syncthreads();
+    // Write the final output.
+    if (warp_idx == 0) {
+        scalar_t* out_ptr = out + seq_idx * num_heads * 
+        max_num_partitions * HEAD_SIZE + head_idx * 
+        max_num_partitions * HEAD_SIZE + partition_idx * 
+        HEAD_SIZE;
+#pragma unroll
+    for (int i = 0; i < NUM_ROWS_PER_THREAD; i++) {
+      const int row_idx = lane / NUM_V_VECS_PER_ROW + i * NUM_ROWS_PER_ITER;
+      if (row_idx < HEAD_SIZE && lane % NUM_V_VECS_PER_ROW == 0) {
+        from_float(*(out_ptr + row_idx), accs[i]);
+      }
+    }
+  }
+```
+
 
 > 为什么 VCache 的 layout 是 [num_blocks, num_kv_heads, head_size, block_size]，和 KCache layout 不一样？ 因为 V 要去做点乘的对象在shared memory，只需要读，不涉及并行写。
 
@@ -189,3 +334,5 @@ for (int block_idx = warp_idx; block_idx < num_blocks; block_idx += NUM_WARPS) {
 Reference:
 - [vllm](https://www.zhihu.com/question/633412311/answer/3332907958)
 - [Efficient Memory Management for Large Language Model Serving with PagedAttention](https://link.zhihu.com/?target=https%3A//dl.acm.org/doi/abs/10.1145/3600006.3613165)
+- [PageAttention代码走读](https://zhuanlan.zhihu.com/p/668736097)
+- [vLLM kernel](https://zhuanlan.zhihu.com/p/657114963)

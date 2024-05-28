@@ -107,7 +107,7 @@
     "keywords": ["NLP","Transformer","LLM","Flash Attention"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1226"
+    "wordCount": "1518"
   }]
   </script>
 
@@ -620,7 +620,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-05 22:43:31 &#43;0000 UTC">2024-05-05</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-06 00:00:00 &#43;0000 UTC">Updated: 2024-05-06</time><span class="px-2 text-primary-500">&middot;</span><span>1226 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
+  <time datetime="2024-05-05 22:43:31 &#43;0000 UTC">2024-05-05</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-06 00:00:00 &#43;0000 UTC">Updated: 2024-05-06</time><span class="px-2 text-primary-500">&middot;</span><span>1518 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span>
   
 
   
@@ -883,6 +883,13 @@ $$\operatorname{softmax}(x):=\frac{f(x)}{\ell(x)}$$</p>
 $$f(x)=\left[e^{m\left(x^{(1)}\right)-m(x)} f\left(x^{(1)}\right) \quad e^{m\left(x^{(2)}\right)-m(x)} f\left(x^{(2)}\right)\right] $$
 $$\ell(x)=\ell\left(\left[x^{(1)} x^{(2)}\right]\right)=e^{m\left(x^{(1)}\right)-m(x)} \ell\left(x^{(1)}\right)+e^{m\left(x^{(2)}\right)-m(x)} \ell\left(x^{(2)}\right) $$
 $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
+<p>复杂度分析：</p>
+<ul>
+<li>读取Q，K，写入\(S=QK^T\)，内存访问复杂度\(O(Nd+N^2)\)</li>
+<li>读取S，写入\(P=softmax(S)\)，内存访问复杂度\(O(N^2)\)</li>
+<li>读取V和P，写入\(O=PV\)，内存访问复杂度\(O(Nd+N^2)\)</li>
+</ul>
+<p>综上，self-attention的 HBM 访问复杂度\(O(Nd+N^2)\)</p>
 <p>分块的 softmax 伪代码:
 
 
@@ -912,7 +919,7 @@ $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
 <blockquote>
 <p>由于重新计算导致 FLOPs 增加，但是由于大量减少HBM访问，FlashAttention 运行速度更快</p>
 </blockquote>
-<p>FlashAttention的 FLOPs 为 \(𝑂(𝑁^2𝑑)\)，除了 input 和 output，额外需要的内存为 \(𝑂(𝑁)\), 对HBM访问的次数为 \(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 比标准 Attention 的 \(O(Nd+N^2)\)更高效</p>
+<p>FlashAttention的 FLOPs 为 \(𝑂(𝑁^2𝑑)\)，除了 input 和 output，额外需要的内存为 \(𝑂(𝑁)\), 对HBM访问的次数为 \(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 其中 M 为SRAM的大小，当 \(M=O(Nd)\)时，对HBM访问的次数为\(O(Nd)\)， 远远小于标准 Attention 的 \(O(Nd+N^2)\)</p>
 <blockquote>
 <p>PyTorch 2.0已将 FlashAttention 集成到官方库中，可以直接调用<a href="https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html"   target="_blank">
     torch.nn.functional.scaled_dot_product_attention</a></p>
@@ -933,6 +940,15 @@ $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
 <ul>
 <li>通过切块技术减少了内存访问次数，提高了计算速度和内存利用率。</li>
 <li>内存访问复杂度为 \(𝑂(𝑁^2𝑑^2𝑀^{−1})\), 比标准 Attention 的 \(O(Nd+N^2)\)更高效</li>
+</ul>
+<p>Reference：</p>
+<ul>
+<li><a href="https://blog.csdn.net/taoqick/article/details/131382360"   target="_blank">
+    一些改cuda加速的思路：FlashAttention、PagedAttention、LightSeq、ByteTransformer</a></li>
+<li><a href="https://readpaper.feishu.cn/docx/AC7JdtLrhoKpgxxSRM8cfUounsh"   target="_blank">
+    FlashAttention: 更快训练更长上下文的GPT</a></li>
+<li><a href="https://www.toutiao.com/article/7368674542362903051/?&amp;source=m_redirect&amp;wid=1716711001029"   target="_blank">
+    手撕Flash Attention</a></li>
 </ul>
 
         </div>

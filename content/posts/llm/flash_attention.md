@@ -69,6 +69,14 @@ $$f(x)=\left[e^{m\left(x^{(1)}\right)-m(x)} f\left(x^{(1)}\right) \quad e^{m\lef
 $$\ell(x)=\ell\left(\left[x^{(1)} x^{(2)}\right]\right)=e^{m\left(x^{(1)}\right)-m(x)} \ell\left(x^{(1)}\right)+e^{m\left(x^{(2)}\right)-m(x)} \ell\left(x^{(2)}\right) $$
 $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$
 
+复杂度分析：
+
+- 读取Q，K，写入\\(S=QK^T\\)，内存访问复杂度\\(O(Nd+N^2)\\)
+- 读取S，写入\\(P=softmax(S)\\)，内存访问复杂度\\(O(N^2)\\)
+- 读取V和P，写入\\(O=PV\\)，内存访问复杂度\\(O(Nd+N^2)\\)
+
+综上，self-attention的 HBM 访问复杂度\\(O(Nd+N^2)\\)
+
 分块的 softmax 伪代码:
 ![tilling softmax](https://pic2.zhimg.com/80/v2-97d9313fbc337b46c171bc722dcafdbd_1440w.webp)
 
@@ -77,11 +85,13 @@ $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$
 flashattention 伪代码：
 ![flashattention](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8ed46b76-4667-4e7d-a1e8-9c10de04c82a%2FUntitled.png?table=block&id=af426072-791a-449d-86e7-8ccb82240c17&t=af426072-791a-449d-86e7-8ccb82240c17)
 
+
+
 中间变量：\\(O_i\\)(最终乘积)、\\(l_i\\)（softmax的分母，即累加和）、\\(m_i\\)（遍历到当前块为止的最大值），再也不用保存全部的S和P了。
 
 > 由于重新计算导致 FLOPs 增加，但是由于大量减少HBM访问，FlashAttention 运行速度更快
 
-FlashAttention的 FLOPs 为 \\(𝑂(𝑁^2𝑑)\\)，除了 input 和 output，额外需要的内存为 \\(𝑂(𝑁)\\), 对HBM访问的次数为 \\(𝑂(𝑁^2𝑑^2𝑀^{−1})\\), 比标准 Attention 的 \\(O(Nd+N^2)\\)更高效
+FlashAttention的 FLOPs 为 \\(𝑂(𝑁^2𝑑)\\)，除了 input 和 output，额外需要的内存为 \\(𝑂(𝑁)\\), 对HBM访问的次数为 \\(𝑂(𝑁^2𝑑^2𝑀^{−1})\\), 其中 M 为SRAM的大小，当 \\(M=O(Nd)\\)时，对HBM访问的次数为\\(O(Nd)\\)， 远远小于标准 Attention 的 \\(O(Nd+N^2)\\)
 
 > PyTorch 2.0已将 FlashAttention 集成到官方库中，可以直接调用[torch.nn.functional.scaled_dot_product_attention](https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html)
 
@@ -91,3 +101,9 @@ FlashAttention的 FLOPs 为 \\(𝑂(𝑁^2𝑑)\\)，除了 input 和 output，�
 FlashAttention V1:
 - 通过切块技术减少了内存访问次数，提高了计算速度和内存利用率。
 - 内存访问复杂度为 \\(𝑂(𝑁^2𝑑^2𝑀^{−1})\\), 比标准 Attention 的 \\(O(Nd+N^2)\\)更高效
+
+
+Reference：
+- [一些改cuda加速的思路：FlashAttention、PagedAttention、LightSeq、ByteTransformer](https://blog.csdn.net/taoqick/article/details/131382360)
+- [FlashAttention: 更快训练更长上下文的GPT](https://readpaper.feishu.cn/docx/AC7JdtLrhoKpgxxSRM8cfUounsh)
+- [手撕Flash Attention](https://www.toutiao.com/article/7368674542362903051/?&source=m_redirect&wid=1716711001029)

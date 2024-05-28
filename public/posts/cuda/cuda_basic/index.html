@@ -15,7 +15,7 @@
   <meta name="keywords" content="CUDA, " />
   
   
-  <link rel="canonical" href="http://localhost:1313/posts/cuda/cuda_1/" />
+  <link rel="canonical" href="http://localhost:1313/posts/cuda/cuda_basic/" />
   
   
   
@@ -60,7 +60,7 @@
   
   
   
-  <meta property="og:url" content="http://localhost:1313/posts/cuda/cuda_1/">
+  <meta property="og:url" content="http://localhost:1313/posts/cuda/cuda_basic/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="CUDA Programming">
   <meta property="og:description" content="Kernel Function # gridDim gridDim.x、gridDi">
@@ -91,7 +91,7 @@
     
     "abstract": "Kernel Function # gridDim gridDim.x、gridDi",
     "inLanguage": "en",
-    "url" : "http:\/\/localhost:1313\/posts\/cuda\/cuda_1\/",
+    "url" : "http:\/\/localhost:1313\/posts\/cuda\/cuda_basic\/",
     "author" : {
       "@type": "Person",
       "name": "Victor Yang"
@@ -105,7 +105,7 @@
     "keywords": ["CUDA"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "2274"
+    "wordCount": "2176"
   }]
   </script>
 
@@ -485,7 +485,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-10 09:47:15 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-20 00:00:00 &#43;0000 UTC">Updated: 2024-05-20</time><span class="px-2 text-primary-500">&middot;</span><span>2274 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">5 mins</span>
+  <time datetime="2024-05-10 09:47:15 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-20 00:00:00 &#43;0000 UTC">Updated: 2024-05-20</time><span class="px-2 text-primary-500">&middot;</span><span>2176 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">5 mins</span>
   
 
   
@@ -563,10 +563,10 @@
   <ul>
     <li><a href="#kernel-function">Kernel Function</a></li>
     <li><a href="#device-function">Device function</a></li>
+    <li><a href="#cuda-常用的函数">CUDA 常用的函数</a></li>
     <li><a href="#cuda-event-record">CUDA Event Record</a></li>
     <li><a href="#steps-of-cuda-program">Steps of CUDA Program</a></li>
     <li><a href="#cuda-kernel-and-parrallel-computing">CUDA Kernel and Parrallel Computing</a></li>
-    <li><a href="#cuda-kernel-matrix-transpose">CUDA Kernel Matrix Transpose</a></li>
     <li><a href="#cuda-code-profiling">CUDA Code Profiling</a></li>
   </ul>
 </nav>
@@ -583,10 +583,10 @@
   <ul>
     <li><a href="#kernel-function">Kernel Function</a></li>
     <li><a href="#device-function">Device function</a></li>
+    <li><a href="#cuda-常用的函数">CUDA 常用的函数</a></li>
     <li><a href="#cuda-event-record">CUDA Event Record</a></li>
     <li><a href="#steps-of-cuda-program">Steps of CUDA Program</a></li>
     <li><a href="#cuda-kernel-and-parrallel-computing">CUDA Kernel and Parrallel Computing</a></li>
-    <li><a href="#cuda-kernel-matrix-transpose">CUDA Kernel Matrix Transpose</a></li>
     <li><a href="#cuda-code-profiling">CUDA Code Profiling</a></li>
   </ul>
 </nav>
@@ -647,7 +647,7 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         <a href="http://localhost:1313/posts/cuda/cuda_memory/">
-            Part 5: CUDA Memory
+            Part 5: CUDA Memory and Optimization
         </a>
     </div>
     
@@ -716,6 +716,19 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div>
+
+<h2 class="relative group">CUDA 常用的函数 
+    <div id="cuda-%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#cuda-%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>同步函数 <code>__syncthreads</code>: 只能用在核函数中 <code>__syncthreads()</code>,该函数可保证一个线程块中的所有线程（或者说所有线程束）在执行该语句后面的语句之前都完全执行了该语句前面的语句。然而，该函数只是针对同一个线程块中的线程的，不同线程块中线程的执行次序依然是不确定的。</p>
+
 
 <h2 class="relative group">CUDA Event Record 
     <div id="cuda-event-record" class="anchor"></div>
@@ -949,52 +962,6 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div>
 
-<h2 class="relative group">CUDA Kernel Matrix Transpose 
-    <div id="cuda-kernel-matrix-transpose" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#cuda-kernel-matrix-transpose" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<ul>
-<li>Gobal memory</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">matrix_trans</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">in</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">out</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">in</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">in</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">i</span><span class="p">];</span><span class="c1">// 顺序读，非顺序写
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// out[j * N + i] = in[i * N + j];  // 顺序写，非顺序读
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><ul>
-<li>Shared memory</li>
-</ul>
-<p>矩阵转置问题中，对全局内存的读和写这两个操作，总有一个是合并的，另—个是非合并的。利用共享内存可以改善全局内存的访问模式，使得对全局内存的读和写都是合并的。</p>
-<p>核心思路是用一个 block 处理 BLOCK_SIZE * BLOCK_SIZE 的矩阵块</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">block_size</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">matrix_trans</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">in</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">out</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="kt">int</span> <span class="n">buf</span><span class="p">[</span><span class="n">block_size</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">in</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">        <span class="n">buf</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">in</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">j</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">j</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="o">&amp;&amp;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="o">&gt;</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">        <span class="n">out</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div>
-
 <h2 class="relative group">CUDA Code Profiling 
     <div id="cuda-code-profiling" class="anchor"></div>
     
@@ -1067,7 +1034,7 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         <a href="http://localhost:1313/posts/cuda/cuda_memory/">
-            Part 5: CUDA Memory
+            Part 5: CUDA Memory and Optimization
         </a>
     </div>
     
@@ -1089,8 +1056,8 @@
           
         
       <script>
-        var oid = "views_posts\/cuda\/cuda_1.md"
-        var oid_likes = "likes_posts\/cuda\/cuda_1.md"
+        var oid = "views_posts\/cuda\/cuda_basic.md"
+        var oid_likes = "likes_posts\/cuda\/cuda_basic.md"
       </script>
       
       

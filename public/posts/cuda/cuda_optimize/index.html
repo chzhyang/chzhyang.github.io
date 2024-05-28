@@ -63,21 +63,22 @@
   <meta property="og:url" content="http://localhost:1313/posts/cuda/cuda_optimize/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="CUDA Optimization">
-  <meta property="og:description" content="[Todo]">
+  <meta property="og:description" content="CUDA 程序获得高性能的必要（但不充分）条件有">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2024-05-24T13:57:32+00:00">
     <meta property="article:modified_time" content="2024-05-24T13:57:32+00:00">
     <meta property="article:tag" content="CUDA">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_memory/">
       <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_conv/">
       <meta property="og:see_also" content="http://localhost:1313/posts/cuda/gpu/">
-      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_1/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_basic/">
 
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CUDA Optimization">
-  <meta name="twitter:description" content="[Todo]">
+  <meta name="twitter:description" content="CUDA 程序获得高性能的必要（但不充分）条件有">
 
   
   <script type="application/ld+json">
@@ -88,7 +89,7 @@
     "name": "CUDA Optimization",
     "headline": "CUDA Optimization",
     
-    "abstract": "[Todo]",
+    "abstract": "CUDA 程序获得高性能的必要（但不充分）条件有",
     "inLanguage": "en",
     "url" : "http:\/\/localhost:1313\/posts\/cuda\/cuda_optimize\/",
     "author" : {
@@ -104,7 +105,7 @@
     "keywords": ["CUDA"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1"
+    "wordCount": "125"
   }]
   </script>
 
@@ -480,7 +481,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <span>1 word</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span>
+  <span>125 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span>
   
 
   
@@ -568,7 +569,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/cuda/cuda_1/">
+        <a href="http://localhost:1313/posts/cuda/cuda_basic/">
             Part 2: CUDA Programming
         </a>
     </div>
@@ -590,6 +591,15 @@
     </div>
     
     
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_memory/">
+            Part 5: CUDA Memory and Optimization
+        </a>
+    </div>
+    
+    
 
 
 </details>
@@ -597,7 +607,18 @@
 
 
         <div class="article-content max-w-prose mb-20">
-          <p>[Todo]</p>
+          <p>CUDA 程序获得高性能的必要（但不充分）条件有：</p>
+<ul>
+<li>数据传输比例较小</li>
+<li>核函数的算术强度较高（计算访存比）</li>
+<li>核函数中定义的线程数目较多</li>
+</ul>
+<p>在编写与优化 CUDA 程序时，要想方设法（设计算法）做到：</p>
+<ul>
+<li>减少主机与设备之间的数据传输</li>
+<li>提高核函数的算术强度（计算访存比）</li>
+<li>增大核函数的并行规模</li>
+</ul>
 
         </div>
         
@@ -624,7 +645,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/cuda/cuda_1/">
+        <a href="http://localhost:1313/posts/cuda/cuda_basic/">
             Part 2: CUDA Programming
         </a>
     </div>
@@ -643,6 +664,15 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         Part 4: This Article
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_memory/">
+            Part 5: CUDA Memory and Optimization
+        </a>
     </div>
     
     
@@ -690,11 +720,11 @@
         </span>
         <span>
           
-            <a class="flex text-right group ml-3" href="/posts/cuda/cuda_conv/">
+            <a class="flex text-right group ml-3" href="/posts/cuda/cuda_memory/">
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >CUDA Conv</span
+                  >CUDA Memory and Optimization</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   
@@ -720,7 +750,13 @@
   </footer>
 </article>
 
-      
+      <div id="top-scroller" class="pointer-events-none absolute top-[110vh] bottom-0 w-12 ltr:right-0 rtl:left-0">
+  <a href="#the-top"
+    class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 mb-16 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+    aria-label="Scroll to top" title="Scroll to top">
+    &uarr;
+  </a>
+</div>
     </main><footer id="site-footer" class="py-10 print:hidden">
   
   
