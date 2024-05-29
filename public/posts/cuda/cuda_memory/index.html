@@ -105,7 +105,7 @@
     "keywords": ["CUDA"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1609"
+    "wordCount": "2778"
   }]
   </script>
 
@@ -614,7 +614,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <span>1609 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span>
+  <span>2778 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">6 mins</span>
   
 
   
@@ -698,6 +698,7 @@
     <li><a href="#shared-memory">Shared memory</a>
       <ul>
         <li><a href="#cuda-kernel---array-reduce">CUDA Kernel - Array Reduce</a></li>
+        <li><a href="#cuda-kernel---matrix-transposeshared-memory">CUDA Kernel - Matrix Transpose(Shared Memory)</a></li>
       </ul>
     </li>
   </ul>
@@ -721,6 +722,7 @@
     <li><a href="#shared-memory">Shared memory</a>
       <ul>
         <li><a href="#cuda-kernel---array-reduce">CUDA Kernel - Array Reduce</a></li>
+        <li><a href="#cuda-kernel---matrix-transposeshared-memory">CUDA Kernel - Matrix Transpose(Shared Memory)</a></li>
       </ul>
     </li>
   </ul>
@@ -888,8 +890,9 @@ add_stride&lt;&lt;&lt;128, 32&gt;&gt;&gt;(x, y, z);
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>并行配置：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">N</span><span class="o">=</span><span class="mi">1024</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">grid_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">32</span><span class="p">)</span><span class="o">/</span><span class="n">N</span><span class="p">);</span> <span class="c1">//32 = float32的大小，一个thread访问一个float32数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">dim3</span> <span class="nf">grid</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">TILE_DIM</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span><span class="c1">//32 = float32的大小，一个thread访问一个float32数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">grid_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="n">TILE_DIM</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">TILE_DIM</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl"><span class="n">dim3</span> <span class="nf">grid</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">dim3</span> <span class="nf">block</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">)</span><span class="c1">//block最多1024个threads
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">M</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="o">*</span> <span class="n">N2</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">real</span> <span class="o">*</span><span class="n">d_A</span><span class="p">,</span> <span class="o">*</span><span class="n">d_B</span><span class="p">;</span>
@@ -916,8 +919,20 @@ Time = 0.130074 +- 0.00122755 ms.
     </span>        
     
 </h2>
-<p>上面矩阵转置例子中，对全局内存的读和写这两个操作，总有一个是合并的，另—个是非合并的。利用共享内存可以改善全局内存的访问模式，使得对全局内存的读和写都是合并的。</p>
-<p>核心思路是用一个 block 处理 BLOCK_SIZE * BLOCK_SIZE 的矩阵块</p>
+<p>上面的矩阵转置例子中，对全局内存的读和写这两个操作，总有一个是合并的，另—个是非合并的。<strong>利用共享内存可以改善全局内存的访问模式，使得对全局内存的读和写都是合并的。</strong></p>
+<p>全局内存的访问速度是所有内存中最低的，应该尽量减少对它的使用。所有设备内存中，寄存器是最高效的，但在需要线程合作的问题中，用仅对单个线程可见的寄存器是不够的, 需要使用对整个线程块可见的共享内存：</p>
+<ul>
+<li>在核函数中，要将一个变量定义为共享内存变量，就要在定义语句中加上一个限定符 <code>__shared__</code>。一般情况下，共享内存的数组长度等于线程块大小</li>
+<li>线程块的处理逻辑完成后，在利用共享内存进行线程块之间的合作（通信）之前，都要进行同步 <code>__syncthreads()</code>，以确保共享内存变量中的数据对线程块内的所有线程来说都准备就绪</li>
+<li>因为共享内存变量的生命周期仅仅在核函数内，所以必须在核函数结束之前将共享内存中的某些结果保存到全局内存</li>
+</ul>
+<p>动态共享内存和静态共享内存：</p>
+<ul>
+<li>静态的限定符 <code>__shared__</code>， 需要指定内存大小，如 <code>__shared__ real s_y[128]</code></li>
+<li>动态的限定符 <code>__extern__</code>, 定义变量时不用指定内存大小，如 <code>extern __shared__ real s_y[]</code>， 但是需要在调用 kernel 时，加入共享内存的参数，即<strong>共享内存的数组长度等于线程块大小</strong>，如 <code>kernel&lt;&lt;&lt;grid_size, block_size, sizeof(real) * block_size&gt;&gt;&gt;()</code>, 这个效果与静态共享内存是一样的，但可以防止使用静态共享内存时指定内存长度时出错</li>
+<li>使用动态共享内存的核函数和使用静态共享内存的核函数在执行时间上几乎没有差别。但使用动态共享内存容易可提高程序的可维护性</li>
+</ul>
+<p>上面的矩阵转置例子使用共享内存的思路是用一个 block 处理 BLOCK_SIZE * BLOCK_SIZE 的矩阵块</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">block_size</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">matrix_trans</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">in</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">out</span><span class="p">){</span>
 </span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="kt">int</span> <span class="n">buf</span><span class="p">[</span><span class="n">block_size</span><span class="p">];</span>
@@ -950,11 +965,139 @@ Time = 0.130074 +- 0.00122755 ms.
 
 
 <p>一个有 N（\(10^8\)） 个元素的数组 x，假如我们需要计算该数组中所有元素的和，即 sum = x[0] + x[1] + &hellip; + x[N - 1]。</p>
-<p>Todo: CUDA编程：基础与实践 P83</p>
-<p>Reference:</p>
+<ul>
+<li>先调用 kernel 将数组 x 归约到 grid_size 大小，即每个线程块完成 block_size 大小的归约，结果写到数组 y (y 的长度为 grid_size)</li>
+<li>然后在 host 上 完成最后一步的归约，即 y[0&hellip;grid_size-1] -&gt; result</li>
+</ul>
+<p>Kernel如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// 全局内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">reduce_global</span><span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="n">d_x</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">d_y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">real</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">d_x</span> <span class="o">+</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">tid</span> <span class="o">+</span> <span class="n">offset</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">d_y</span><span class="p">[</span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 静态共享内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">reduce_shared</span><span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="n">d_x</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">d_y</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">bid</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">tid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="n">real</span> <span class="n">s_y</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">&lt;</span><span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="n">d_x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">offset</span><span class="o">=</span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">tid</span><span class="o">&lt;</span><span class="n">offset</span><span class="o">&gt;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span><span class="o">=</span><span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="o">+</span><span class="n">offset</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">d_y</span><span class="p">[</span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//动态共享内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">reduce_dynamic</span><span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="n">d_x</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">d_y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">bid</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">tid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">extern</span> <span class="n">__shared__</span> <span class="n">real</span> <span class="n">s_y</span><span class="p">[];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="n">d_x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">+=</span> <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span> <span class="o">+</span> <span class="n">offset</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">d_y</span><span class="p">[</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_y</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Host上完成最后一步：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">real</span> <span class="n">result</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">grid_size</span><span class="p">;</span> <span class="o">++</span><span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">+=</span> <span class="n">h_y</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Telsa T4上的性能对比，详细参数见 <a href="https://github.com/MAhaitao999/CUDA_Programming/blob/master/CUDA/chapter8_%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8/reduce2gpu.cu"   target="_blank">
+    code</a>：</p>
+<pre tabindex="0"><code>Using global memory only:
+Time sum = 123633392.000000.
+
+Using static shared memory:
+Time sum = 123633392.000000.
+
+Using dynamic shared memory:
+Time sum = 123633392.000000.
+</code></pre>
+
+<h3 class="relative group">CUDA Kernel - Matrix Transpose(Shared Memory) 
+    <div id="cuda-kernel---matrix-transposeshared-memory" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#cuda-kernel---matrix-transposeshared-memory" aria-label="Anchor">#</a>
+    </span>        
+    
+</h3>
+<p>核心思想：</p>
+<ul>
+<li>用一个线程块处理一块(tile)的矩阵，比如设置 tile 的边长 TILE_DIM = 32</li>
+<li>将一个 tile 的矩阵从全局内存数组 A 中读入线程块的共享内存（二维数组 S[TILE_DIM][TILE_DIM], 线程也是按照二维的方式去执行）</li>
+<li>线程块迭代归约整个 tile（）</li>
+</ul>
+<p>Kernel:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// N 为矩阵的边长
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose1</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">TILE_DIM</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span><span class="c1">// 线程块 要处理的二维数据的维度为（TILE_DIM，TILE_DIM）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="n">dim3</span> <span class="nf">block_size</span><span class="p">(</span><span class="n">TILE_DIM</span><span class="p">,</span><span class="n">TILE_DIM</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">grid_size_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="n">TILE_DIM</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">dim3</span> <span class="nf">grid_size</span><span class="p">(</span><span class="n">grid_size_x</span><span class="p">,</span><span class="n">grid_size_x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">M</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">N</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">real</span> <span class="o">*</span><span class="n">d_A</span> <span class="o">=</span> <span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="n">M</span><span class="p">);</span><span class="c1">//输入数组X
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">real</span> <span class="o">*</span><span class="n">d_B</span> <span class="o">=</span> <span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="n">M</span><span class="p">);</span><span class="c1">//结果数组Y，需要做最后一轮归约
+</span></span></span><span class="line"><span class="cl"><span class="c1">// init A
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="o">*</span><span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h_A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_A</span><span class="p">,</span> <span class="n">M</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_B</span><span class="p">,</span> <span class="n">M</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">transpose1</span><span class="o">&lt;&lt;&lt;</span><span class="n">grid_size</span><span class="p">,</span> <span class="n">block_size</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">d_A</span><span class="p">,</span> <span class="n">d_B</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_A</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_B</span><span class="p">);</span>
+</span></span></code></pre></div><p>Reference:</p>
 <ul>
 <li><a href="https://book.douban.com/subject/35252459/"   target="_blank">
     CUDA编程：基础与实践</a></li>
+<li><a href="https://github.com/MAhaitao999/CUDA_Programming"   target="_blank">
+    CUDA编程：基础与实践 code</a></li>
 </ul>
 
         </div>
