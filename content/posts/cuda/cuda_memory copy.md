@@ -1,7 +1,7 @@
 ---
 title: "CUDA Memory and Optimization"
 date: 2024-05-23T13:57:32Z
-draft: false
+draft: true
 description: ""
 tags: ["CUDA"]
 series: ["CUDA Parallel Programming"]
@@ -270,21 +270,6 @@ Time sum = 123633392.000000.
 Using dynamic shared memory:
 Time sum = 123633392.000000.
 ```
-### Bank Conflict in Shared Memory
-
-有一个内存 bank 的概念值得注意。为了获得高的内存带宽，共享内存在物理上被分为 32 个（刚好等于一个线程束中的线程数目，即内建变量 warpSize 的值）同样宽度的、能被同时访问的内存 bank。
-
-将 32 个 bank 从 0 到 31 编号。在每一个 bank 中，又可以对其中的内存地址从 0 开始编号。所有 bank 中编号为 0 的内存称为第一层内存；将所有 bank 中编号为 1 的内存称为第二层内存。
-
-对于 bank 宽度为 4 字节的架构(开普勒)，共享内存数组是按如下方式线性地映射到内存 bank 的：共享内存数组中连续的 128 字节的内容分摊到 32 个 bank 的某一层中，每个 bank 负责 4 字节的内容。例如：对一个长度为 128 的单精度浮点数变量的共享内存数组来说，每个 bank 分摊 4 个在地址上相差 128 字节的数据：
-- 第 0-31 个数组元素依次对应到 32 个 bank 的第一层
-- 第 32-63 个数组元素依次对应到 32 个 bank 的第二层
-- 第 64-95 个数组元素依次对应到 32 个 bank 的第三层
-- 第 96-127 个数组元素依次对应到 32 个 bank 的第四层
-
-只要同一线程束内的多个线程不同时访问同一个 bank 中不同层的数据，该线程束对共享内存的访问就只需要一次内存事务（memory transaction）。当同一线程束内的多个线程试图访问同一个 bank 中不同层的数据时，就会发生 bank 冲突。在一个线程束内对同一个 bank 中的 n 层数据同时访问将导致 n 次内存事务，称为发生了 n 路 bank 冲突。最坏的情况是线程束内的 32 个线程同时访问同一个 bank 中 32 个不同层的地址，这将导致 32 路 bank 冲突。这种 n 很大的 bank 冲突是要尽量避免的。
-
-如何消除冲突？ 可以用改变共享内存数组大小的方式来消除或减轻共享内存的 bank 冲突。详细方法见下面的矩阵转置例子transpose2。
 
 ### CUDA Kernel - Matrix Transpose(Shared Memory)
 
@@ -296,52 +281,9 @@ Time sum = 123633392.000000.
 Kernel:
 ```c++
 // N 为矩阵的边长
-__global__ void transpose1(const real *A, real *B, const int N)
-{
-    __shared__ real S[TILE_DIM][TILE_DIM];
-    int bx = blockIdx.x * TILE_DIM;
-    int by = blockIdx.y * TILE_DIM;
+__global__ void transpose1(const real *A, real *B, const int N){
 
-    int nx1 = bx + threadIdx.x;
-    int ny1 = by + threadIdx.y;
-
-    if (nx1 < N && ny1 < N)
-    {
-        S[threadIdx.y][threadIdx.x] = A[ny1 * N + nx1];
-    }
-    __syncthreads();
-
-    int nx2 = bx + threadIdx.y;
-    int ny2 = by + threadIdx.x;
-    if (nx2 < N && ny2 < N)
-    {
-        B[nx2 * N + ny2] = S[threadIdx.x][threadIdx.y];
-    }
 }
-
-// 消除bank conflict
-__global__ void transpose2(const real *A, real *B, const int N)
-{
-    __shared__ real S[TILE_DIM][TILE_DIM + 1];
-    int bx = blockIdx.x * TILE_DIM;
-    int by = blockIdx.y * TILE_DIM;
-
-    int nx1 = bx + threadIdx.x;
-    int ny1 = by + threadIdx.y;
-    if (nx1 < N && ny1 < N)
-    {
-        S[threadIdx.y][threadIdx.x] = A[ny1 * N + nx1];
-    }
-    __syncthreads();
-
-    int nx2 = bx + threadIdx.y;
-    int ny2 = by + threadIdx.x;
-    if (nx2 < N && ny2 < N)
-    {
-        B[nx2 * N + ny2] = S[threadIdx.x][threadIdx.y];
-    }
-}
-
 ```
 
 ```c++
@@ -365,3 +307,8 @@ transpose1<<<grid_size, block_size>>>(d_A, d_B, N);
 cudaFree(d_A);
 cudaFree(d_B);
 ```
+
+Reference:
+
+- [CUDA编程：基础与实践](https://book.douban.com/subject/35252459/)
+- [CUDA编程：基础与实践 code](https://github.com/MAhaitao999/CUDA_Programming)

@@ -15,7 +15,7 @@
   <meta name="keywords" content="CUDA, " />
   
   
-  <link rel="canonical" href="http://localhost:1313/posts/cuda/cuda_memory/" />
+  <link rel="canonical" href="http://localhost:1313/posts/cuda/cuda_memory-copy/" />
   
   
   
@@ -60,7 +60,7 @@
   
   
   
-  <meta property="og:url" content="http://localhost:1313/posts/cuda/cuda_memory/">
+  <meta property="og:url" content="http://localhost:1313/posts/cuda/cuda_memory-copy/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="CUDA Memory and Optimization">
   <meta property="og:description" content="Global Memory # 全局内存的访问模式，有合并（coa">
@@ -71,6 +71,7 @@
     <meta property="article:modified_time" content="2024-05-23T13:57:32+00:00">
     <meta property="article:tag" content="CUDA">
       <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_optimize/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_memory/">
       <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_conv/">
       <meta property="og:see_also" content="http://localhost:1313/posts/cuda/gpu/">
       <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_basic/">
@@ -91,7 +92,7 @@
     
     "abstract": "Global Memory # 全局内存的访问模式，有合并（coa",
     "inLanguage": "en",
-    "url" : "http:\/\/localhost:1313\/posts\/cuda\/cuda_memory\/",
+    "url" : "http:\/\/localhost:1313\/posts\/cuda\/cuda_memory-copy\/",
     "author" : {
       "@type": "Person",
       "name": "Victor Yang"
@@ -105,7 +106,7 @@
     "keywords": ["CUDA"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "3569"
+    "wordCount": "2752"
   }]
   </script>
 
@@ -614,7 +615,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <span>3569 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">8 mins</span>
+  <span>2752 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">6 mins</span>
   
 
   
@@ -698,7 +699,6 @@
     <li><a href="#shared-memory">Shared memory</a>
       <ul>
         <li><a href="#cuda-kernel---array-reduce">CUDA Kernel - Array Reduce</a></li>
-        <li><a href="#bank-conflict-in-shared-memory">Bank Conflict in Shared Memory</a></li>
         <li><a href="#cuda-kernel---matrix-transposeshared-memory">CUDA Kernel - Matrix Transpose(Shared Memory)</a></li>
       </ul>
     </li>
@@ -723,7 +723,6 @@
     <li><a href="#shared-memory">Shared memory</a>
       <ul>
         <li><a href="#cuda-kernel---array-reduce">CUDA Kernel - Array Reduce</a></li>
-        <li><a href="#bank-conflict-in-shared-memory">Bank Conflict in Shared Memory</a></li>
         <li><a href="#cuda-kernel---matrix-transposeshared-memory">CUDA Kernel - Matrix Transpose(Shared Memory)</a></li>
       </ul>
     </li>
@@ -788,6 +787,15 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         Part 5: This Article
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_memory/">
+            Part 5: CUDA Memory and Optimization
+        </a>
     </div>
     
     
@@ -1054,29 +1062,6 @@ Using dynamic shared memory:
 Time sum = 123633392.000000.
 </code></pre>
 
-<h3 class="relative group">Bank Conflict in Shared Memory 
-    <div id="bank-conflict-in-shared-memory" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#bank-conflict-in-shared-memory" aria-label="Anchor">#</a>
-    </span>        
-    
-</h3>
-<p>有一个内存 bank 的概念值得注意。为了获得高的内存带宽，共享内存在物理上被分为 32 个（刚好等于一个线程束中的线程数目，即内建变量 warpSize 的值）同样宽度的、能被同时访问的内存 bank。</p>
-<p>将 32 个 bank 从 0 到 31 编号。在每一个 bank 中，又可以对其中的内存地址从 0 开始编号。所有 bank 中编号为 0 的内存称为第一层内存；将所有 bank 中编号为 1 的内存称为第二层内存。</p>
-<p>对于 bank 宽度为 4 字节的架构(开普勒)，共享内存数组是按如下方式线性地映射到内存 bank 的：共享内存数组中连续的 128 字节的内容分摊到 32 个 bank 的某一层中，每个 bank 负责 4 字节的内容。例如：对一个长度为 128 的单精度浮点数变量的共享内存数组来说，每个 bank 分摊 4 个在地址上相差 128 字节的数据：</p>
-<ul>
-<li>第 0-31 个数组元素依次对应到 32 个 bank 的第一层</li>
-<li>第 32-63 个数组元素依次对应到 32 个 bank 的第二层</li>
-<li>第 64-95 个数组元素依次对应到 32 个 bank 的第三层</li>
-<li>第 96-127 个数组元素依次对应到 32 个 bank 的第四层</li>
-</ul>
-<p>只要同一线程束内的多个线程不同时访问同一个 bank 中不同层的数据，该线程束对共享内存的访问就只需要一次内存事务（memory transaction）。当同一线程束内的多个线程试图访问同一个 bank 中不同层的数据时，就会发生 bank 冲突。在一个线程束内对同一个 bank 中的 n 层数据同时访问将导致 n 次内存事务，称为发生了 n 路 bank 冲突。最坏的情况是线程束内的 32 个线程同时访问同一个 bank 中 32 个不同层的地址，这将导致 32 路 bank 冲突。这种 n 很大的 bank 冲突是要尽量避免的。</p>
-<p>如何消除冲突？ 可以用改变共享内存数组大小的方式来消除或减轻共享内存的 bank 冲突。详细方法见下面的矩阵转置例子transpose2。</p>
-
-
 <h3 class="relative group">CUDA Kernel - Matrix Transpose(Shared Memory) 
     <div id="cuda-kernel---matrix-transposeshared-memory" class="anchor"></div>
     
@@ -1095,50 +1080,8 @@ Time sum = 123633392.000000.
 </ul>
 <p>Kernel:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// N 为矩阵的边长
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose1</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="n">real</span> <span class="n">S</span><span class="p">[</span><span class="n">TILE_DIM</span><span class="p">][</span><span class="n">TILE_DIM</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">TILE_DIM</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">by</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">TILE_DIM</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose1</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">){</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nx1</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ny1</span> <span class="o">=</span> <span class="n">by</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx1</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny1</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">S</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">ny1</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">nx1</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nx2</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ny2</span> <span class="o">=</span> <span class="n">by</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx2</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny2</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">[</span><span class="n">nx2</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ny2</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 消除bank conflict
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose2</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="n">real</span> <span class="n">S</span><span class="p">[</span><span class="n">TILE_DIM</span><span class="p">][</span><span class="n">TILE_DIM</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">TILE_DIM</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">by</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">TILE_DIM</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nx1</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ny1</span> <span class="o">=</span> <span class="n">by</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx1</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny1</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">S</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">ny1</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">nx1</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nx2</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ny2</span> <span class="o">=</span> <span class="n">by</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx2</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny2</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">[</span><span class="n">nx2</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ny2</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">TILE_DIM</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span><span class="c1">// 线程块 要处理的二维数据的维度为（TILE_DIM，TILE_DIM）
@@ -1216,6 +1159,15 @@ Time sum = 123633392.000000.
     </div>
     
     
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_memory/">
+            Part 5: CUDA Memory and Optimization
+        </a>
+    </div>
+    
+    
 
 
 </details>
@@ -1233,8 +1185,8 @@ Time sum = 123633392.000000.
           
         
       <script>
-        var oid = "views_posts\/cuda\/cuda_memory.md"
-        var oid_likes = "likes_posts\/cuda\/cuda_memory.md"
+        var oid = "views_posts\/cuda\/cuda_memory copy.md"
+        var oid_likes = "likes_posts\/cuda\/cuda_memory copy.md"
       </script>
       
       
@@ -1280,11 +1232,11 @@ Time sum = 123633392.000000.
         </span>
         <span>
           
-            <a class="flex text-right group ml-3" href="/posts/cuda/cuda_conv/">
+            <a class="flex text-right group ml-3" href="/posts/cuda/cuda_memory/">
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >CUDA Conv</span
+                  >CUDA Memory and Optimization</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   
