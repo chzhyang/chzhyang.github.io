@@ -110,7 +110,8 @@ __global__ void transpose3(const real *A, real *B, const int N)
 
 ```c++
 int N=1024;
-int grid_x = (N+32)/N); //32 = float32的大小，一个thread访问一个float32数据
+int TILE_DIM = 32;//32 = float32的大小，一个thread访问一个float32数据
+int grid_x = (N+TILE_DIM-1)/TILE_DIM); 
 dim3 grid(grid_x, grid_x);
 dim3 block(32,32)//block最多1024个threads
 int M = sizeof(real) * N2;
@@ -135,9 +136,20 @@ Time = 0.130074 +- 0.00122755 ms.
 
 ## Shared memory
 
-上面矩阵转置例子中，对全局内存的读和写这两个操作，总有一个是合并的，另—个是非合并的。利用共享内存可以改善全局内存的访问模式，使得对全局内存的读和写都是合并的。
+上面的矩阵转置例子中，对全局内存的读和写这两个操作，总有一个是合并的，另—个是非合并的。**利用共享内存可以改善全局内存的访问模式，使得对全局内存的读和写都是合并的。**
 
-核心思路是用一个 block 处理 BLOCK_SIZE * BLOCK_SIZE 的矩阵块
+全局内存的访问速度是所有内存中最低的，应该尽量减少对它的使用。所有设备内存中，寄存器是最高效的，但在需要线程合作的问题中，用仅对单个线程可见的寄存器是不够的, 需要使用对整个线程块可见的共享内存：
+
+- 在核函数中，要将一个变量定义为共享内存变量，就要在定义语句中加上一个限定符 `__shared__`。一般情况下，共享内存的数组长度等于线程块大小
+- 线程块的处理逻辑完成后，在利用共享内存进行线程块之间的合作（通信）之前，都要进行同步 `__syncthreads()`，以确保共享内存变量中的数据对线程块内的所有线程来说都准备就绪
+- 因为共享内存变量的生命周期仅仅在核函数内，所以必须在核函数结束之前将共享内存中的某些结果保存到全局内存
+
+动态共享内存和静态共享内存：
+- 静态的限定符 `__shared__`， 需要指定内存大小，如 `__shared__ real s_y[128]`
+- 动态的限定符 `__extern__`, 定义变量时不用指定内存大小，如 `extern __shared__ real s_y[]`， 但是需要在调用 kernel 时，加入共享内存的参数，即**共享内存的数组长度等于线程块大小**，如 `kernel<<<grid_size, block_size, sizeof(real) * block_size>>>()`, 这个效果与静态共享内存是一样的，但可以防止使用静态共享内存时指定内存长度时出错
+- 使用动态共享内存的核函数和使用静态共享内存的核函数在执行时间上几乎没有差别。但使用动态共享内存容易可提高程序的可维护性
+
+上面的矩阵转置例子使用共享内存的思路是用一个 block 处理 BLOCK_SIZE * BLOCK_SIZE 的矩阵块
 
 ```c++
 const int block_size = 32;
@@ -157,7 +169,6 @@ __global__ void matrix_trans(int* in, int* out){
         out[j*n+i] = buf[threadIdx.x][threadIdx.y];
     }
 }
-
 ```
 
 ### CUDA Kernel - Array Reduce
@@ -166,8 +177,138 @@ __global__ void matrix_trans(int* in, int* out){
 
 一个有 N（\\(10^8\\)） 个元素的数组 x，假如我们需要计算该数组中所有元素的和，即 sum = x[0] + x[1] + ... + x[N - 1]。
 
-Todo: CUDA编程：基础与实践 P83
+- 先调用 kernel 将数组 x 归约到 grid_size 大小，即每个线程块完成 block_size 大小的归约，结果写到数组 y (y 的长度为 grid_size)
+- 然后在 host 上 完成最后一步的归约，即 y[0...grid_size-1] -> result
+
+Kernel如下：
+```c++
+// 全局内存
+void __global__ reduce_global(real *d_x, real *d_y)
+{
+    const int tid = threadIdx.x;
+    real *x = d_x + blockDim.x * blockIdx.x;
+
+    for (int offset = blockDim.x >> 1; offset > 0; offset >>= 1)
+    {
+        if (tid < offset)
+        {
+            x[tid] += x[tid + offset];
+        }
+        __syncthreads();
+    }
+
+    if (tid == 0)
+    {
+        d_y[blockIdx.x] = x[0];
+    }
+}
+// 静态共享内存
+void __global__ reduce_shared(real *d_x, real *d_y){
+    const int tid = threadIdx.x;
+    const int bid = blockIdx.x;
+    const int n = bid * blockDim.x + tid;
+    __shared__ real s_y[128];
+    s_y[tid] = (n<N) ? d_x[n] : 0.0;
+    __syncthreads();
+
+    for(int offset=blockDim.x >> 1; offset >0; offset >>= 1){
+        if(tid<offset>){
+            s_y[tid]=s_y[tid+offset];
+        }
+        __syncthreads();
+    }
+    if (tid == 0)
+    {
+        d_y[blockIdx.x] = x[0];
+    }
+}
+//动态共享内存
+void __global__ reduce_dynamic(real *d_x, real *d_y)
+{
+    const int tid = threadIdx.x;
+    const int bid = blockIdx.x;
+    const int n = bid * blockDim.x + tid;
+    extern __shared__ real s_y[];
+    s_y[tid] = (n < N) ? d_x[n] : 0.0;
+    __syncthreads();
+
+    for (int offset = blockDim.x >> 1; offset > 0; offset >>= 1)
+    {
+        if (tid < offset)
+        {
+            s_y[tid] += s_y[tid + offset];
+        }
+        __syncthreads();
+    }
+
+    if (tid == 0)
+    {
+        d_y[bid] = s_y[0];
+    }
+}
+```
+
+Host上完成最后一步：
+
+```c++
+real result = 0.0;
+for (int n = 0; n < grid_size; ++n)
+{
+    result += h_y[n];
+}
+```
+
+Telsa T4上的性能对比，详细参数见 [code](https://github.com/MAhaitao999/CUDA_Programming/blob/master/CUDA/chapter8_%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8/reduce2gpu.cu)：
+
+```
+Using global memory only:
+Time sum = 123633392.000000.
+
+Using static shared memory:
+Time sum = 123633392.000000.
+
+Using dynamic shared memory:
+Time sum = 123633392.000000.
+```
+
+### CUDA Kernel - Matrix Transpose(Shared Memory)
+
+核心思想：
+- 用一个线程块处理一块(tile)的矩阵，比如设置 tile 的边长 TILE_DIM = 32
+- 将一个 tile 的矩阵从全局内存数组 A 中读入线程块的共享内存（二维数组 S[TILE_DIM][TILE_DIM], 线程也是按照二维的方式去执行）
+- 线程块迭代归约整个 tile（）
+
+Kernel:
+```c++
+// N 为矩阵的边长
+__global__ void transpose1(const real *A, real *B, const int N){
+
+}
+```
+
+```c++
+const int N = 1024;
+const int TILE_DIM = 32;// 线程块 要处理的二维数据的维度为（TILE_DIM，TILE_DIM）
+const dim3 block_size(TILE_DIM,TILE_DIM);
+const int grid_size_x = (N + TILE_DIM-1)/N;
+const dim3 grid_size(grid_size_x,grid_size_x);
+
+const int M = sizeof(real) * (N*N);
+real *d_A = (real *) malloc(M);//输入数组X
+real *d_B = (real *) malloc(M);//结果数组Y，需要做最后一轮归约
+// init A
+for (int i = 0; i < N*N; ++i)
+{
+    h_A[i] = i;
+}
+cudaMallocManaged(&d_A, M);
+cudaMallocManaged(&d_B, M);
+transpose1<<<grid_size, block_size>>>(d_A, d_B, N);
+cudaFree(d_A);
+cudaFree(d_B);
+```
 
 Reference:
 
 - [CUDA编程：基础与实践](https://book.douban.com/subject/35252459/)
+- [CUDA编程：基础与实践 code](https://github.com/MAhaitao999/CUDA_Programming)
