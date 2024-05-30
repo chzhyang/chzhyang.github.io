@@ -2,6 +2,7 @@
 title: "About"
 date: 2024-05-01T21:26:03Z 
 lastmod: 2024-05-20
+showPagination: false
 ---
 
 ## Me
@@ -21,7 +22,7 @@ class Me:
 
 ## My Skills
 
-- Generative AI/AIGC: `Transformer`, `LLM`, `VLM`, `Llama`, `Llava`, `MoE`, `Attention`, `vLLM`, `DeepSpeed`, `RAG`, `Langchain`, `Agent`
+- Generative AI/AIGC: `Transformer`, `LLM`, `VLM`, `Llama`, `Llava`, `MoE`, `Inference Optimization`, `Attention`, `vLLM`, `DeepSpeed`, `RAG`, `Langchain`, `Agent`
 - Parallel Computing: `CUDA`, `GPU`, `Horovod`, `MPI`
 - Machine Learning: `Deep Learning`, `PyTorch`, `Federated Learning`
 - Programming Language: `Python`, `C++`, `GoLang`
