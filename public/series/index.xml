@@ -2,68 +2,68 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Series on Victor&#39;s Blog</title>
-    <link>http://localhost:39293/series/</link>
+    <link>http://localhost:42769/series/</link>
     <description>Recent content in Series on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Tue, 28 May 2024 14:16:06 +0000</lastBuildDate><atom:link href="http://localhost:39293/series/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 28 May 2024 14:16:06 +0000</lastBuildDate><atom:link href="http://localhost:42769/series/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>LLM Architecture</title>
-      <link>http://localhost:39293/series/llm-architecture/</link>
+      <link>http://localhost:42769/series/llm-architecture/</link>
       <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
       
-      <guid>http://localhost:39293/series/llm-architecture/</guid>
+      <guid>http://localhost:42769/series/llm-architecture/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Algorithm Journey(algorithmzuo)</title>
-      <link>http://localhost:39293/series/algorithm-journeyalgorithmzuo/</link>
+      <link>http://localhost:42769/series/algorithm-journeyalgorithmzuo/</link>
       <pubDate>Tue, 28 May 2024 09:47:15 +0000</pubDate>
       
-      <guid>http://localhost:39293/series/algorithm-journeyalgorithmzuo/</guid>
+      <guid>http://localhost:42769/series/algorithm-journeyalgorithmzuo/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>CUDA Parallel Programming</title>
-      <link>http://localhost:39293/series/cuda-parallel-programming/</link>
+      <link>http://localhost:42769/series/cuda-parallel-programming/</link>
       <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
       
-      <guid>http://localhost:39293/series/cuda-parallel-programming/</guid>
+      <guid>http://localhost:42769/series/cuda-parallel-programming/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Attention and Optimization</title>
-      <link>http://localhost:39293/series/attention-and-optimization/</link>
+      <link>http://localhost:42769/series/attention-and-optimization/</link>
       <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:39293/series/attention-and-optimization/</guid>
+      <guid>http://localhost:42769/series/attention-and-optimization/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>PyTorch</title>
-      <link>http://localhost:39293/series/pytorch/</link>
+      <link>http://localhost:42769/series/pytorch/</link>
       <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:39293/series/pytorch/</guid>
+      <guid>http://localhost:42769/series/pytorch/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>VLLM</title>
-      <link>http://localhost:39293/series/vllm/</link>
+      <link>http://localhost:42769/series/vllm/</link>
       <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:39293/series/vllm/</guid>
+      <guid>http://localhost:42769/series/vllm/</guid>
       <description></description>
       
     </item>

@@ -11,7 +11,7 @@ series_order: [1, 1]
 showDate: true
 ---
 
-{{< katex >}}
+{{<katex>}}
 
 ## Self-Attention
 
@@ -19,7 +19,7 @@ showDate: true
 
 ## MHA
 
-MHA（multi-head attention）
+MHA(multi-head attention)
 
 QKV 经过线性变换后，将他们分别在 hidden states 维度上切分成 heads 份。 
 
@@ -31,21 +31,19 @@ Decoding阶段，下一个step的输入其实包含了上一个step的内容，�
 
 KV Cache 的目的：空间换时间，用缓存把需要重复利用的中间计算结果存下来，减少重复计算。而 K 和 V 就是要缓存的对象。
 
-Q
-K
-V
+Q K V
 
-对于输入长度为 \\(s)\\ ，层数为 \\(L\\) ，hidden size为 \\(d\\) 的模型:
+对于输入长度为 \\(seq\\) ，层数为 \\(L\\) ，hidden size为 \\(d\\) 的模型:
 - 当 batch size=1 时
-    - 需要缓存的参数量为: \\(2*L*s*d\\)，其中 2 表示 K + V
-    - 需要的空间为（使用半精度浮点数 float16）：\\(2*2*L*s*d Bytes\\) ，其中第一个 2 表示 float16 占用 2 Bytes
+    - 需要缓存的参数量为: 2*L*s*d ，其中 2 表示 K + V
+    - 需要的空间为（使用半精度浮点数 float16）：2*2*L*s*d Bytes ，其中第一个 2 表示 float16 占用 2 Bytes
 - 当 batch size=B 时
-    - 需要缓存的参数量为: \\(2*L*s*d*B\\)
-    - 需要的空间为（使用半精度浮点数 float16）：\\(2*2*L*s*d*B Bytes\\)
+    - 需要缓存的参数量为: 2*L*s*d*B
+    - 需要的空间为（使用半精度浮点数 float16）：2*2*L*s*d*B Bytes
 - MHA 相比单头的情况，相当于只是把 QKV 切成多份并行计算了，对于实际需要缓存的大小没有影响
 - GQA、MQA [Todo]
 
-以Llama2 7B为例，\\(L=32, d=4096\\)，此时每个 token 需要的 cache 空间为 524,288 Bytes(512 KB)，当 \\(s=1024, batch size=1)\\) 时，需要 512 MB
+以Llama2 7B为例，L=32, d=4096，此时每个 token 需要的 cache 空间为 524,288 Bytes(512 KB)，当 s=1024, batch size=1 时，需要 512 MB
 
 主流显卡配置：
 - NV A100(Ampere Arch)，HBM2e 40/80GB，L2 Cache 40MB, CUDA Cores - 16896/14592

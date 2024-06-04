@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" class="scroll-smooth" data-default-appearance="light"
-  data-auto-appearance="true"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=39293&amp;path=livereload" data-no-instant defer></script>
+  data-auto-appearance="true"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=42769&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8" />
   
   <meta http-equiv="content-language" content="en" />
@@ -15,7 +15,7 @@
   <meta name="keywords" content="NLP, Transformer, LLM, Attention, KVCache, " />
   
   
-  <link rel="canonical" href="http://localhost:39293/posts/llm/attention/" />
+  <link rel="canonical" href="http://localhost:42769/posts/llm/attention/" />
   
   
   
@@ -60,7 +60,7 @@
   
   
   
-  <meta property="og:url" content="http://localhost:39293/posts/llm/attention/">
+  <meta property="og:url" content="http://localhost:42769/posts/llm/attention/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="Attention and KV Cache">
   <meta property="og:description" content="量化计算 KVCache">
@@ -74,9 +74,9 @@
     <meta property="article:tag" content="LLM">
     <meta property="article:tag" content="Attention">
     <meta property="article:tag" content="KVCache">
-      <meta property="og:see_also" content="http://localhost:39293/posts/llm/flash_attention_2/">
-      <meta property="og:see_also" content="http://localhost:39293/posts/llm/paged_attention_v1/">
-      <meta property="og:see_also" content="http://localhost:39293/posts/llm/flash_attention/">
+      <meta property="og:see_also" content="http://localhost:42769/posts/llm/flash_attention_2/">
+      <meta property="og:see_also" content="http://localhost:42769/posts/llm/paged_attention_v1/">
+      <meta property="og:see_also" content="http://localhost:42769/posts/llm/flash_attention/">
 
   
   <meta name="twitter:card" content="summary">
@@ -94,7 +94,7 @@
     "description": "量化计算 KVCache",
     "abstract": "Self-Attention # 对于self-attention，由",
     "inLanguage": "en",
-    "url" : "http:\/\/localhost:39293\/posts\/llm\/attention\/",
+    "url" : "http:\/\/localhost:42769\/posts\/llm\/attention\/",
     "author" : {
       "@type": "Person",
       "name": "Victor Yang"
@@ -108,7 +108,7 @@
     "keywords": ["NLP","Transformer","LLM","Attention","KVCache"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1338"
+    "wordCount": "1300"
   }]
   </script>
 
@@ -621,7 +621,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-05 00:00:00 &#43;0000 UTC">2024-05-05</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">Updated: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>1338 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
+  <time datetime="2024-05-05 00:00:00 &#43;0000 UTC">2024-05-05</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">Updated: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>1300 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
   
 
   
@@ -776,7 +776,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:39293/posts/llm/paged_attention_v1/">
+        <a href="http://localhost:42769/posts/llm/paged_attention_v1/">
             Part [1 4]: Paged Attention V1(vLLM)
         </a>
     </div>
@@ -785,7 +785,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:39293/posts/llm/flash_attention/">
+        <a href="http://localhost:42769/posts/llm/flash_attention/">
             Part 2: Flash Attention
         </a>
     </div>
@@ -801,7 +801,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:39293/posts/llm/flash_attention_2/">
+        <a href="http://localhost:42769/posts/llm/flash_attention_2/">
             Part 3: Flash Attention V2
         </a>
     </div>
@@ -841,7 +841,7 @@
     </span>        
     
 </h2>
-<p>MHA（multi-head attention）</p>
+<p>MHA(multi-head attention)</p>
 <p>QKV 经过线性变换后，将他们分别在 hidden states 维度上切分成 heads 份。</p>
 <p>MHA 相比单头的情况，相当于只是把 QKV 切成多份并行计算了，对于实际需要缓存的大小没有影响</p>
 
@@ -858,27 +858,25 @@
 </h2>
 <p>Decoding阶段，下一个step的输入其实包含了上一个step的内容，而且只在最后面多了一个token的数据，下一个step的计算应该也包含了上一个step的计算。</p>
 <p>KV Cache 的目的：空间换时间，用缓存把需要重复利用的中间计算结果存下来，减少重复计算。而 K 和 V 就是要缓存的对象。</p>
-<p>Q
-K
-V</p>
-<p>对于输入长度为 \(s)\ ，层数为 \(L\) ，hidden size为 \(d\) 的模型:</p>
+<p>Q K V</p>
+<p>对于输入长度为 \(seq\) ，层数为 \(L\) ，hidden size为 \(d\) 的模型:</p>
 <ul>
 <li>当 batch size=1 时
 <ul>
-<li>需要缓存的参数量为: \(2<em>L</em>s*d\)，其中 2 表示 K + V</li>
-<li>需要的空间为（使用半精度浮点数 float16）：\(2<em>2</em>L<em>s</em>d Bytes\) ，其中第一个 2 表示 float16 占用 2 Bytes</li>
+<li>需要缓存的参数量为: 2<em>L</em>s*d ，其中 2 表示 K + V</li>
+<li>需要的空间为（使用半精度浮点数 float16）：2<em>2</em>L<em>s</em>d Bytes ，其中第一个 2 表示 float16 占用 2 Bytes</li>
 </ul>
 </li>
 <li>当 batch size=B 时
 <ul>
-<li>需要缓存的参数量为: \(2<em>L</em>s<em>d</em>B\)</li>
-<li>需要的空间为（使用半精度浮点数 float16）：\(2<em>2</em>L<em>s</em>d*B Bytes\)</li>
+<li>需要缓存的参数量为: 2<em>L</em>s<em>d</em>B</li>
+<li>需要的空间为（使用半精度浮点数 float16）：2<em>2</em>L<em>s</em>d*B Bytes</li>
 </ul>
 </li>
 <li>MHA 相比单头的情况，相当于只是把 QKV 切成多份并行计算了，对于实际需要缓存的大小没有影响</li>
 <li>GQA、MQA [Todo]</li>
 </ul>
-<p>以Llama2 7B为例，\(L=32, d=4096\)，此时每个 token 需要的 cache 空间为 524,288 Bytes(512 KB)，当 \(s=1024, batch size=1)\) 时，需要 512 MB</p>
+<p>以Llama2 7B为例，L=32, d=4096，此时每个 token 需要的 cache 空间为 524,288 Bytes(512 KB)，当 s=1024, batch size=1 时，需要 512 MB</p>
 <p>主流显卡配置：</p>
 <ul>
 <li>NV A100(Ampere Arch)，HBM2e 40/80GB，L2 Cache 40MB, CUDA Cores - 16896/14592</li>
@@ -966,7 +964,7 @@ V</p>
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:39293/posts/llm/paged_attention_v1/">
+        <a href="http://localhost:42769/posts/llm/paged_attention_v1/">
             Part [1 4]: Paged Attention V1(vLLM)
         </a>
     </div>
@@ -975,7 +973,7 @@ V</p>
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:39293/posts/llm/flash_attention/">
+        <a href="http://localhost:42769/posts/llm/flash_attention/">
             Part 2: Flash Attention
         </a>
     </div>
@@ -991,7 +989,7 @@ V</p>
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:39293/posts/llm/flash_attention_2/">
+        <a href="http://localhost:42769/posts/llm/flash_attention_2/">
             Part 3: Flash Attention V2
         </a>
     </div>
@@ -1125,7 +1123,7 @@ V</p>
 </footer><div
   id="search-wrapper"
   class="invisible fixed inset-0 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
-  data-url="http://localhost:39293/"
+  data-url="http://localhost:42769/"
   style="z-index:500"
 >
   <div
