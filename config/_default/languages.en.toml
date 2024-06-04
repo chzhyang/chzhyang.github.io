@@ -15,7 +15,7 @@ title = "Victor's Blog"
 
 [author]
    name = "Victor Yang"
-#   image = "img/blowfish_logo.png"
+  image = "img/author.png"
 # headline = "Hi, welcome to my blog"
 # bio = "A little bit about you"
 links = [
