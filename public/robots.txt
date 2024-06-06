@@ -1,3 +1,3 @@
 User-agent: *
-Disallow: /
-Sitemap: http://localhost:42769/sitemap.xml
+Allow: /
+Sitemap: https://chzhyang.github.com/sitemap.xml

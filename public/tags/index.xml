@@ -2,188 +2,208 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Victor&#39;s Blog</title>
-    <link>http://localhost:42769/tags/</link>
+    <link>https://chzhyang.github.com/tags/</link>
     <description>Recent content in Tags on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Tue, 28 May 2024 14:16:06 +0000</lastBuildDate><atom:link href="http://localhost:42769/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Jun 2024 19:15:49 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Llama</title>
-      <link>http://localhost:42769/tags/llama/</link>
-      <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
+      <title>Finance</title>
+      <link>https://chzhyang.github.com/tags/finance/</link>
+      <pubDate>Sat, 01 Jun 2024 19:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/llama/</guid>
+      <guid>https://chzhyang.github.com/tags/finance/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Quantitative Trading</title>
+      <link>https://chzhyang.github.com/tags/quantitative-trading/</link>
+      <pubDate>Sat, 01 Jun 2024 19:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tags/quantitative-trading/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>AI Quantization</title>
+      <link>https://chzhyang.github.com/tags/ai-quantization/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tags/ai-quantization/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>LLM</title>
-      <link>http://localhost:42769/tags/llm/</link>
-      <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
+      <link>https://chzhyang.github.com/tags/llm/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/llm/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>Dynamic Programming</title>
-      <link>http://localhost:42769/tags/dynamic-programming/</link>
-      <pubDate>Tue, 28 May 2024 09:47:15 +0000</pubDate>
-      
-      <guid>http://localhost:42769/tags/dynamic-programming/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>Leetcode</title>
-      <link>http://localhost:42769/tags/leetcode/</link>
-      <pubDate>Tue, 28 May 2024 09:47:15 +0000</pubDate>
-      
-      <guid>http://localhost:42769/tags/leetcode/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>CUDA</title>
-      <link>http://localhost:42769/tags/cuda/</link>
-      <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
-      
-      <guid>http://localhost:42769/tags/cuda/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>Attention</title>
-      <link>http://localhost:42769/tags/attention/</link>
-      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
-      
-      <guid>http://localhost:42769/tags/attention/</guid>
+      <guid>https://chzhyang.github.com/tags/llm/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>NLP</title>
-      <link>http://localhost:42769/tags/nlp/</link>
-      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
+      <link>https://chzhyang.github.com/tags/nlp/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/nlp/</guid>
+      <guid>https://chzhyang.github.com/tags/nlp/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Transformer</title>
-      <link>http://localhost:42769/tags/transformer/</link>
+      <link>https://chzhyang.github.com/tags/transformer/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tags/transformer/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Llama</title>
+      <link>https://chzhyang.github.com/tags/llama/</link>
+      <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tags/llama/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Dynamic Programming</title>
+      <link>https://chzhyang.github.com/tags/dynamic-programming/</link>
+      <pubDate>Tue, 28 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tags/dynamic-programming/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Leetcode</title>
+      <link>https://chzhyang.github.com/tags/leetcode/</link>
+      <pubDate>Tue, 28 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tags/leetcode/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA</title>
+      <link>https://chzhyang.github.com/tags/cuda/</link>
+      <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tags/cuda/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Attention</title>
+      <link>https://chzhyang.github.com/tags/attention/</link>
       <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/transformer/</guid>
+      <guid>https://chzhyang.github.com/tags/attention/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>AI</title>
-      <link>http://localhost:42769/tags/ai/</link>
+      <link>https://chzhyang.github.com/tags/ai/</link>
       <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/ai/</guid>
+      <guid>https://chzhyang.github.com/tags/ai/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Pytorch</title>
-      <link>http://localhost:42769/tags/pytorch/</link>
+      <link>https://chzhyang.github.com/tags/pytorch/</link>
       <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/pytorch/</guid>
+      <guid>https://chzhyang.github.com/tags/pytorch/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Paged Attention</title>
-      <link>http://localhost:42769/tags/paged-attention/</link>
+      <link>https://chzhyang.github.com/tags/paged-attention/</link>
       <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/paged-attention/</guid>
+      <guid>https://chzhyang.github.com/tags/paged-attention/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>VLLM</title>
-      <link>http://localhost:42769/tags/vllm/</link>
+      <link>https://chzhyang.github.com/tags/vllm/</link>
       <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/vllm/</guid>
+      <guid>https://chzhyang.github.com/tags/vllm/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Conv</title>
-      <link>http://localhost:42769/tags/conv/</link>
+      <link>https://chzhyang.github.com/tags/conv/</link>
       <pubDate>Mon, 20 May 2024 13:57:32 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/conv/</guid>
+      <guid>https://chzhyang.github.com/tags/conv/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>GPU</title>
-      <link>http://localhost:42769/tags/gpu/</link>
+      <link>https://chzhyang.github.com/tags/gpu/</link>
       <pubDate>Sat, 18 May 2024 09:47:15 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/gpu/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>Design</title>
-      <link>http://localhost:42769/tags/design/</link>
-      <pubDate>Fri, 10 May 2024 09:47:15 +0000</pubDate>
-      
-      <guid>http://localhost:42769/tags/design/</guid>
+      <guid>https://chzhyang.github.com/tags/gpu/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Flash Attention</title>
-      <link>http://localhost:42769/tags/flash-attention/</link>
+      <link>https://chzhyang.github.com/tags/flash-attention/</link>
       <pubDate>Sun, 05 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/flash-attention/</guid>
+      <guid>https://chzhyang.github.com/tags/flash-attention/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>KVCache</title>
-      <link>http://localhost:42769/tags/kvcache/</link>
+      <link>https://chzhyang.github.com/tags/kvcache/</link>
       <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/kvcache/</guid>
+      <guid>https://chzhyang.github.com/tags/kvcache/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Advanced</title>
-      <link>http://localhost:42769/tags/advanced/</link>
+      <link>https://chzhyang.github.com/tags/advanced/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:42769/tags/advanced/</guid>
+      <guid>https://chzhyang.github.com/tags/advanced/</guid>
       <description>This is the advanced tag. Just like other listing pages in Blowfish, you can add custom content to individual taxonomy terms and it will be displayed at the top of the term listing.</description>
       
     </item>

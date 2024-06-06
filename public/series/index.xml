@@ -2,68 +2,78 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Series on Victor&#39;s Blog</title>
-    <link>http://localhost:42769/series/</link>
+    <link>https://chzhyang.github.com/series/</link>
     <description>Recent content in Series on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Tue, 28 May 2024 14:16:06 +0000</lastBuildDate><atom:link href="http://localhost:42769/series/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Jun 2024 19:15:49 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/series/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>LLM Architecture</title>
-      <link>http://localhost:42769/series/llm-architecture/</link>
-      <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
+      <title>Quantitative Trading</title>
+      <link>https://chzhyang.github.com/series/quantitative-trading/</link>
+      <pubDate>Sat, 01 Jun 2024 19:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/series/llm-architecture/</guid>
+      <guid>https://chzhyang.github.com/series/quantitative-trading/</guid>
       <description></description>
       
     </item>
     
     <item>
-      <title>Algorithm Journey(algorithmzuo)</title>
-      <link>http://localhost:42769/series/algorithm-journeyalgorithmzuo/</link>
-      <pubDate>Tue, 28 May 2024 09:47:15 +0000</pubDate>
+      <title>AI Quantization</title>
+      <link>https://chzhyang.github.com/series/ai-quantization/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:42769/series/algorithm-journeyalgorithmzuo/</guid>
+      <guid>https://chzhyang.github.com/series/ai-quantization/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>LLM Architecture</title>
+      <link>https://chzhyang.github.com/series/llm-architecture/</link>
+      <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/series/llm-architecture/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>CUDA Parallel Programming</title>
-      <link>http://localhost:42769/series/cuda-parallel-programming/</link>
+      <link>https://chzhyang.github.com/series/cuda-parallel-programming/</link>
       <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
       
-      <guid>http://localhost:42769/series/cuda-parallel-programming/</guid>
+      <guid>https://chzhyang.github.com/series/cuda-parallel-programming/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>Attention and Optimization</title>
-      <link>http://localhost:42769/series/attention-and-optimization/</link>
+      <link>https://chzhyang.github.com/series/attention-and-optimization/</link>
       <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:42769/series/attention-and-optimization/</guid>
+      <guid>https://chzhyang.github.com/series/attention-and-optimization/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>PyTorch</title>
-      <link>http://localhost:42769/series/pytorch/</link>
+      <link>https://chzhyang.github.com/series/pytorch/</link>
       <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/series/pytorch/</guid>
+      <guid>https://chzhyang.github.com/series/pytorch/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>VLLM</title>
-      <link>http://localhost:42769/series/vllm/</link>
+      <link>https://chzhyang.github.com/series/vllm/</link>
       <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/series/vllm/</guid>
+      <guid>https://chzhyang.github.com/series/vllm/</guid>
       <description></description>
       
     </item>

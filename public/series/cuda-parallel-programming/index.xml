@@ -2,68 +2,58 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CUDA Parallel Programming on Victor&#39;s Blog</title>
-    <link>http://localhost:42769/series/cuda-parallel-programming/</link>
+    <link>https://chzhyang.github.com/series/cuda-parallel-programming/</link>
     <description>Recent content in CUDA Parallel Programming on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Fri, 24 May 2024 13:57:32 +0000</lastBuildDate><atom:link href="http://localhost:42769/series/cuda-parallel-programming/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 May 2024 13:57:32 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/series/cuda-parallel-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CUDA Optimization</title>
-      <link>http://localhost:42769/posts/cuda/cuda_optimize/</link>
+      <link>https://chzhyang.github.com/posts/cuda/cuda_optimize/</link>
       <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/cuda/cuda_optimize/</guid>
+      <guid>https://chzhyang.github.com/posts/cuda/cuda_optimize/</guid>
       <description>CUDA 程序获得高性能的必要（但不充分）条件有</description>
       
     </item>
     
     <item>
       <title>CUDA Memory and Optimization</title>
-      <link>http://localhost:42769/posts/cuda/cuda_memory-copy/</link>
+      <link>https://chzhyang.github.com/posts/cuda/cuda_memory/</link>
       <pubDate>Thu, 23 May 2024 13:57:32 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/cuda/cuda_memory-copy/</guid>
-      <description>Global Memory # 全局内存的访问模式，有合并（coa</description>
-      
-    </item>
-    
-    <item>
-      <title>CUDA Memory and Optimization</title>
-      <link>http://localhost:42769/posts/cuda/cuda_memory/</link>
-      <pubDate>Thu, 23 May 2024 13:57:32 +0000</pubDate>
-      
-      <guid>http://localhost:42769/posts/cuda/cuda_memory/</guid>
+      <guid>https://chzhyang.github.com/posts/cuda/cuda_memory/</guid>
       <description>Global Memory # 全局内存的访问模式，有合并（coa</description>
       
     </item>
     
     <item>
       <title>CUDA Conv</title>
-      <link>http://localhost:42769/posts/cuda/cuda_conv/</link>
+      <link>https://chzhyang.github.com/posts/cuda/cuda_conv/</link>
       <pubDate>Mon, 20 May 2024 13:57:32 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/cuda/cuda_conv/</guid>
+      <guid>https://chzhyang.github.com/posts/cuda/cuda_conv/</guid>
       <description>CUDA Conv # 在 PyTorch 上实现Conv很简单 import torch from torch.nn.functional import</description>
       
     </item>
     
     <item>
       <title>GPU 结构</title>
-      <link>http://localhost:42769/posts/cuda/gpu/</link>
+      <link>https://chzhyang.github.com/posts/cuda/gpu/</link>
       <pubDate>Sat, 18 May 2024 09:47:15 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/cuda/gpu/</guid>
+      <guid>https://chzhyang.github.com/posts/cuda/gpu/</guid>
       <description>CPU 与 GPU 的不同 # CPU，4个 ALU，主要负</description>
       
     </item>
     
     <item>
       <title>CUDA Programming</title>
-      <link>http://localhost:42769/posts/cuda/cuda_basic/</link>
+      <link>https://chzhyang.github.com/posts/cuda/cuda_basic/</link>
       <pubDate>Fri, 10 May 2024 09:47:15 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/cuda/cuda_basic/</guid>
+      <guid>https://chzhyang.github.com/posts/cuda/cuda_basic/</guid>
       <description>Kernel Function # gridDim gridDim.x、gridDi</description>
       
     </item>

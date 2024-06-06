@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Attention and Optimization on Victor&#39;s Blog</title>
-    <link>http://localhost:42769/series/attention-and-optimization/</link>
+    <link>https://chzhyang.github.com/series/attention-and-optimization/</link>
     <description>Recent content in Attention and Optimization on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Thu, 23 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="http://localhost:42769/series/attention-and-optimization/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/series/attention-and-optimization/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Flash Attention V2</title>
-      <link>http://localhost:42769/posts/llm/flash_attention_2/</link>
+      <link>https://chzhyang.github.com/posts/llm/flash_attention_2/</link>
       <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/llm/flash_attention_2/</guid>
+      <guid>https://chzhyang.github.com/posts/llm/flash_attention_2/</guid>
       <description>[WIP] FlashAttention V2: 在V1的基础上减少了非矩阵乘法运算</description>
       
     </item>
     
     <item>
       <title>Paged Attention V1(vLLM)</title>
-      <link>http://localhost:42769/posts/llm/paged_attention_v1/</link>
+      <link>https://chzhyang.github.com/posts/llm/paged_attention_v1/</link>
       <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/llm/paged_attention_v1/</guid>
+      <guid>https://chzhyang.github.com/posts/llm/paged_attention_v1/</guid>
       <description>vLLM # vLLM是吞吐性能卓越的大模型推理框</description>
       
     </item>
     
     <item>
       <title>Flash Attention</title>
-      <link>http://localhost:42769/posts/llm/flash_attention/</link>
+      <link>https://chzhyang.github.com/posts/llm/flash_attention/</link>
       <pubDate>Sun, 05 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/llm/flash_attention/</guid>
+      <guid>https://chzhyang.github.com/posts/llm/flash_attention/</guid>
       <description>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness 与标准 attention 相比，Flash</description>
       
     </item>
     
     <item>
       <title>Attention and KV Cache</title>
-      <link>http://localhost:42769/posts/llm/attention/</link>
+      <link>https://chzhyang.github.com/posts/llm/attention/</link>
       <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/llm/attention/</guid>
+      <guid>https://chzhyang.github.com/posts/llm/attention/</guid>
       <description>Self-Attention # 对于self-attention，由</description>
       
     </item>

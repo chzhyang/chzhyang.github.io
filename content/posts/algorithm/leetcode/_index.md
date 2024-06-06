@@ -1,5 +1,5 @@
 ---
-title: "Algoritm - LeetCode"
+title: "LeetCode"
 # description: "Blogs"
 
 cascade:

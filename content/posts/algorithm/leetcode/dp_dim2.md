@@ -5,8 +5,8 @@ lastmod: 2024-05-28
 draft: false
 description: ""
 tags: ["leetcode", "dynamic programming"]
-series: ["Algorithm Journey(algorithmzuo)"]
-series_order: 2
+# series: ["LeetCode"]
+# series_order: 2
 # layout: "simple"
 showDate: true
 ---

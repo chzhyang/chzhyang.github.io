@@ -1,6 +1,7 @@
 ---
 title: "CUDA Memory and Optimization"
 date: 2024-05-23T13:57:32Z
+lastmod: 2024-05-29
 draft: false
 description: ""
 tags: ["CUDA"]

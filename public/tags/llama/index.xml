@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Llama on Victor&#39;s Blog</title>
-    <link>http://localhost:42769/tags/llama/</link>
+    <link>https://chzhyang.github.com/tags/llama/</link>
     <description>Recent content in Llama on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Tue, 28 May 2024 14:16:06 +0000</lastBuildDate><atom:link href="http://localhost:42769/tags/llama/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 28 May 2024 14:16:06 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/tags/llama/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Implement Llama3 in Python and Quantitative Analysis</title>
-      <link>http://localhost:42769/posts/llm/llama3/</link>
+      <link>https://chzhyang.github.com/posts/llm/llama3/</link>
       <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
       
-      <guid>http://localhost:42769/posts/llm/llama3/</guid>
+      <guid>https://chzhyang.github.com/posts/llm/llama3/</guid>
       <description>Download Llama3 Model Weight # Llama3 Download Llama3 weights from https://llama.meta.com/llama-downloads/ Install requirements # pip install -r requirements.txt Tokenizer #</description>
       
     </item>
