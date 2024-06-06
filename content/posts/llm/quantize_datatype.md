@@ -1,5 +1,5 @@
 ---
-title: "DataType and Quantization"
+title: "DataType in AI"
 date: 2024-04-28
 lastmod: 2024-04-30
 draft: false
@@ -32,9 +32,9 @@ DL 中模型的权重和激活通常由单精度浮点数(FP32)表示，如下�
 ![data type](https://www.maartengrootendorst.com/assets/images/posts/2023-12-11-quantization/precision.svg)
 
 
-## Compare DataTypes in AI
+## DataTypes Comparation in AI
 
-| 类型 | bits | 符号位 | 指数位 | 尾数位 | 范围 | 精度 | 原理 | 说明 |
+| 类型 | bits | 符号位 | 指数位 | 尾数位 | 范围 | 精度 | 原理 | 其他 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | FP32 | 32 | 1 | 8 | 23 | \\(-3.4 \times 10^{38}\\) ~ \\(3.4 \times 10^{38}\\) | \\(10^{-6}\\) | | 大部分CPU/GPU/深度学习框架中默认使用FP32 |
 | FP16 | 16 | 1 | 5 | 10 | -65504 ~ 65504 | \\(10^{-3}\\) |  | 预训练LLM保存时默认使用的格式 |
@@ -124,7 +124,18 @@ float nvHalf2Float(half n)
 
 ## Quantization in LLM
 
-LLMs的巨大模型规模和边缘设备的限制（主要是内存大小和带宽）给部署带来了显著挑战，模型量化可以将高精度数字转换为低精度数字，有效降低 LLMs 对内存和带宽的需求，同时也可以在一定程度上提高推理速度和吞吐量。
+LLMs的巨大模型规模和边缘设备的限制（主要是内存大小和带宽）给部署带来了显著挑战。
+
+模型量化是指以较低的推理精度损失将连续取值（通常为float32或者大量可能的离散值）的浮点型权重近似为有限多个离散值（通常为int8）的过程。
+
+通过以更少的位数表示浮点数据，可以有效降低 LLMs 对内存和带宽的需求，在一些低精度运算较快的处理器上可以增加推理速度。
+
+量化的对象：
+
+- 权重，最常规的量化对象
+- 激活，activation 往往是占内存使用的大头，量化 activation 不仅可以减少内存占用，结合 weight 量化可以充分利用整数计算获得性能提升
+- KV Cache，有助于提高长序列生成的吞吐量
+- 梯度
 
 
 LLM中的量化示例：
@@ -185,6 +196,29 @@ m3:
 
 > 由于量化时产生了四舍五入和误差，导致反量化回到 FP16 格式后与原始数据略有误差
 
+
+## Asymmetry and symmetry quantization
+
+量化的形式：
+
+根据原始数据范围是否均匀，可以将量化方法分为线性量化和非线性量化。DL中的权重和激活值通常是不均匀的，因此理论上使用非线性量化导致的精度损失更小，但在实际推理中非线性量化的计算复杂度较高，**通常使用线性量化**。
+
+线性量化的原理。假设r表示量化前的浮点数，量化后的整数q可以表示为：
+
+$q=clip(round(r/s+z),q_{min},q_{max})$
+
+其中，$round()$和$clip()$ 分别表示取整和截断操作，$q_{min}$和$q_{max}$表示量化后的上下限，$s$是数据量画的间隔，$z$是表示数据偏移的偏置，当z=0时称为**对称（Symmetric）量化**，不为0时称为**非对称（Asymmetric）量化**
+
+![Asymmetry and symmetry quantization](https://miro.medium.com/v2/resize:fit:828/format:webp/1*vbOT2mU7Op0Re4i2VtbaSg.png)
+
+对称量化可以避免量化算子在推理中计算z相关的部分，降低推理时的计算复杂度；非对称量化可以根据实际数据的分布确定最小值和最小值，可以更加充分的利用量化数据信息，使得量化导致的损失更低
+
+量化的粒度：
+
+根据量化参数sss和zzz的共享范围（即量化粒度），量化方法可以分为逐层量化（per-tensor）、逐通道（per-token & per-channel 或者 vector-wise quantization ）量化和逐组量化（per-group、Group-wise）。
+
+
 Reference
 - [int8/fp16/bf16/tf32在AI芯片中什么作用？](https://www.bilibili.com/video/BV1WT411k724/?spm_id_from=333.788&vd_source=0937fafa4d5fa1b43ea250393f22ec7d)
 - [fp16和fp32神经网络混合精度训练](https://blog.csdn.net/djfjkj52/article/details/114963916)
+- [大模型量化概述](https://juejin.cn/post/7291931852800524329)

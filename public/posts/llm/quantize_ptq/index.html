@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
-  <title>Quantize Methods in LLM &middot; Victor&#39;s Blog</title>
-  <meta name="title" content="Quantize Methods in LLM &middot; Victor&#39;s Blog" />
+  <title>PTQ for LLM &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="PTQ for LLM &middot; Victor&#39;s Blog" />
   
-  
+  <meta name="description" content="LLM 常见的 PTQ 量化方法， 如 GPTQ, AWQ, PTQ, GGUF 等" />
   <meta name="keywords" content="NLP, Transformer, LLM, AI Quantization, " />
   
   
-  <link rel="canonical" href="https://chzhyang.github.com/posts/llm/quantize_methods/" />
+  <link rel="canonical" href="https://chzhyang.github.com/posts/llm/quantize_ptq/" />
   
   
   
@@ -60,10 +60,10 @@
   
   
   
-  <meta property="og:url" content="https://chzhyang.github.com/posts/llm/quantize_methods/">
+  <meta property="og:url" content="https://chzhyang.github.com/posts/llm/quantize_ptq/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
-  <meta property="og:title" content="Quantize Methods in LLM">
-  <meta property="og:description" content="LLM 涉及的量化方法：GPTQ, AWQ, PTQ, GGUF">
+  <meta property="og:title" content="PTQ for LLM">
+  <meta property="og:description" content="LLM 常见的 PTQ 量化方法， 如 GPTQ, AWQ, PTQ, GGUF 等">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -73,12 +73,13 @@
     <meta property="article:tag" content="Transformer">
     <meta property="article:tag" content="LLM">
     <meta property="article:tag" content="AI Quantization">
-      <meta property="og:see_also" content="https://chzhyang.github.com/posts/llm/datatype/">
+      <meta property="og:see_also" content="https://chzhyang.github.com/posts/llm/quantize_datatype/">
+      <meta property="og:see_also" content="https://chzhyang.github.com/posts/llm/quantize_intro/">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Quantize Methods in LLM">
-  <meta name="twitter:description" content="LLM 涉及的量化方法：GPTQ, AWQ, PTQ, GGUF">
+  <meta name="twitter:title" content="PTQ for LLM">
+  <meta name="twitter:description" content="LLM 常见的 PTQ 量化方法， 如 GPTQ, AWQ, PTQ, GGUF 等">
 
   
   <script type="application/ld+json">
@@ -86,12 +87,12 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "Blogs",
-    "name": "Quantize Methods in LLM",
-    "headline": "Quantize Methods in LLM",
-    
-    "abstract": "LLM 涉及的量化方法：GPTQ, AWQ, PTQ, GGUF",
+    "name": "PTQ for LLM",
+    "headline": "PTQ for LLM",
+    "description": "LLM 常见的 PTQ 量化方法， 如 GPTQ, AWQ, PTQ, GGUF 等",
+    "abstract": "PTQ # PTQ(Post-Training Quantization)，即后训",
     "inLanguage": "en",
-    "url" : "https:\/\/chzhyang.github.com\/posts\/llm\/quantize_methods\/",
+    "url" : "https:\/\/chzhyang.github.com\/posts\/llm\/quantize_ptq\/",
     "author" : {
       "@type": "Person",
       "name": "Victor Yang"
@@ -105,7 +106,7 @@
     "keywords": ["NLP","Transformer","LLM","AI Quantization"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "840"
+    "wordCount": "3566"
   }]
   </script>
 
@@ -571,7 +572,7 @@
   <header id="single_header" class="mt-5 max-w-prose">
     
     <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-      Quantize Methods in LLM
+      PTQ for LLM
     </h1>
     <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
       
@@ -618,7 +619,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-28 22:43:31 &#43;0000 UTC">2024-05-28</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-06-01 00:00:00 &#43;0000 UTC">Updated: 2024-06-01</time><span class="px-2 text-primary-500">&middot;</span><span>840 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">2 mins</span>
+  <time datetime="2024-05-28 22:43:31 &#43;0000 UTC">2024-05-28</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-06-01 00:00:00 &#43;0000 UTC">Updated: 2024-06-01</time><span class="px-2 text-primary-500">&middot;</span><span>3566 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">8 mins</span>
   
 
   
@@ -718,6 +719,13 @@
     class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#ptq">PTQ</a>
+      <ul>
+        <li><a href="#权重量化">权重量化</a></li>
+        <li><a href="#权重和激活全量化">权重和激活全量化</a></li>
+      </ul>
+    </li>
+    <li><a href="#llmint8">LLM.int8()</a></li>
     <li><a href="#gptq">GPTQ</a>
       <ul>
         <li><a href="#使用-autogptq-量化模型">使用 AutoGPTQ 量化模型</a></li>
@@ -725,8 +733,12 @@
         <li><a href="#在-vllm-中加载-gptq-量化模型">在 vLLM 中加载 GPTQ 量化模型</a></li>
       </ul>
     </li>
-    <li><a href="#awq">AWQ</a></li>
-    <li><a href="#ptq">PTQ</a></li>
+    <li><a href="#smoothquant">SmoothQuant</a></li>
+    <li><a href="#awq">AWQ</a>
+      <ul>
+        <li><a href="#autoawq">AutoAWQ</a></li>
+      </ul>
+    </li>
     <li><a href="#gguf">GGUF</a>
       <ul>
         <li><a href="#加载-gguf-模型">加载 GGUF 模型</a></li>
@@ -746,6 +758,13 @@
     class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#ptq">PTQ</a>
+      <ul>
+        <li><a href="#权重量化">权重量化</a></li>
+        <li><a href="#权重和激活全量化">权重和激活全量化</a></li>
+      </ul>
+    </li>
+    <li><a href="#llmint8">LLM.int8()</a></li>
     <li><a href="#gptq">GPTQ</a>
       <ul>
         <li><a href="#使用-autogptq-量化模型">使用 AutoGPTQ 量化模型</a></li>
@@ -753,8 +772,12 @@
         <li><a href="#在-vllm-中加载-gptq-量化模型">在 vLLM 中加载 GPTQ 量化模型</a></li>
       </ul>
     </li>
-    <li><a href="#awq">AWQ</a></li>
-    <li><a href="#ptq">PTQ</a></li>
+    <li><a href="#smoothquant">SmoothQuant</a></li>
+    <li><a href="#awq">AWQ</a>
+      <ul>
+        <li><a href="#autoawq">AutoAWQ</a></li>
+      </ul>
+    </li>
     <li><a href="#gguf">GGUF</a>
       <ul>
         <li><a href="#加载-gguf-模型">加载 GGUF 模型</a></li>
@@ -785,8 +808,8 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="https://chzhyang.github.com/posts/llm/datatype/">
-            Part 1: DataType and Quantization
+        <a href="https://chzhyang.github.com/posts/llm/quantize_datatype/">
+            Part 1: DataType in AI
         </a>
     </div>
     
@@ -794,7 +817,16 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        Part 2: This Article
+        <a href="https://chzhyang.github.com/posts/llm/quantize_intro/">
+            Part 2: Quantization Introduction
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        Part 3: This Article
     </div>
     
     
@@ -807,8 +839,106 @@
         <div class="article-content max-w-prose mb-20">
           
 
-<p>LLM 涉及的量化方法：GPTQ, AWQ, PTQ, GGUF等。</p>
 
+
+<h2 class="relative group">PTQ 
+    <div id="ptq" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#ptq" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>PTQ(Post-Training Quantization)，即后训练量化，主要目标是无需对 LLM 架构进行修改或重新训练的前提下，通过量化减少 LLM 的存储和计算复杂度。</p>
+<p>主要优势是简单高效，但会在量化过程中引入一定程度的精度损失。</p>
+<p>PTQ 分为 权重量化 和 全量化。</p>
+
+
+<h3 class="relative group">权重量化 
+    <div id="%E6%9D%83%E9%87%8D%E9%87%8F%E5%8C%96" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E6%9D%83%E9%87%8D%E9%87%8F%E5%8C%96" aria-label="Anchor">#</a>
+    </span>        
+    
+</h3>
+<ul>
+<li><a href="https://arxiv.org/abs/2206.09557"   target="_blank">
+    LUT-GEMM</a>, 仅对权重进行量化以及使用BCQ格式在LLM中优化矩阵乘法，通过提高计算效率来增强延迟降低和性能</li>
+<li><a href="https://arxiv.org/abs/2208.07339"   target="_blank">
+    LLM.int8</a>, 采用混合精度分解的量化方法。先做了一个矩阵分解，对绝大部分权重和激活用8bit量化（vector-wise）。对离群特征的几个维度保留16bit，对其做高精度的矩阵乘法</li>
+<li><a href="https://arxiv.org/abs/2206.01861"   target="_blank">
+    ZeroQuant</a>, 对权重做group-wise，对激活值做token-wise。用逐层知识蒸馏缓解精度损失（原网络做老师），量化后的网络做学生。和W8A8的普通方法做比较，在BERT和GPT3-style模型上精度更好，还能把权重量化到4bit，但加速效果糟糕</li>
+<li><a href="https://arxiv.org/abs/2210.17323"   target="_blank">
+    GPTQ</a>, 对某个 block 内的所有参数逐个量化，每个参数量化后，需要适当调整这个 block 内其他未量化的参数，以弥补量化造成的精度损失。 <strong>GPTQ 需要准备校准数据集</strong></li>
+<li><a href="https://arxiv.org/abs/2306.00978"   target="_blank">
+    AWQ</a>, 发现对于LLM的性能，权重并不是同等重要的，通过保留1%的显著权重可以大大减少量化误差。在此基础上，AWQ采用了激活感知方法，考虑与较大激活幅度对应的权重通道的重要性，这在处理重要特征时起着关键作用。该方法采用逐通道缩放技术来确定最佳缩放因子，从而在量化所有权重的同时最小化量化误差</li>
+</ul>
+
+
+<h3 class="relative group">权重和激活全量化 
+    <div id="%E6%9D%83%E9%87%8D%E5%92%8C%E6%BF%80%E6%B4%BB%E5%85%A8%E9%87%8F%E5%8C%96" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E6%9D%83%E9%87%8D%E5%92%8C%E6%BF%80%E6%B4%BB%E5%85%A8%E9%87%8F%E5%8C%96" aria-label="Anchor">#</a>
+    </span>        
+    
+</h3>
+<p>LLM中激活往往由于异常值的存在而变得更加复杂</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2211.10438"   target="_blank">
+    SmoothQuant</a>，观察到不同的token在它们的通道上展示出类似的变化，引入了逐通道缩放变换，有效地平滑了幅度，解决了量化激活的挑战。</li>
+</ul>
+
+
+<h2 class="relative group">LLM.int8() 
+    <div id="llmint8" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#llmint8" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>LLM.int8()发现当 LLMs 的模型参数量超过 6.7B 的时候，激活中会成片的出现大幅的离群点(outliers)，朴素且高效的量化方法（W8A8、ZeroQuant等）会导致量化误差增大，精度下降。但是离群特征（Emergent Features）的分布是有规律的，通常分布在 Transformer 层的少数几个维度。针对这个问题，LLM.int8() 采用了混合精度分解计算的方式（离群点和其对应的权重使用 FP16 计算，其他量化成 INT8 后计算）。虽然能确保精度损失较小，但由于需要运行时进行异常值检测、scattering 和 gathering，导致它比 FP16 推理慢。</p>
+<p>步骤：</p>
+<ul>
+<li>从输入的隐含状态中，按列提取异常值 (离群特征，即大于某个阈值的值)。</li>
+<li>对离群特征进行 FP16 矩阵运算，对非离群特征进行量化，做 INT8 矩阵运算；</li>
+<li>反量化非离群值的矩阵乘结果，并与离群值矩阵乘结果相加，获得最终的 FP16 结果</li>
+</ul>
+<p>虽然 LLM.in8() 带来的性能下降微乎其微，但是这种分离计算的方式拖慢了推理速度。对于 BLOOM-176B，相比于 FP16，LLM.int8() 慢了大约 15% 到 23%；对于更小的模型（3B 和 11B），速度差距更为明显，LLM.int8() 慢三倍以上</p>
+<p>LLM.int8() 的实现主要在 bitsandbytes 库，transformers 库已经集成了 bitsandbytes 这个量化库，其优点是不需要量化校准数据集，任何模型只要含有 torch.nn.Linear 模块，就可以对其进行开箱即用的量化。</p>
+<p>8-bit:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModelForCausalLM</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;decapoda-research/llama-7b-hf&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">device_map</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">load_in_8bit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">max_memory</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">mem_get_info</span><span class="p">(</span><span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">1024</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="si">}</span><span class="s1">GB&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>4-bit:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BitsAndBytesConfig</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">nf4_config</span> <span class="o">=</span> <span class="n">BitsAndBytesConfig</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">   <span class="n">load_in_4bit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="n">bnb_4bit_quant_type</span><span class="o">=</span><span class="s2">&#34;nf4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="n">bnb_4bit_use_double_quant</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="n">bnb_4bit_compute_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">model_nf4</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">quantization_config</span><span class="o">=</span><span class="n">nf4_config</span><span class="p">)</span>
+</span></span></code></pre></div>
 
 <h2 class="relative group">GPTQ 
     <div id="gptq" class="anchor"></div>
@@ -820,9 +950,12 @@
     </span>        
     
 </h2>
-<p>GPTQ (Generalized Post-Training Quantization)，是一种针对4位量化的训练后量化 (PTQ) 方法，通过最小化权重的均方误差（基于近似二阶信息）将所有权重压缩到 INT4。推理时，动态地将权重反量化为 FP16，以提高性能，同时保持低内存占用。</p>
+<p>GPTQ (Generalized Post-Training Quantization)，是一种训练后量化 (PTQ) 方法，采用 INT4/FP16 (W4A16) 的混合量化方案，其中模型权重被量化为 int4，激活值保留在 FP16，是一种仅权重量化方法。通过最小化权重的均方误差（基于近似二阶信息）将所有权重压缩到 INT4。推理时，动态地将权重反量化为 FP16。</p>
+<p>GPTQ 将权重分组（如：128列为一组）为多个子矩阵（block）。对某个 block 内的所有参数逐个量化，每个参数量化后，需要适当调整这个 block 内其他未量化的参数，以弥补量化造成的精度损失。因此，GPTQ 量化需要准备校准数据集。</p>
+<p>GPTQ 把量化问题视作优化问题，逐层寻找最优的量化权重，使用 Cholesky 分解 Hessian 矩阵的逆，在给定的step中对连续列的块进行量化，并在step结束时更新剩余的权重。</p>
 <p>优势：</p>
 <ul>
+<li>int4 量化能够节省接近4倍的内存</li>
 <li>主要针对 GPU 推理和性能，对 GPU 进行了优化</li>
 <li>不需要对模型进行重训练</li>
 </ul>
@@ -831,6 +964,14 @@
 <li>对 GPU 要求较高</li>
 <li>量化预训练模型带来量化误差</li>
 </ul>
+<p>量化和反量化的步骤：</p>
+<ul>
+<li>缩放：将输入张量x除以缩放因子scale。这一步是为了将x的值范围调整到预期的量化范围</li>
+<li>四舍五入：将缩放后的结果四舍五入到最近的整数。这一步将x的值离散化，即将其转换为整数</li>
+<li>限制范围：使用torch.clamp函数将四舍五入后的结果限制在0和maxq之间，确保量化后的值不会超出预期的量化范围</li>
+<li>反量化：将量化后的张量减去零点zero，然后乘以缩放因子scale。这一步是为了将量化后的值恢复到原始的值范围</li>
+</ul>
+<p>一般来说，GPTQ推荐使用 8-bit 量化及 groupsize = 128。</p>
 
 
 <h3 class="relative group">使用 AutoGPTQ 量化模型 
@@ -843,9 +984,11 @@
     </span>        
     
 </h3>
-<p>安装 GPTQ</p>
-<pre tabindex="0"><code>git clone https://github.com/AutoGPTQ/AutoGPTQ
-cd AutoGPTQ
+<p><a href="https://github.com/AutoGPTQ/"   target="_blank">
+    AutoGPTQ</a> 是基于 GPTQ 算法、有用户友好型接口的 LLM 量化 toolkit，AutoGPTQ 代码库已被集成到 Transformers 中，可以使用 GPTQ 算法在 8 bit、4 bit、3 bit、2 bit 精度下量化和运行模型</p>
+<p><a href="https://github.com/AutoGPTQ/AutoGPTQ?tab=readme-ov-file#installation"   target="_blank">
+    安装 GPTQ</a></p>
+<pre tabindex="0"><code>git clone https://github.com/AutoGPTQ/AutoGPTQ &amp;&amp; cd AutoGPTQ
 pip install -e .
 </code></pre><p>构建 GPTQ 量化模型需要使用<strong>训练数据</strong>进行校准。以单卡 GPU 进行量化为例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">auto_gptq</span> <span class="kn">import</span> <span class="n">AutoGPTQForCausalLM</span><span class="p">,</span> <span class="n">BaseQuantizeConfig</span>
@@ -873,10 +1016,11 @@ pip install -e .
 </span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">AutoGPTQForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">quantize_config</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 使用训练数据进行校准</span>
-</span></span><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 样本的数据类型应该为 List[Dict]，其中字典的键有且仅有 input_ids 和 attention_mask</span>
+</span></span><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="n">input_ids</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">:</span> <span class="s2">&#34;&#34;</span><span class="p">}]</span>
 </span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">cache_examples_on_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 保存模型</span>
-</span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">save_quantized</span><span class="p">(</span><span class="n">quant_path</span><span class="p">,</span> <span class="n">use_safetensors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># 不支持模型分片</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 保存模型, 不支持模型分片</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">save_quantized</span><span class="p">(</span><span class="n">quant_path</span><span class="p">,</span> <span class="n">use_safetensors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">quant_path</span><span class="p">)</span>
 </span></span></code></pre></div><p>如果使用多个 GPU，需要配置 使用 max_memory 而不是 device_map：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">AutoGPTQForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
@@ -896,7 +1040,7 @@ pip install -e .
     </span>        
     
 </h3>
-<p>Transformers 已支持 AutoGPTQ，可以直接在 Transformers 中使用量化后的模型。以 Qwen1.5-7B-Chat-GPTQ-Int8 为例：</p>
+<p>Transformers, optimum, peft 已支持 AutoGPTQ，可以直接在 Transformers 中使用量化后的模型。以 Qwen1.5-7B-Chat-GPTQ-Int8 为例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
 </span></span><span class="line"><span class="cl"><span class="n">device</span> <span class="o">=</span> <span class="s2">&#34;cuda&#34;</span> <span class="c1"># the device to load the model onto</span>
 </span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
@@ -938,6 +1082,24 @@ pip install -e .
 <p><code>python -m vllm.entrypoints.openai.api_server --model Qwen/Qwen1.5-7B-Chat-GPTQ-Int8</code></p>
 
 
+<h2 class="relative group">SmoothQuant 
+    <div id="smoothquant" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#smoothquant" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>LLM 量化的挑战之一是激活值比权重更难量化，因为权重数据分布一般比较均匀，而激活的异常值多且大让激活值量化变得更艰难，但是异常值只存在少数通道。单一 token 方差很大（异常值会存在于每一个 token 中），单一 channel 方差会小很多。</p>
+<p>SmoothQuant 是一种同时确保准确率且推理高效的训练后量化 (PTQ) 方法，可实现 8bit 权重量化（W8A16）、8bit 全量化（W8A8），它引入平滑因子 s 来平滑激活的异常值，通过数学等效变换将量化难度从激活转移到权重上。</p>
+<p>SmoothQuant 对激活进行平滑，按通道（列）除以 smoothing factor，同时为了保持 liner layer 数学上的等价性，以相反的方式对权重进行对应调整。</p>
+<p>SmoothQuant 证明自己可以无损地量化（8bit）所有超过100B参数的开源LLM。通过集成到PyTorch和FasterTransformer中，与 FP16 相比，获得高达1.56倍的推理加速，并将内存占用减半，并且模型越大，加速效果越明显。</p>
+<p>与其他量化方法相比，SmoothQuant 可以保持较高的精度，同时具有更低的延迟。</p>
+<p>目前，SmoothQuant 已经被集成到 TensorRT-LLM(NVIDIA) 和 Neural-Compressor(Intel) 中。</p>
+
+
 <h2 class="relative group">AWQ 
     <div id="awq" class="anchor"></div>
     
@@ -948,21 +1110,49 @@ pip install -e .
     </span>        
     
 </h2>
-<p>AWQ(Activation-aware Weight Quantization), 即激活感知权重量化，是一种针对LLM的低比特权重量化的硬件友好方法，同时支持 CPU、GPU。 AWQ 基于一个观察，即权重并非同等重要：保护仅1%的显著权重可以大大减少量化误差。AWQ 通过观察激活而非权重来寻找保护显著权重的最佳每通道缩放比例</p>
+<p>AWQ(Activation-aware Weight Quantization), 即激活感知权重量化，是一种针对 LLM 的、硬件友好的、低比特权重量化方法，同时支持 CPU、GPU。</p>
+<p>AWQ 源于一个观察，即权重对于LLM的性能并不同等重要：存在约（0.1%-1%）的显著权重（salient weight）对大模型性能影响很大，<strong>跳过这1%的显著权重</strong>（不量化），可大大减少量化误差。</p>
+<p>AWQ 通过观察<strong>激活分布</strong>而非权重分布来寻找保护显著权重的最佳每通道缩放比例（per-channel），在量化过程中会对特殊权重进行特殊处理以减轻量化过程中的精度损失，在和GPTQ量化保持类似推理速度的同时可以具备更好的精度。</p>
+<p>除了官方支持<a href="https://github.com/mit-han-lab/llm-awq"   target="_blank">
+    llm-awq</a>以外，AutoAWQ、vLLM、HuggingFace TGI、LMDeploy、TensorRT-LLM、FastChat 等都支持 AWQ</p>
 
 
-<h2 class="relative group">PTQ 
-    <div id="ptq" class="anchor"></div>
+<h3 class="relative group">AutoAWQ 
+    <div id="autoawq" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#ptq" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#autoawq" aria-label="Anchor">#</a>
     </span>        
     
-</h2>
-<p>PTQ(Post-Training Quantization)，即后训练量化</p>
-
+</h3>
+<p>基于 AWQ 的 量化工具包，与 FP16 相比，AutoAWQ 使用4bit量化将模型速度提高了 3 倍，并将对内存需求降低了 3 倍。Transformers 已经集成了 AutoAWQ</p>
+<p>使用autoawq量化模型</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">awq</span> <span class="kn">import</span> <span class="n">AutoAWQForCausalLM</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+</span></span><span class="line"><span class="cl"><span class="n">model_path</span> <span class="o">=</span> <span class="s2">&#34;facebook/opt-125m&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">quant_path</span> <span class="o">=</span> <span class="s2">&#34;opt-125m-awq&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">quant_config</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zero_point&#34;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;q_group_size&#34;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;w_bit&#34;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;version&#34;</span><span class="p">:</span><span class="s2">&#34;GEMM&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Load model</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">AutoAWQForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Quantize</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">quant_config</span><span class="o">=</span><span class="n">quant_config</span><span class="p">)</span>
+</span></span></code></pre></div><p>加载 awq 模型</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span>
+</span></span><span class="line"><span class="cl"><span class="n">quant_path</span><span class="o">=</span><span class="s2">&#34;opt-125m-awq&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">quant_path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">quant_path</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">text</span> <span class="o">=</span> <span class="s2">&#34;What is AI?&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&#34;pt&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</span></span></code></pre></div>
 
 <h2 class="relative group">GGUF 
     <div id="gguf" class="anchor"></div>
@@ -974,7 +1164,7 @@ pip install -e .
     </span>        
     
 </h2>
-<p>GGUF(GPT-Generated Unified Format)，以前称为 GGML(General Matrix Multiply Library)，允许用户使用 CPU 来运行 LLM，它专注于优化矩阵乘，以提高量化后的计算效率，适用于在资源受限的设备。</p>
+<p>GGUF(GPT-Generated Unified Format)，以前称为 GGML(General Matrix Multiply Library)，GGUF格式较新，可以保留模型版本等其他自定义信息。这两种格式也是PTQ形式的量化算法。允许用户使用 CPU 来运行 LLM，它专注于优化矩阵乘，以提高量化后的计算效率，适用于在资源受限的设备。</p>
 
 
 <h3 class="relative group">加载 GGUF 模型 
@@ -1019,12 +1209,70 @@ pip install -e .
     </span>        
     
 </h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Type</th>
+<th>Need Dataset</th>
+<th>Scale 粒度</th>
+<th>DateType</th>
+<th>Hardware</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM.int8()</td>
+<td>PTQ</td>
+<td>No</td>
+<td>per-channel</td>
+<td>8bit,4bit</td>
+<td>GPU</td>
+</tr>
+<tr>
+<td>GPTQ</td>
+<td>PTQ</td>
+<td>Yes</td>
+<td>per-group</td>
+<td>8bit,4bit</td>
+<td>GPU</td>
+</tr>
+<tr>
+<td>SmothQuant</td>
+<td>PTQ</td>
+<td>No</td>
+<td>per-tensor, per-token</td>
+<td>8bit</td>
+<td>GPU</td>
+</tr>
+<tr>
+<td>AWQ</td>
+<td>PTQ</td>
+<td>No</td>
+<td>per-channel</td>
+<td>4bit</td>
+<td>GPU,CPU</td>
+</tr>
+</tbody>
+</table>
 <p>Reference</p>
 <ul>
+<li><a href="https://arxiv.org/abs/2210.17323"   target="_blank">
+    GPTQ</a></li>
+<li><a href="https://github.com/AutoGPTQ"   target="_blank">
+    AutoGPTQ</a></li>
+<li><a href="https://github.com/mit-han-lab/smoothquant"   target="_blank">
+    smoothquant</a></li>
 <li><a href="https://arxiv.org/abs/2306.00978"   target="_blank">
-    AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration</a></li>
+    AWQ</a></li>
 <li><a href="https://www.maartengrootendorst.com/blog/quantization/"   target="_blank">
     Which Quantization Method is Right for You? (GPTQ vs. GGUF vs. AWQ)</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/680212402"   target="_blank">
+    大模型量化技术原理-LLM.int8,GPTQ</a></li>
+<li><a href="https://juejin.cn/post/7330079146515611687"   target="_blank">
+    大模型量化技术原理-SmoothQuant</a></li>
+<li><a href="https://www.cnblogs.com/ting1/p/18217395"   target="_blank">
+    量化技术解析</a></li>
 </ul>
 
         </div>
@@ -1043,8 +1291,8 @@ pip install -e .
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="https://chzhyang.github.com/posts/llm/datatype/">
-            Part 1: DataType and Quantization
+        <a href="https://chzhyang.github.com/posts/llm/quantize_datatype/">
+            Part 1: DataType in AI
         </a>
     </div>
     
@@ -1052,7 +1300,16 @@ pip install -e .
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        Part 2: This Article
+        <a href="https://chzhyang.github.com/posts/llm/quantize_intro/">
+            Part 2: Quantization Introduction
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        Part 3: This Article
     </div>
     
     
@@ -1073,8 +1330,8 @@ pip install -e .
           
         
       <script>
-        var oid = "views_posts\/llm\/quantize_methods.md"
-        var oid_likes = "likes_posts\/llm\/quantize_methods.md"
+        var oid = "views_posts\/llm\/quantize_ptq.md"
+        var oid_likes = "likes_posts\/llm\/quantize_ptq.md"
       </script>
       
       
