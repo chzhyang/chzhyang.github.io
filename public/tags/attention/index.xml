@@ -2,28 +2,28 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Attention on Victor&#39;s Blog</title>
-    <link>https://chzhyang.github.com/tags/attention/</link>
+    <link>http://localhost:1313/tags/attention/</link>
     <description>Recent content in Attention on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Thu, 23 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/tags/attention/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/attention/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Flash Attention V2</title>
-      <link>https://chzhyang.github.com/posts/llm/flash_attention_2/</link>
+      <link>http://localhost:1313/posts/llm/flash_attention_2/</link>
       <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
-      <guid>https://chzhyang.github.com/posts/llm/flash_attention_2/</guid>
+      <guid>http://localhost:1313/posts/llm/flash_attention_2/</guid>
       <description>[WIP] FlashAttention V2: 在V1的基础上减少了非矩阵乘法运算</description>
       
     </item>
     
     <item>
       <title>Attention and KV Cache</title>
-      <link>https://chzhyang.github.com/posts/llm/attention/</link>
+      <link>http://localhost:1313/posts/llm/attention/</link>
       <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
       
-      <guid>https://chzhyang.github.com/posts/llm/attention/</guid>
+      <guid>http://localhost:1313/posts/llm/attention/</guid>
       <description>Self-Attention # 对于self-attention，由</description>
       
     </item>

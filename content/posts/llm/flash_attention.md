@@ -19,13 +19,13 @@ FlashAttention: [Fast and Memory-Efficient Exact Attention with IO-Awareness](ht
 
 > FlashAttention 目的不是节约 FLOPs，而是减少对HBM的访问。它没有改变原有的计算公式，整体计算复杂度并未降低。
 
-## 背景
+## Self-attention
 
 GPU中存储单元主要有 HBM 和 SRAM：HBM 容量大但是访问速度慢，SRAM容量小却有着较高的访问速度。例如：A100 GPU有40-80GB的HBM，带宽为1.5-2.0TB/s；每108个流式多核处理器各有192KB的片上SRAM，带宽估计约为 19TB/s。可以看出，片上的SRAM比HBM快一个数量级，但尺寸要小许多数量级。
 
 当输入序列（sequence length）较长时，Transformer的计算过程缓慢且耗费内存，这是因为 self-attention 的 time 和 memory complexity 会随着 sequence length 的增加成二次增长。
 
-标准Attention的计算过程：
+标准 Attention 的计算过程：
 {{< katex >}}
 $$
 S=Q K^T \in \mathbb{R}^{N \times N}
@@ -37,20 +37,7 @@ $$
 O=P V \in \mathbb{R}^{N \times N}
 $$
 
-标准Attention的中间结果 𝑆, 𝑃 通常需要通过高带宽内存（HBM）进行存取，两者所需内存空间复杂度为\\(O(Nd+N^2)\\), 对 HBM 的重复读写是主要瓶颈。要解决这个问题，需要做两件事：
-
-- 在不访问整个输入的情况下计算 softmax
-- 不为反向传播存储大的中间 attention 矩阵(\\(N^2\\))
-
-
-## FlashAttention V1
-
-FlashAttention 提出了两种方法来解决上述问题：tiling 和 recomputation。
-
-- tiling - **注意力计算被重新构造**，将输入分割成块，并通过在输入块上进行多次传递来递增地执行softmax操作。
-- recomputation - 存储来自前向的 softmax 归一化因子，以便在反向中快速重新计算芯片上的 attention，这比从HBM读取中间矩阵的标准注意力方法更快。可以把它看作基于 tiling 的特殊的 gradient checkpointing
-
-正常的softmax计算：
+softmax 计算：
 
 $$m(x):=\max _i x i$$
 $$f(x):=\left[e^{x_1-m(x)} \ldots e^{x_B-m(x)}\right]$$
@@ -62,20 +49,35 @@ softmax 伪代码:
 
 softmax 函数需要三个循环，第一个循环计算数组的最大值，第二个循环计算 softmax 的分母，第三个循环计算 softmax 输出。
 
-分块的 softmax 计算(假设分2块并行计算)：
-
-$$m(x)=m\left(\left[x^{(1)} x^{(2)}\right]\right)=\max \left(m\left(x^{(1)}\right), m\left(x^{(2)}\right)\right) $$
-$$f(x)=\left[e^{m\left(x^{(1)}\right)-m(x)} f\left(x^{(1)}\right) \quad e^{m\left(x^{(2)}\right)-m(x)} f\left(x^{(2)}\right)\right] $$
-$$\ell(x)=\ell\left(\left[x^{(1)} x^{(2)}\right]\right)=e^{m\left(x^{(1)}\right)-m(x)} \ell\left(x^{(1)}\right)+e^{m\left(x^{(2)}\right)-m(x)} \ell\left(x^{(2)}\right) $$
-$$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$
-
 复杂度分析：
 
 - 读取Q，K，写入\\(S=QK^T\\)，内存访问复杂度\\(O(Nd+N^2)\\)
 - 读取S，写入\\(P=softmax(S)\\)，内存访问复杂度\\(O(N^2)\\)
 - 读取V和P，写入\\(O=PV\\)，内存访问复杂度\\(O(Nd+N^2)\\)
 
-综上，self-attention的 HBM 访问复杂度\\(O(Nd+N^2)\\)
+综上，self-attention 的中间结果 𝑆, 𝑃 通常需要通过高带宽内存（HBM）进行存取，self-attention 的 HBM 访问复杂度\\(O(Nd+N^2)\\)，对 HBM 的重复读写是主要瓶颈。要解决这个问题，需要做两件事：
+
+- 在不访问整个输入的情况下计算 softmax
+- 不为反向传播存储大的中间 attention 矩阵(\\(N^2\\))
+
+## FlashAttention V1
+
+FlashAttention-V1 提出了两种方法来解决上述问题：tiling 和 recomputation。
+
+- tiling - **注意力计算被重新构造**，将输入分割成块，并通过在输入块上进行多次传递来递增地执行softmax操作。
+- recomputation - 存储来自前向的 softmax 归一化因子，以便在反向中快速重新计算芯片上的 attention，这比从HBM读取中间矩阵的标准注意力方法更快。可以把它看作基于 tiling 的特殊的 gradient checkpointing
+
+FlashAttention 设计了一套分而治之的算法，将大的矩阵切块加载到SRAM，计算每个分块的m和l值。利用上一轮m和l结合新的子块迭代计算，最终算出整个矩阵的数值。整个过程不用存储中间变量S和P矩阵，因此节省了效率。
+
+[![flashattention-1.jpg](https://s21.ax1x.com/2024/06/07/pkYzPhQ.jpg)](https://imgse.com/i/pkYzPhQ)
+
+
+分块的 softmax 计算(假设分2块并行计算)：
+
+$$m(x)=m\left(\left[x^{(1)} x^{(2)}\right]\right)=\max \left(m\left(x^{(1)}\right), m\left(x^{(2)}\right)\right) $$
+$$f(x)=\left[e^{m\left(x^{(1)}\right)-m(x)} f\left(x^{(1)}\right) \quad e^{m\left(x^{(2)}\right)-m(x)} f\left(x^{(2)}\right)\right] $$
+$$\ell(x)=\ell\left(\left[x^{(1)} x^{(2)}\right]\right)=e^{m\left(x^{(1)}\right)-m(x)} \ell\left(x^{(1)}\right)+e^{m\left(x^{(2)}\right)-m(x)} \ell\left(x^{(2)}\right) $$
+$$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$
 
 分块的 softmax 伪代码:
 ![tilling softmax](https://pic2.zhimg.com/80/v2-97d9313fbc337b46c171bc722dcafdbd_1440w.webp)

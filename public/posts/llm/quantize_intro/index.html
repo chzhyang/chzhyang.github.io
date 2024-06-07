@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" class="scroll-smooth" data-default-appearance="light"
-  data-auto-appearance="true"><head>
+  data-auto-appearance="true"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8" />
   
   <meta http-equiv="content-language" content="en" />
@@ -15,7 +15,7 @@
   <meta name="keywords" content="NLP, Transformer, LLM, AI Quantization, " />
   
   
-  <link rel="canonical" href="https://chzhyang.github.com/posts/llm/quantize_intro/" />
+  <link rel="canonical" href="http://localhost:1313/posts/llm/quantize_intro/" />
   
   
   
@@ -60,7 +60,7 @@
   
   
   
-  <meta property="og:url" content="https://chzhyang.github.com/posts/llm/quantize_intro/">
+  <meta property="og:url" content="http://localhost:1313/posts/llm/quantize_intro/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="Quantization Introduction">
   <meta property="og:description" content="Introduction # LLMs的巨大模型规模和边缘设备的限">
@@ -73,8 +73,8 @@
     <meta property="article:tag" content="Transformer">
     <meta property="article:tag" content="LLM">
     <meta property="article:tag" content="AI Quantization">
-      <meta property="og:see_also" content="https://chzhyang.github.com/posts/llm/quantize_ptq/">
-      <meta property="og:see_also" content="https://chzhyang.github.com/posts/llm/quantize_datatype/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/llm/quantize_ptq/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/llm/quantize_datatype/">
 
   
   <meta name="twitter:card" content="summary">
@@ -92,7 +92,7 @@
     
     "abstract": "Introduction # LLMs的巨大模型规模和边缘设备的限",
     "inLanguage": "en",
-    "url" : "https:\/\/chzhyang.github.com\/posts\/llm\/quantize_intro\/",
+    "url" : "http:\/\/localhost:1313\/posts\/llm\/quantize_intro\/",
     "author" : {
       "@type": "Person",
       "name": "Victor Yang"
@@ -106,7 +106,7 @@
     "keywords": ["NLP","Transformer","LLM","AI Quantization"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1981"
+    "wordCount": "2194"
   }]
   </script>
 
@@ -619,7 +619,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-04-28 00:00:00 &#43;0000 UTC">2024-04-28</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-04-30 00:00:00 &#43;0000 UTC">Updated: 2024-04-30</time><span class="px-2 text-primary-500">&middot;</span><span>1981 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span>
+  <time datetime="2024-04-28 00:00:00 &#43;0000 UTC">2024-04-28</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-04-30 00:00:00 &#43;0000 UTC">Updated: 2024-04-30</time><span class="px-2 text-primary-500">&middot;</span><span>2194 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">5 mins</span>
   
 
   
@@ -770,7 +770,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="https://chzhyang.github.com/posts/llm/quantize_datatype/">
+        <a href="http://localhost:1313/posts/llm/quantize_datatype/">
             Part 1: DataType in AI
         </a>
     </div>
@@ -786,7 +786,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="https://chzhyang.github.com/posts/llm/quantize_ptq/">
+        <a href="http://localhost:1313/posts/llm/quantize_ptq/">
             Part 3: PTQ for LLM
         </a>
     </div>
@@ -911,7 +911,31 @@
 <p>根据原始数据范围是否均匀，可以将量化方法分为线性量化和非线性量化。DL中的权重和激活值通常是不均匀的，因此理论上使用非线性量化导致的精度损失更小，但在实际推理中非线性量化的计算复杂度较高，<strong>通常使用线性量化</strong>。</p>
 <p>线性量化的原理。假设 r 表示量化前的浮点数，量化后的整数 q 可以表示为：</p>
 <p>$q=clip(round(r/s+z),q_{min},q_{max})$</p>
-<p>其中，$round()$和$clip()$ 分别表示取整和截断操作，$q_{min}$和$q_{max}$表示量化后的上下限，$s$是数据量化的间隔，$z$是表示数据偏移的偏置，当z=0时称为<strong>对称（Symmetric）量化</strong>，不为0时称为<strong>非对称（Asymmetric）量化</strong></p>
+<p>其中，$round()$和$clip()$ 分别表示取整和截断操作，$q_{min}$和$q_{max}$表示量化后的上下限，$s$是数据量化的间隔，$z$是表示数据偏移的偏置。</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p6_2.png" alt="sym-quantize" />
+    
+  </figure>
+
+</p>
+<p>当z=0时称为<strong>对称（Symmetric）量化</strong>，不为0时称为<strong>非对称（Asymmetric）量化</strong>。对于对称量化，原数值的 0 量化后仍然是 0，量化前后的数值都是以 0 为中点对称分布，但实际上有些数值的分布并不是左右对称的，比如 ReLU 激活后都是大于 0，这样会导致量化后 q 的范围只用到了一半，而非对称量化则解决了这个问题</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p6_3.png" alt="asym-quantize" />
+    
+  </figure>
+
+</p>
+<p>非对称量化的 min、max 独立统计，Z 的值根据 r 的分布不同而不同，这样可以使 q 的范围被充分利用。</p>
 <p>
 
 
@@ -936,17 +960,28 @@
     </span>        
     
 </h2>
-<p>根据量化参数 s 和 z 的共享范围（即量化粒度），量化方法的粒度可以分为：</p>
+<p>量化粒度指选取多少个待量化参数共享一个量化系数，通常来说粒度越大，精度损失越大。根据量化参数 s 和 z 的共享范围（即量化粒度），量化方法的粒度可以分为：</p>
 <ul>
-<li>逐层量化(per-tensor)，是范围最大的粒度，以一层网络为量化单位，每层网络一组量化参数</li>
+<li>逐层量化(per-tensor, per-layer)，是范围最大的粒度，以一层网络为量化单位，每层网络一组量化参数</li>
 <li>逐通道(per-token &amp; per-channel 或 vector-wise quantization) 量化，以一层网络的每个量化通道为单位，每个通道单独使用一组量化参数
 <ul>
 <li>per-token：对激活来说，每行对应一个量化系数</li>
 <li>per-channel：对权重来说，每列对应一个量化系数</li>
 </ul>
 </li>
-<li>逐组量化(per-group、Group-wise)，粒度处于 per-tensor 和 per-channel 之间，每个group（如 K 行或 K 列）使用一组 s 和 z</li>
+<li>逐组量化(per-group, per-block, Group-wise)，粒度处于 per-tensor 和 per-channel 之间，每个group（如 K 行或 K 列）使用一组 s 和 z</li>
 </ul>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p13_2.png" alt="quantize 粒度" />
+    
+  </figure>
+
+</p>
 <blockquote>
 <p>权重和激活可以选择不同的量化粒度。譬如权重用 per-tensor，激活用 per-token。并且对于激活分动态量化与静态量化</p>
 </blockquote>
@@ -1018,6 +1053,8 @@
     fp16和fp32神经网络混合精度训练</a></li>
 <li><a href="https://juejin.cn/post/7291931852800524329"   target="_blank">
     大模型量化概述</a></li>
+<li><a href="https://robot9.me/ai-model-quantization-principles-practice/"   target="_blank">
+    模型量化原理与实践</a></li>
 </ul>
 
         </div>
@@ -1036,7 +1073,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="https://chzhyang.github.com/posts/llm/quantize_datatype/">
+        <a href="http://localhost:1313/posts/llm/quantize_datatype/">
             Part 1: DataType in AI
         </a>
     </div>
@@ -1052,7 +1089,7 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="https://chzhyang.github.com/posts/llm/quantize_ptq/">
+        <a href="http://localhost:1313/posts/llm/quantize_ptq/">
             Part 3: PTQ for LLM
         </a>
     </div>
@@ -1186,7 +1223,7 @@
 </footer><div
   id="search-wrapper"
   class="invisible fixed inset-0 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
-  data-url="https://chzhyang.github.com/"
+  data-url="http://localhost:1313/"
   style="z-index:500"
 >
   <div

@@ -2,28 +2,28 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Leetcode on Victor&#39;s Blog</title>
-    <link>https://chzhyang.github.com/tags/leetcode/</link>
+    <link>http://localhost:1313/tags/leetcode/</link>
     <description>Recent content in Leetcode on Victor&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Tue, 28 May 2024 09:47:15 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/tags/leetcode/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 28 May 2024 09:47:15 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/leetcode/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dynamic Programming: Dim-2</title>
-      <link>https://chzhyang.github.com/posts/algorithm/leetcode/dp_dim2/</link>
+      <link>http://localhost:1313/posts/algorithm/leetcode/dp_dim2/</link>
       <pubDate>Tue, 28 May 2024 09:47:15 +0000</pubDate>
       
-      <guid>https://chzhyang.github.com/posts/algorithm/leetcode/dp_dim2/</guid>
+      <guid>http://localhost:1313/posts/algorithm/leetcode/dp_dim2/</guid>
       <description>二维动态规划的基本思路 # 基本思路与一维 DP</description>
       
     </item>
     
     <item>
       <title>Dynamic Programming: Dim-1</title>
-      <link>https://chzhyang.github.com/posts/algorithm/leetcode/dp_dim1/</link>
+      <link>http://localhost:1313/posts/algorithm/leetcode/dp_dim1/</link>
       <pubDate>Fri, 10 May 2024 09:47:15 +0000</pubDate>
       
-      <guid>https://chzhyang.github.com/posts/algorithm/leetcode/dp_dim1/</guid>
+      <guid>http://localhost:1313/posts/algorithm/leetcode/dp_dim1/</guid>
       <description>动态规划(DP)的基本思路 # DP的前提是</description>
       
     </item>

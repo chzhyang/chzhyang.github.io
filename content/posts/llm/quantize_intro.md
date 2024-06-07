@@ -99,7 +99,15 @@ m3:
 
 $q=clip(round(r/s+z),q_{min},q_{max})$
 
-其中，$round()$和$clip()$ 分别表示取整和截断操作，$q_{min}$和$q_{max}$表示量化后的上下限，$s$是数据量化的间隔，$z$是表示数据偏移的偏置，当z=0时称为**对称（Symmetric）量化**，不为0时称为**非对称（Asymmetric）量化**
+其中，$round()$和$clip()$ 分别表示取整和截断操作，$q_{min}$和$q_{max}$表示量化后的上下限，$s$是数据量化的间隔，$z$是表示数据偏移的偏置。
+
+![sym-quantize](https://robot9.me/wp-content/uploads/2023/12/p6_2.png)
+
+当z=0时称为**对称（Symmetric）量化**，不为0时称为**非对称（Asymmetric）量化**。对于对称量化，原数值的 0 量化后仍然是 0，量化前后的数值都是以 0 为中点对称分布，但实际上有些数值的分布并不是左右对称的，比如 ReLU 激活后都是大于 0，这样会导致量化后 q 的范围只用到了一半，而非对称量化则解决了这个问题
+
+![asym-quantize](https://robot9.me/wp-content/uploads/2023/12/p6_3.png)
+
+非对称量化的 min、max 独立统计，Z 的值根据 r 的分布不同而不同，这样可以使 q 的范围被充分利用。
 
 ![Asymmetry and symmetry quantization](https://miro.medium.com/v2/resize:fit:828/format:webp/1*vbOT2mU7Op0Re4i2VtbaSg.png)
 
@@ -107,12 +115,14 @@ $q=clip(round(r/s+z),q_{min},q_{max})$
 
 ## 量化的粒度
 
-根据量化参数 s 和 z 的共享范围（即量化粒度），量化方法的粒度可以分为：
-- 逐层量化(per-tensor)，是范围最大的粒度，以一层网络为量化单位，每层网络一组量化参数
+量化粒度指选取多少个待量化参数共享一个量化系数，通常来说粒度越大，精度损失越大。根据量化参数 s 和 z 的共享范围（即量化粒度），量化方法的粒度可以分为：
+- 逐层量化(per-tensor, per-layer)，是范围最大的粒度，以一层网络为量化单位，每层网络一组量化参数
 - 逐通道(per-token & per-channel 或 vector-wise quantization) 量化，以一层网络的每个量化通道为单位，每个通道单独使用一组量化参数
     - per-token：对激活来说，每行对应一个量化系数
     - per-channel：对权重来说，每列对应一个量化系数 
-- 逐组量化(per-group、Group-wise)，粒度处于 per-tensor 和 per-channel 之间，每个group（如 K 行或 K 列）使用一组 s 和 z
+- 逐组量化(per-group, per-block, Group-wise)，粒度处于 per-tensor 和 per-channel 之间，每个group（如 K 行或 K 列）使用一组 s 和 z
+
+![quantize 粒度](https://robot9.me/wp-content/uploads/2023/12/p13_2.png)
 
 > 权重和激活可以选择不同的量化粒度。譬如权重用 per-tensor，激活用 per-token。并且对于激活分动态量化与静态量化
 
@@ -140,3 +150,4 @@ Reference
 - [int8/fp16/bf16/tf32在AI芯片中什么作用？](https://www.bilibili.com/video/BV1WT411k724/?spm_id_from=333.788&vd_source=0937fafa4d5fa1b43ea250393f22ec7d)
 - [fp16和fp32神经网络混合精度训练](https://blog.csdn.net/djfjkj52/article/details/114963916)
 - [大模型量化概述](https://juejin.cn/post/7291931852800524329)
+- [模型量化原理与实践](https://robot9.me/ai-model-quantization-principles-practice/)

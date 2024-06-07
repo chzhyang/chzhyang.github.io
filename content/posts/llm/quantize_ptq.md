@@ -38,6 +38,8 @@ LLM中激活往往由于异常值的存在而变得更加复杂
 
 LLM.int8()发现当 LLMs 的模型参数量超过 6.7B 的时候，激活中会成片的出现大幅的离群点(outliers)，朴素且高效的量化方法（W8A8、ZeroQuant等）会导致量化误差增大，精度下降。但是离群特征（Emergent Features）的分布是有规律的，通常分布在 Transformer 层的少数几个维度。针对这个问题，LLM.int8() 采用了混合精度分解计算的方式（离群点和其对应的权重使用 FP16 计算，其他量化成 INT8 后计算）。虽然能确保精度损失较小，但由于需要运行时进行异常值检测、scattering 和 gathering，导致它比 FP16 推理慢。
 
+![llm.int8](https://robot9.me/wp-content/uploads/2023/12/p50.png)
+
 步骤：
 - 从输入的隐含状态中，按列提取异常值 (离群特征，即大于某个阈值的值)。
 - 对离群特征进行 FP16 矩阵运算，对非离群特征进行量化，做 INT8 矩阵运算；
@@ -81,7 +83,14 @@ model_nf4 = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=n
 
 GPTQ (Generalized Post-Training Quantization)，是一种训练后量化 (PTQ) 方法，采用 INT4/FP16 (W4A16) 的混合量化方案，其中模型权重被量化为 int4，激活值保留在 FP16，是一种仅权重量化方法。通过最小化权重的均方误差（基于近似二阶信息）将所有权重压缩到 INT4。推理时，动态地将权重反量化为 FP16。
 
-GPTQ 将权重分组（如：128列为一组）为多个子矩阵（block）。对某个 block 内的所有参数逐个量化，每个参数量化后，需要适当调整这个 block 内其他未量化的参数，以弥补量化造成的精度损失。因此，GPTQ 量化需要准备校准数据集。
+GPTQ 将权重分组（如：128列为一组）为多个子矩阵（block）。具体的迭代方案是：对某个 block 内的所有参数逐个量化，每个参数量化后，适当调整这个 block 内其他未量化的参数，以弥补量化造成的精度损失，该算法由90年代的剪枝算法发展而来：
+
+OBD (1990)：引入 H 矩阵进行神经网络剪枝
+OBS (1993)：新增权重删除补偿
+OBQ (2022)：将 OBS 应用到模型量化，并增加分行计算
+GPTQ (2023)：进一步提升量化速度
+
+GPTQ 量化需要准备校准数据集。
 
 GPTQ 把量化问题视作优化问题，逐层寻找最优的量化权重，使用 Cholesky 分解 Hessian 矩阵的逆，在给定的step中对连续列的块进行量化，并在step结束时更新剩余的权重。
 
@@ -200,9 +209,13 @@ response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 
 LLM 量化的挑战之一是激活值比权重更难量化，因为权重数据分布一般比较均匀，而激活的异常值多且大让激活值量化变得更艰难，但是异常值只存在少数通道。单一 token 方差很大（异常值会存在于每一个 token 中），单一 channel 方差会小很多。
 
-SmoothQuant 是一种同时确保准确率且推理高效的训练后量化 (PTQ) 方法，可实现 8bit 权重量化（W8A16）、8bit 全量化（W8A8），它引入平滑因子 s 来平滑激活的异常值，通过数学等效变换将量化难度从激活转移到权重上。
+SmoothQuant 是一种同时确保准确率且推理高效的训练后量化 (PTQ) 方法，可实现 8bit 权重量化（W8A16）、8bit 全量化(W8A8)。核心思想是缩小激活，放大权重，使得激活更容易量化，通常来说由于各类 Norm 的存在，激活的波动范围会远大于权重，因此 SmoothQuant 从激活的参数中提取一个缩放系数，再乘到权重中，结果不变但压缩了激活的变换范围，从而减少了量化误差。它引入平滑因子 s 来平滑激活的异常值，通过数学等效变换将量化难度从激活转移到权重上。
 
 SmoothQuant 对激活进行平滑，按通道（列）除以 smoothing factor，同时为了保持 liner layer 数学上的等价性，以相反的方式对权重进行对应调整。
+
+![smoothquant1](https://robot9.me/wp-content/uploads/2023/12/p51.jpg)
+
+![smoothquant2](https://robot9.me/wp-content/uploads/2023/12/p52.jpg)
 
 SmoothQuant 证明自己可以无损地量化（8bit）所有超过100B参数的开源LLM。通过集成到PyTorch和FasterTransformer中，与 FP16 相比，获得高达1.56倍的推理加速，并将内存占用减半，并且模型越大，加速效果越明显。
 
@@ -212,7 +225,7 @@ SmoothQuant 证明自己可以无损地量化（8bit）所有超过100B参数的
 
 ## AWQ
 
-AWQ(Activation-aware Weight Quantization), 即激活感知权重量化，是一种针对 LLM 的、硬件友好的、低比特权重量化方法，同时支持 CPU、GPU。 
+AWQ(Activation-aware Weight Quantization), 即激活感知权重量化，是一种硬件友好的、低比特权重量化方法，同时支持 CPU、GPU。 
 
 AWQ 源于一个观察，即权重对于LLM的性能并不同等重要：存在约（0.1%-1%）的显著权重（salient weight）对大模型性能影响很大，**跳过这1%的显著权重**（不量化），可大大减少量化误差。
 
@@ -303,3 +316,4 @@ Reference
 - [大模型量化技术原理-LLM.int8,GPTQ](https://zhuanlan.zhihu.com/p/680212402)
 - [大模型量化技术原理-SmoothQuant](https://juejin.cn/post/7330079146515611687)
 - [量化技术解析](https://www.cnblogs.com/ting1/p/18217395)
+- [大语言模型量化方法对比：GPTQ、GGUF、AWQ](https://developer.aliyun.com/article/1376963)

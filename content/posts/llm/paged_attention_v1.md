@@ -336,3 +336,5 @@ Reference:
 - [Efficient Memory Management for Large Language Model Serving with PagedAttention](https://link.zhihu.com/?target=https%3A//dl.acm.org/doi/abs/10.1145/3600006.3613165)
 - [PageAttention代码走读](https://zhuanlan.zhihu.com/p/668736097)
 - [vLLM kernel](https://zhuanlan.zhihu.com/p/657114963)
+- [vLLM部署与int8量化](https://blog.csdn.net/weixin_49816179/article/details/135481609)
+- [vLLM和量化](https://blog.csdn.net/qq_29788741/article/details/131328282)
