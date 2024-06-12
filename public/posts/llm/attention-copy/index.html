@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
-  <title>Quantization Introduction &middot; Victor&#39;s Blog</title>
-  <meta name="title" content="Quantization Introduction &middot; Victor&#39;s Blog" />
+  <title>Attention and KV Cache &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="Attention and KV Cache &middot; Victor&#39;s Blog" />
+  
+  <meta name="description" content="量化计算 KVCache" />
+  <meta name="keywords" content="NLP, Transformer, LLM, Attention, KVCache, " />
   
   
-  <meta name="keywords" content="NLP, Transformer, LLM, AI Quantization, " />
-  
-  
-  <link rel="canonical" href="http://localhost:1313/posts/llm/quantize_intro/" />
+  <link rel="canonical" href="http://localhost:1313/posts/llm/attention-copy/" />
   
   
   
@@ -60,26 +60,29 @@
   
   
   
-  <meta property="og:url" content="http://localhost:1313/posts/llm/quantize_intro/">
+  <meta property="og:url" content="http://localhost:1313/posts/llm/attention-copy/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
-  <meta property="og:title" content="Quantization Introduction">
-  <meta property="og:description" content="Introduction # LLMs的巨大模型规模和边缘设备的限">
+  <meta property="og:title" content="Attention and KV Cache">
+  <meta property="og:description" content="量化计算 KVCache">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-04-28T00:00:00+00:00">
-    <meta property="article:modified_time" content="2024-04-30T00:00:00+00:00">
+    <meta property="article:published_time" content="2024-05-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-05-19T00:00:00+00:00">
     <meta property="article:tag" content="NLP">
     <meta property="article:tag" content="Transformer">
     <meta property="article:tag" content="LLM">
-    <meta property="article:tag" content="AI Quantization">
-      <meta property="og:see_also" content="http://localhost:1313/posts/llm/quantize_ptq/">
-      <meta property="og:see_also" content="http://localhost:1313/posts/llm/quantize_datatype/">
+    <meta property="article:tag" content="Attention">
+    <meta property="article:tag" content="KVCache">
+      <meta property="og:see_also" content="http://localhost:1313/posts/llm/flash_attention_2/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/llm/paged_attention_v1/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/llm/flash_attention/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/llm/attention/">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Quantization Introduction">
-  <meta name="twitter:description" content="Introduction # LLMs的巨大模型规模和边缘设备的限">
+  <meta name="twitter:title" content="Attention and KV Cache">
+  <meta name="twitter:description" content="量化计算 KVCache">
 
   
   <script type="application/ld+json">
@@ -87,26 +90,26 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "Blogs",
-    "name": "Quantization Introduction",
-    "headline": "Quantization Introduction",
-    
-    "abstract": "Introduction # LLMs的巨大模型规模和边缘设备的限",
+    "name": "Attention and KV Cache",
+    "headline": "Attention and KV Cache",
+    "description": "量化计算 KVCache",
+    "abstract": "Self-Attention # 对于self-attention，由",
     "inLanguage": "en",
-    "url" : "http:\/\/localhost:1313\/posts\/llm\/quantize_intro\/",
+    "url" : "http:\/\/localhost:1313\/posts\/llm\/attention-copy\/",
     "author" : {
       "@type": "Person",
       "name": "Victor Yang"
     },
     "copyrightYear": "2024",
-    "dateCreated": "2024-04-28T00:00:00\u002b00:00",
-    "datePublished": "2024-04-28T00:00:00\u002b00:00",
+    "dateCreated": "2024-05-05T00:00:00\u002b00:00",
+    "datePublished": "2024-05-05T00:00:00\u002b00:00",
     
-    "dateModified": "2024-04-30T00:00:00\u002b00:00",
+    "dateModified": "2024-05-19T00:00:00\u002b00:00",
     
-    "keywords": ["NLP","Transformer","LLM","AI Quantization"],
+    "keywords": ["NLP","Transformer","LLM","Attention","KVCache"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "2194"
+    "wordCount": "1300"
   }]
   </script>
 
@@ -572,7 +575,7 @@
   <header id="single_header" class="mt-5 max-w-prose">
     
     <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-      Quantization Introduction
+      Attention and KV Cache
     </h1>
     <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
       
@@ -619,7 +622,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-04-28 00:00:00 &#43;0000 UTC">2024-04-28</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-04-30 00:00:00 &#43;0000 UTC">Updated: 2024-04-30</time><span class="px-2 text-primary-500">&middot;</span><span>2194 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">5 mins</span>
+  <time datetime="2024-05-05 00:00:00 &#43;0000 UTC">2024-05-05</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">Updated: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>1300 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
   
 
   
@@ -667,10 +670,18 @@
 </span>
   </span>
   
-  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/tags/ai-quantization/&#34;,'_self');">
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/tags/attention/&#34;,'_self');">
     <span class="flex" style="cursor: pointer;">
   <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
-    AI Quantization
+    Attention
+  </span>
+</span>
+  </span>
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/tags/kvcache/&#34;,'_self');">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    KVCache
   </span>
 </span>
   </span>
@@ -719,13 +730,11 @@
     class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#introduction">Introduction</a></li>
-    <li><a href="#quantize-object">Quantize Object</a></li>
-    <li><a href="#llm-quantization-example">LLM Quantization Example</a></li>
-    <li><a href="#asymmetry-and-symmetry-quantization">Asymmetry and symmetry quantization</a></li>
-    <li><a href="#量化的粒度">量化的粒度</a></li>
-    <li><a href="#量化方法的分类">量化方法的分类</a></li>
-    <li><a href="#llm-量化的挑战">LLM 量化的挑战</a></li>
+    <li><a href="#self-attention">Self-Attention</a></li>
+    <li><a href="#mha">MHA</a></li>
+    <li><a href="#kv-cache">KV Cache</a></li>
+    <li><a href="#mqa">MQA</a></li>
+    <li><a href="#gqa">GQA</a></li>
   </ul>
 </nav>
   </div>
@@ -739,13 +748,11 @@
     class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#introduction">Introduction</a></li>
-    <li><a href="#quantize-object">Quantize Object</a></li>
-    <li><a href="#llm-quantization-example">LLM Quantization Example</a></li>
-    <li><a href="#asymmetry-and-symmetry-quantization">Asymmetry and symmetry quantization</a></li>
-    <li><a href="#量化的粒度">量化的粒度</a></li>
-    <li><a href="#量化方法的分类">量化方法的分类</a></li>
-    <li><a href="#llm-量化的挑战">LLM 量化的挑战</a></li>
+    <li><a href="#self-attention">Self-Attention</a></li>
+    <li><a href="#mha">MHA</a></li>
+    <li><a href="#kv-cache">KV Cache</a></li>
+    <li><a href="#mqa">MQA</a></li>
+    <li><a href="#gqa">GQA</a></li>
   </ul>
 </nav>
   </div>
@@ -763,15 +770,15 @@
     
     <summary
         class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
-        AI Quantization - This article is part of a series.
+        Attention and Optimization - This article is part of a series.
     </summary>
     
     
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/llm/quantize_datatype/">
-            Part 1: DataType in AI
+        <a href="http://localhost:1313/posts/llm/paged_attention_v1/">
+            Part [4]: Paged Attention V1(vLLM)
         </a>
     </div>
     
@@ -779,15 +786,33 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        Part 2: This Article
+        Part 1: This Article
     </div>
     
     
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/llm/quantize_ptq/">
-            Part 3: PTQ Methods for LLM
+        <a href="http://localhost:1313/posts/llm/attention/">
+            Part 1: Attention and KV Cache
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/llm/flash_attention/">
+            Part 2: Flash Attention
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/llm/flash_attention_2/">
+            Part 3: Flash Attention V2
         </a>
     </div>
     
@@ -803,258 +828,134 @@
 
 
 
-<h2 class="relative group">Introduction 
-    <div id="introduction" class="anchor"></div>
+<h2 class="relative group">Self-Attention 
+    <div id="self-attention" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#introduction" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#self-attention" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
-<p>LLMs的巨大模型规模和边缘设备的限制（主要是内存大小和带宽）给部署带来了显著挑战。</p>
-<p>模型量化是指以较低的推理精度损失将连续取值（通常为float32或者大量可能的离散值）的浮点型权重近似为有限多个离散值（通常为int8）的过程。</p>
-<p>通过以更少的位数表示浮点数据，可以有效降低 LLMs 对内存和带宽的需求，在一些低精度运算较快的处理器上可以增加推理速度。</p>
+<p>对于self-attention，由于 Q, K, V 都来自输入 X ，在计算 \(QT^T\) 时，模型很容易关注到自身的位置上，也就是 \(QT^T\)  对角线上的激活值会明显比较大, 这会削弱模型关注其他高价值位置的能力，也就限制模型的理解和表达能力。MHA 对这个问题有一定的缓解作用。</p>
 
 
-<h2 class="relative group">Quantize Object 
-    <div id="quantize-object" class="anchor"></div>
+<h2 class="relative group">MHA 
+    <div id="mha" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#quantize-object" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#mha" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
+<p>MHA(multi-head attention)</p>
+<p>QKV 经过线性变换后，将他们分别在 hidden states 维度上切分成 heads 份。</p>
+<p>MHA 相比单头的情况，相当于只是把 QKV 切成多份并行计算了，对于实际需要缓存的大小没有影响</p>
+
+
+<h2 class="relative group">KV Cache 
+    <div id="kv-cache" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#kv-cache" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>Decoding阶段，下一个step的输入其实包含了上一个step的内容，而且只在最后面多了一个token的数据，下一个step的计算应该也包含了上一个step的计算。</p>
+<p>KV Cache 的目的：空间换时间，用缓存把需要重复利用的中间计算结果存下来，减少重复计算。而 K 和 V 就是要缓存的对象。</p>
+<p>Q K V</p>
+<p>对于输入长度为 \(seq\) ，层数为 \(L\) ，hidden size为 \(d\) 的模型:</p>
 <ul>
-<li>权重，最常规的量化对象</li>
-<li>激活，activation 往往是占内存使用的大头，量化 activation 不仅可以减少内存占用，结合 weight 量化可以充分利用整数计算获得性能提升</li>
-<li>KV Cache，有助于提高长序列生成的吞吐量</li>
-<li>梯度</li>
-</ul>
-
-
-<h2 class="relative group">LLM Quantization Example 
-    <div id="llm-quantization-example" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#llm-quantization-example" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-</span></span><span class="line"><span class="cl"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 生成维度为（5,5）的FP16格式的矩阵m1</span>
-</span></span><span class="line"><span class="cl"><span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 求scale</span>
-</span></span><span class="line"><span class="cl"><span class="n">oldMax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">scale</span> <span class="o">=</span> <span class="mi">127</span><span class="o">/</span><span class="n">oldMax</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">oldMax</span><span class="p">,</span><span class="n">scale</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 量化为m2</span>
-</span></span><span class="line"><span class="cl"><span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">m1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 反量化为m3</span>
-</span></span><span class="line"><span class="cl"><span class="n">m3</span> <span class="o">=</span> <span class="p">(</span><span class="n">m2</span><span class="o">/</span><span class="n">scale</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">m3</span><span class="p">)</span>
-</span></span></code></pre></div><p>现有 FP16 格式的权重矩阵m1:</p>
-<pre tabindex="0"><code>[[0.549   0.7153  0.6025  0.545   0.4236 ]
- [0.646   0.4375  0.8916  0.964   0.3835 ]
- [0.7915  0.529   0.568   0.926   0.07104]
- [0.08716 0.02022 0.8325  0.7783  0.87   ]
- [0.9785  0.7993  0.4614  0.781   0.1183 ]]
-</code></pre><p>量化为 INT8 格式的步骤：</p>
+<li>当 batch size=1 时
 <ul>
-<li>旧范围： FP16 格式中的最大权重值 - FP16 格式中的最小权重值 = 0.9785–0.07104</li>
-<li>新范围： INT8 包含从 -128 到 127 的数字。因此，范围 = 127-(-128)</li>
-<li>缩放比例(Scale)： 新范围中的最大值 / 旧范围中的最大值 = 127 / 0.9785 = 129.7884231536926</li>
-<li>量化值： Scale * 原始值, 四舍五入</li>
-</ul>
-<p>m2:</p>
-<pre tabindex="0"><code>[[ 71  93  78  71  55]
- [ 84  57 116 125  50]
- [103  69  74 120   9]
- [ 11   3 108 101 113]
- [127 104  60 101  15]]
-</code></pre><ul>
-<li>反量化： 量化值 / Scale</li>
-</ul>
-<p>m3:</p>
-<pre tabindex="0"><code>[[0.547   0.7163  0.601   0.547   0.4238 ]
- [0.647   0.4392  0.8936  0.963   0.3853 ]
- [0.7935  0.5317  0.5703  0.925   0.06934]
- [0.0848  0.02312 0.832   0.7783  0.8706 ]
- [0.9785  0.8013  0.4624  0.7783  0.1156 ]]
-</code></pre><blockquote>
-<p>量化往往以 group 为单位，group 的划分对旧范围有影响</p>
-</blockquote>
-<blockquote>
-<p>由于量化时产生了四舍五入和误差，导致反量化回到 FP16 格式后与原始数据略有误差</p>
-</blockquote>
-
-
-<h2 class="relative group">Asymmetry and symmetry quantization 
-    <div id="asymmetry-and-symmetry-quantization" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#asymmetry-and-symmetry-quantization" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<p>量化的形式：</p>
-<p>根据原始数据范围是否均匀，可以将量化方法分为线性量化和非线性量化。DL中的权重和激活值通常是不均匀的，因此理论上使用非线性量化导致的精度损失更小，但在实际推理中非线性量化的计算复杂度较高，<strong>通常使用线性量化</strong>。</p>
-<p>线性量化的原理。假设 r 表示量化前的浮点数，量化后的整数 q 可以表示为：</p>
-<p>$q=clip(round(r/s+z),q_{min},q_{max})$</p>
-<p>其中，$round()$和$clip()$ 分别表示取整和截断操作，$q_{min}$和$q_{max}$表示量化后的上下限，$s$是数据量化的间隔，$z$是表示数据偏移的偏置。</p>
-<p>
-
-
-
-
-  <figure>
-    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p6_2.png" alt="sym-quantize" />
-    
-  </figure>
-
-</p>
-<p>当z=0时称为<strong>对称（Symmetric）量化</strong>，不为0时称为<strong>非对称（Asymmetric）量化</strong>。对于对称量化，原数值的 0 量化后仍然是 0，量化前后的数值都是以 0 为中点对称分布，但实际上有些数值的分布并不是左右对称的，比如 ReLU 激活后都是大于 0，这样会导致量化后 q 的范围只用到了一半，而非对称量化则解决了这个问题</p>
-<p>
-
-
-
-
-  <figure>
-    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p6_3.png" alt="asym-quantize" />
-    
-  </figure>
-
-</p>
-<p>非对称量化的 min、max 独立统计，Z 的值根据 r 的分布不同而不同，这样可以使 q 的范围被充分利用。</p>
-<p>
-
-
-
-
-  <figure>
-    <img class="my-0 rounded-md" loading="lazy" src="https://miro.medium.com/v2/resize:fit:828/format:webp/1*vbOT2mU7Op0Re4i2VtbaSg.png" alt="Asymmetry and symmetry quantization" />
-    
-  </figure>
-
-</p>
-<p>对称量化可以避免量化算子在推理中计算z相关的部分，降低推理时的计算复杂度；非对称量化可以根据实际数据的分布确定最小值和最小值，可以更加充分的利用量化数据信息，使得量化导致的损失更低</p>
-
-
-<h2 class="relative group">量化的粒度 
-    <div id="%E9%87%8F%E5%8C%96%E7%9A%84%E7%B2%92%E5%BA%A6" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#%E9%87%8F%E5%8C%96%E7%9A%84%E7%B2%92%E5%BA%A6" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<p>量化粒度指选取多少个待量化参数共享一个量化系数，通常来说粒度越大，精度损失越大。根据量化参数 s 和 z 的共享范围（即量化粒度），量化方法的粒度可以分为：</p>
-<ul>
-<li>逐层量化(per-tensor, per-layer)，是范围最大的粒度，以一层网络为量化单位，每层网络一组量化参数</li>
-<li>逐通道(per-token &amp; per-channel 或 vector-wise quantization) 量化，以一层网络的每个量化通道为单位，每个通道单独使用一组量化参数
-<ul>
-<li>per-token：对激活来说，每行对应一个量化系数</li>
-<li>per-channel：对权重来说，每列对应一个量化系数</li>
+<li>需要缓存的参数量为: 2<em>L</em>s*d ，其中 2 表示 K + V</li>
+<li>需要的空间为（使用半精度浮点数 float16）：2<em>2</em>L<em>s</em>d Bytes ，其中第一个 2 表示 float16 占用 2 Bytes</li>
 </ul>
 </li>
-<li>逐组量化(per-group, per-block, Group-wise)，粒度处于 per-tensor 和 per-channel 之间，每个group（如 K 行或 K 列）使用一组 s 和 z</li>
+<li>当 batch size=B 时
+<ul>
+<li>需要缓存的参数量为: 2<em>L</em>s<em>d</em>B</li>
+<li>需要的空间为（使用半精度浮点数 float16）：2<em>2</em>L<em>s</em>d*B Bytes</li>
 </ul>
+</li>
+<li>MHA 相比单头的情况，相当于只是把 QKV 切成多份并行计算了，对于实际需要缓存的大小没有影响</li>
+<li>GQA、MQA [Todo]</li>
+</ul>
+<p>以Llama2 7B为例，L=32, d=4096，此时每个 token 需要的 cache 空间为 524,288 Bytes(512 KB)，当 s=1024, batch size=1 时，需要 512 MB</p>
+<p>主流显卡配置：</p>
+<ul>
+<li>NV A100(Ampere Arch)，HBM2e 40/80GB，L2 Cache 40MB, CUDA Cores - 16896/14592</li>
+<li>NV H100(Hopper Arch), HBM2e/HBM3 80GB, L2 Cache 50MB, CUDA Cores 6912</li>
+<li>NV V100(Volta Arch), HBM2 16/32GB, L2 Cache 6MB, CUDA Cores 5120</li>
+</ul>
+<p>H100也只有50M的L2 Cache，只能支持Llama2 7B共100个tokens的seq，超出L2 Cache的部分只能走到显存中去了，但是 HBM 的 bandwidth 比 L2 Cache 小多了，A100 memory bandwidth 如下图所示：</p>
 <p>
 
 
 
 
   <figure>
-    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p13_2.png" alt="quantize 粒度" />
+    <img class="my-0 rounded-md" loading="lazy" src="https://pic1.zhimg.com/80/v2-98a3525b9ce728be66903fe35f3a143c_1440w.webp" alt="a100 memory bandwidth" />
     
   </figure>
 
 </p>
-<blockquote>
-<p>权重和激活可以选择不同的量化粒度。譬如权重用 per-tensor，激活用 per-token。并且对于激活分动态量化与静态量化</p>
-</blockquote>
 
 
-<h2 class="relative group">量化方法的分类 
-    <div id="%E9%87%8F%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%88%86%E7%B1%BB" class="anchor"></div>
+<h2 class="relative group">MQA 
+    <div id="mqa" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#%E9%87%8F%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%88%86%E7%B1%BB" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#mqa" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
-<p>根据应用量化压缩模型的阶段，可以将模型量化分为：</p>
-<ul>
-<li>量化感知训练（Quantization Aware Training, QAT）：在模型训练过程中加入伪量化算子，通过训练时统计输入输出的数据范围可以提升量化后模型的精度，适用于对模型精度要求较高的场景；其量化目标无缝地集成到模型的训练过程中。这种方法使LLM在训练过程中适应低精度表示，增强其处理由量化引起的精度损失的能力。这种适应旨在量化过程之后保持更高性能
-<ul>
-<li>LLM-QAT</li>
-</ul>
-</li>
-<li>量化感知微调（Quantization-Aware Fine-tuning，QAF）：在微调过程中对LLM进行量化。主要目标是确保经过微调的LLM在量化为较低位宽后仍保持性能。通过将量化感知整合到微调中，以在模型压缩和保持性能之间取得平衡
-<ul>
-<li>QLoRA</li>
-</ul>
-</li>
-<li>训练后量化（Post Training Quantization, PTQ）：在LLM训练完成后对其参数进行量化，只需要少量校准数据，适用于追求高易用性和缺乏训练资源的场景。主要目标是减少LLM的存储和计算复杂性，而无需对LLM架构进行修改或进行重新训练。PTQ的主要优势在于其简单性和高效性。但PTQ可能会在量化过程中引入一定程度的精度损失。
-<ul>
-<li>LLM.int8()</li>
-<li>GPTQ</li>
-<li>AWQ</li>
-</ul>
-</li>
-</ul>
+<p>《Fast Transformer Decoding: One Write-Head is All You Need》</p>
+<p>Q 经过线性变换后，MQA 只对 Q 进行 多个 head 的切分，每个 head 的 Q 的维度变为 \(Q_s*(d/heads)\)， K和V并不切分，而是线性变换时直接把hidden state维度降低为 d/heads， 然后 heads 个 Q 分别于 同一份 K，V 继续宁 attention 计算，最后将结果 concat 起来。</p>
+<p>比如在Llama2 7B中用了32个头，MQA后，1024个 tokens 需要 KVCache 就变成MHA 的 1/32，即 512MB/32=16MB，基本可以全部放入A100的L2 Cache</p>
+<p>由于共享了多个头的参数，限制了模型的表达能力，MQA虽然能好地支持推理加速，但是在效果上略略比MHA差一点</p>
 
 
-<h2 class="relative group">LLM 量化的挑战 
-    <div id="llm-%E9%87%8F%E5%8C%96%E7%9A%84%E6%8C%91%E6%88%98" class="anchor"></div>
+<h2 class="relative group">GQA 
+    <div id="gqa" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#llm-%E9%87%8F%E5%8C%96%E7%9A%84%E6%8C%91%E6%88%98" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#gqa" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
-<ul>
-<li>量化激活比量化权重更难（LLM.int8()表明，使用 INT8 甚至 INT4 量化 LLM 的权重不会降低准确性）</li>
-<li>异常值让量化激活更困难（激活的异常值比大多数激活值大 100 倍，使用 INT8 量化，大多数值将被清零）</li>
-<li>异常值持续存在于固定的通道中（固定通道存在异常值，并且异常值通道值较大）</li>
-</ul>
+<p>《GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints》</p>
+<p>GQA（Grouped-Query Attention）提出了一个折中的办法，既能减少 MQA 的损失，又比 MHA 需要更少的缓存。</p>
+<p>GQA里， Q 还是按原来MHA/MQA的做法不变，但是 用多份 K和V，不过数量小于 Q 的 heads。相当于把 Q 的多个头给分了group，同一个group内的 Q 共享同一套 KV，不同group的 Q 所用的 KV 不同。</p>
 <p>
 
 
 
 
   <figure>
-    <img class="my-0 rounded-md" loading="lazy" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1712927348344dd4b4426dc2befc61bd~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1280&amp;h=395&amp;s=2026136&amp;e=png&amp;b=f9f9f9" alt="LLM quantize challenge" />
+    <img class="my-0 rounded-md" loading="lazy" src="https://pic4.zhimg.com/80/v2-152555107b3ad3ad0b4f97b0972eb123_1440w.webp" alt="GQA-MHA-MQA" />
     
   </figure>
 
 </p>
-<p>Reference</p>
+<p>GQA的速度相比MHA有明显提升，而效果上比MQA也好一些，能做到和MHA基本没差距。Llama2 70B 用的就是GQA。</p>
+<p>未完待续&hellip;</p>
+<p>Todo: 代码，GQA量化计算</p>
+<p>Reference:</p>
 <ul>
-<li><a href="https://www.bilibili.com/video/BV1WT411k724/?spm_id_from=333.788&amp;vd_source=0937fafa4d5fa1b43ea250393f22ec7d"   target="_blank">
-    int8/fp16/bf16/tf32在AI芯片中什么作用？</a></li>
-<li><a href="https://blog.csdn.net/djfjkj52/article/details/114963916"   target="_blank">
-    fp16和fp32神经网络混合精度训练</a></li>
-<li><a href="https://juejin.cn/post/7291931852800524329"   target="_blank">
-    大模型量化概述</a></li>
-<li><a href="https://robot9.me/ai-model-quantization-principles-practice/"   target="_blank">
-    模型量化原理与实践</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/686149289"   target="_blank">
+    理解Attention:从起源到MHA,MQA和GQA</a></li>
+<li><a href="https://pytorch-forecasting.readthedocs.io/en/latest/_modules/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.html#ScaledDotProductAttention"   target="_blank">
+    self-attention code</a></li>
 </ul>
 
         </div>
@@ -1066,15 +967,15 @@
     
     <summary
         class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
-        AI Quantization - This article is part of a series.
+        Attention and Optimization - This article is part of a series.
     </summary>
     
     
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/llm/quantize_datatype/">
-            Part 1: DataType in AI
+        <a href="http://localhost:1313/posts/llm/paged_attention_v1/">
+            Part [4]: Paged Attention V1(vLLM)
         </a>
     </div>
     
@@ -1082,15 +983,33 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        Part 2: This Article
+        Part 1: This Article
     </div>
     
     
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/llm/quantize_ptq/">
-            Part 3: PTQ Methods for LLM
+        <a href="http://localhost:1313/posts/llm/attention/">
+            Part 1: Attention and KV Cache
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/llm/flash_attention/">
+            Part 2: Flash Attention
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/llm/flash_attention_2/">
+            Part 3: Flash Attention V2
         </a>
     </div>
     
@@ -1112,8 +1031,8 @@
           
         
       <script>
-        var oid = "views_posts\/llm\/quantize_intro.md"
-        var oid_likes = "likes_posts\/llm\/quantize_intro.md"
+        var oid = "views_posts\/llm\/attention copy.md"
+        var oid_likes = "likes_posts\/llm\/attention copy.md"
       </script>
       
       
@@ -1136,7 +1055,7 @@
       <div class="flex justify-between pt-3">
         <span>
           
-            <a class="flex group mr-3" href="/posts/llm/quantize_datatype/">
+            <a class="flex group mr-3" href="/posts/llm/flash_attention/">
               <span
                 class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
                 >&larr;</span
@@ -1148,11 +1067,11 @@
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >DataType in AI</span
+                  >Flash Attention</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   
-                    <time datetime="2024-04-28 00:00:00 &#43;0000 UTC">2024-04-28</time>
+                    <time datetime="2024-05-05 22:43:31 &#43;0000 UTC">2024-05-05</time>
                   
                 </span>
               </span>
@@ -1160,6 +1079,28 @@
           
         </span>
         <span>
+          
+            <a class="flex text-right group ml-3" href="/posts/llm/attention/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Attention and KV Cache</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2024-05-05 00:00:00 &#43;0000 UTC">2024-05-05</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
           
         </span>
       </div>

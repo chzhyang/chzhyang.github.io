@@ -19,16 +19,6 @@
     </item>
     
     <item>
-      <title>Design</title>
-      <link>http://localhost:1313/posts/algorithm/leetcode/pattern/</link>
-      <pubDate>Fri, 10 May 2024 09:47:15 +0000</pubDate>
-      
-      <guid>http://localhost:1313/posts/algorithm/leetcode/pattern/</guid>
-      <description>Singleton # 饿汉 class Single { public: static Single* GetInstance(); static void deleteInstance(); void print(); private: //禁</description>
-      
-    </item>
-    
-    <item>
       <title>Dynamic Programming: Dim-1</title>
       <link>http://localhost:1313/posts/algorithm/leetcode/dp_dim1/</link>
       <pubDate>Fri, 10 May 2024 09:47:15 +0000</pubDate>

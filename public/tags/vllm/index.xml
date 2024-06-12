@@ -18,5 +18,15 @@
       
     </item>
     
+    <item>
+      <title>vLLM(1)</title>
+      <link>http://localhost:1313/posts/llm/vllm/</link>
+      <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/llm/vllm/</guid>
+      <description>Reference vLLM核心技术 PagedAttent</description>
+      
+    </item>
+    
   </channel>
 </rss>

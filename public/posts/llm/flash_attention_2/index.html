@@ -63,12 +63,12 @@
   <meta property="og:url" content="http://localhost:1313/posts/llm/flash_attention_2/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="Flash Attention V2">
-  <meta property="og:description" content="[WIP] FlashAttention V2: 在V1的基础上减少了非矩阵乘法运算">
+  <meta property="og:description" content="FlashAttention-V2 # FlashAttention2 对FlashAttention 的改">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2024-05-23T22:43:31+00:00">
-    <meta property="article:modified_time" content="2024-05-23T22:43:31+00:00">
+    <meta property="article:modified_time" content="2024-06-03T00:00:00+00:00">
     <meta property="article:tag" content="NLP">
     <meta property="article:tag" content="Transformer">
     <meta property="article:tag" content="LLM">
@@ -80,7 +80,7 @@
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Flash Attention V2">
-  <meta name="twitter:description" content="[WIP] FlashAttention V2: 在V1的基础上减少了非矩阵乘法运算">
+  <meta name="twitter:description" content="FlashAttention-V2 # FlashAttention2 对FlashAttention 的改">
 
   
   <script type="application/ld+json">
@@ -91,7 +91,7 @@
     "name": "Flash Attention V2",
     "headline": "Flash Attention V2",
     
-    "abstract": "[WIP] FlashAttention V2: 在V1的基础上减少了非矩阵乘法运算",
+    "abstract": "FlashAttention-V2 # FlashAttention2 对FlashAttention 的改",
     "inLanguage": "en",
     "url" : "http:\/\/localhost:1313\/posts\/llm\/flash_attention_2\/",
     "author" : {
@@ -102,12 +102,12 @@
     "dateCreated": "2024-05-23T22:43:31\u002b00:00",
     "datePublished": "2024-05-23T22:43:31\u002b00:00",
     
-    "dateModified": "2024-05-23T22:43:31\u002b00:00",
+    "dateModified": "2024-06-03T00:00:00\u002b00:00",
     
     "keywords": ["NLP","Transformer","LLM","Attention"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "253"
+    "wordCount": "1112"
   }]
   </script>
 
@@ -131,6 +131,139 @@
   
 
 <script src="/lib/jquery/jquery.slim.min.js" integrity=""></script>
+
+
+
+
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2&#43;FkHzf1u0&#43;SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3&#43;jMqG/zPtRor/q4qaUCYQpmSjTw8M&#43;g==" />
+
+
+<script defer src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4&#43;aQiLo9/uaQqckDpdJ8Zm3M0QBs&#43;Pktg4pz0kEklUg=="></script>
+
+
+<script defer src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF&#43;NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w=="
+  onload="renderMathInElement(document.body);"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -462,6 +595,8 @@
 
 
 
+  
+
 
 
   
@@ -485,7 +620,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-23 22:43:31 &#43;0000 UTC">2024-05-23</time><span class="px-2 text-primary-500">&middot;</span><span>253 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span>
+  <time datetime="2024-05-23 22:43:31 &#43;0000 UTC">2024-05-23</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-06-03 00:00:00 &#43;0000 UTC">Updated: 2024-06-03</time><span class="px-2 text-primary-500">&middot;</span><span>1112 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
   
 
   
@@ -572,7 +707,51 @@
   
   <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
     
-    
+     <div
+      class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
+      <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
+
+         <details open class="toc-right mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+  <summary
+    class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    Table of Contents
+  </summary>
+  <div
+    class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#flashattention-v2">FlashAttention-V2</a></li>
+    <li><a href="#减少非矩阵运算">减少非矩阵运算</a></li>
+    <li><a href="#循环调整">循环调整</a></li>
+    <li><a href="#performance">Performance</a></li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+<details class="toc-inside mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 lg:hidden">
+  <summary
+    class="py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    Table of Contents
+  </summary>
+  <div
+    class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#flashattention-v2">FlashAttention-V2</a></li>
+    <li><a href="#减少非矩阵运算">减少非矩阵运算</a></li>
+    <li><a href="#循环调整">循环调整</a></li>
+    <li><a href="#performance">Performance</a></li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+
+   </div>
+      </div>
+      
 
       <div class="min-w-0 min-h-0 max-w-fit">
         
@@ -589,7 +768,16 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         <a href="http://localhost:1313/posts/llm/paged_attention_v1/">
-            Part [1 4]: Paged Attention V1(vLLM)
+            Part [4]: Paged Attention V1(vLLM)
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/llm/attention/">
+            Part 1: Attention and KV Cache
         </a>
     </div>
     
@@ -599,15 +787,6 @@
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         <a href="http://localhost:1313/posts/llm/flash_attention/">
             Part 2: Flash Attention
-        </a>
-    </div>
-    
-    
-    
-    <div
-        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/llm/attention/">
-            Part [1 1]: Attention and KV Cache
         </a>
     </div>
     
@@ -626,14 +805,139 @@
 
 
         <div class="article-content max-w-prose mb-20">
-          <p>[WIP]</p>
+          
+
+
+
+<h2 class="relative group">FlashAttention-V2 
+    <div id="flashattention-v2" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#flashattention-v2" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>FlashAttention2 对FlashAttention 的改进:</p>
+<ul>
+<li>减少了非矩阵乘法运算</li>
+<li>循环调整</li>
+</ul>
+
+
+<h2 class="relative group">减少非矩阵运算 
+    <div id="%E5%87%8F%E5%B0%91%E9%9D%9E%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E5%87%8F%E5%B0%91%E9%9D%9E%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>A100的 FP16/BF16 矩阵乘的最大理论吞吐量为 312 TFLOPs/s，但FP32 非矩阵乘法仅有 19.5 TFLOPs/s，即每个 no-matmul FLOP比mat-mul FLOP 昂贵16倍。</p>
+<p>V2 再算法上相对 V1 做了如下调整：</p>
+<p>V2 在做 Attention 计算局部数值的时候，暂时不考虑分母，因此在嵌套计算 \(O_i\) 的时候就不用做除法缩放，而是在最后一把调整。</p>
+<p>V1 计算局部数值的过程：</p>
+<p>$$\begin{aligned}
+&amp; m^{(1)}=\operatorname{rowmax}\left(\mathbf{S}^{(1)}\right) \in \mathbb{R}^{B_r}\\
+&amp; \ell^{(1)}=\operatorname{rowsum}\left(e^{\mathbf{S}^{(1)}-m^{(1)}}\right) \in \mathbb{R}^{B_r}\\
+&amp; \tilde{\mathbf{P}}^{(1)}=\operatorname{diag}\left(\ell^{(1)}\right)^{-1} e^{S^{(1)}-m^{(1)}} \in \mathbb{R}^{B_r \times B_c}\\
+&amp; \mathbf{O}^{(1)}=\tilde{\mathbf{P}}^{(1)} \mathbf{V}^{(1)}=\operatorname{diag}\left(\ell^{(1)}\right)^{-1} e^{\mathbf{S}^{(1)}-m^{(1)}} \mathbf{V}^{(1)} \in \mathbb{R}^{B_r \times d}
+\end{aligned}$$</p>
+<p>V2 计算局部数值的过程：</p>
+<p>$$\begin{aligned}
+&amp; m^{(1)}=\operatorname{rowmax}\left(\mathbf{S}^{(1)}\right) \in \mathbb{R}^{B_r} \\
+&amp; \ell^{(1)}=\operatorname{rowsum}\left(e^{\mathbf{S}^{(1)}-m^{(1)}}\right) \in \mathbb{R}^{B_r} \\
+&amp; \mathbf{O}^{(1)}=e^{\mathbf{S}^{(1)}-m^{(1)}} \mathbf{V}^{(1)} \in \mathbb{R}^{B_r \times d}
+\end{aligned}$$</p>
+<p>从而，V1 每次更新 \(O\) 需要在上一轮 \(O_{i-1}\) 的基础上进行 \(diag(l(1)/l(2))\) 的缩放，V2 也不需要了，只需要在过程补偿 max 值：</p>
+<p>$$\tilde{\mathbf{O}}^{(2)}=\operatorname{diag}\left(e^{m^{(1)}-m^{(2)}}\right)^{-1} \tilde{\mathbf{O}}^{(1)}+e^{\mathbf{S}^{(2)}-m^{(2)}} \mathbf{V}^{(2)}=e^{s^{(1)}-m} \mathbf{V}^{(1)}+e^{s^{(2)}-m} \mathbf{V}^{(2)}$$</p>
+
+
+<h2 class="relative group">循环调整 
+    <div id="%E5%BE%AA%E7%8E%AF%E8%B0%83%E6%95%B4" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E5%BE%AA%E7%8E%AF%E8%B0%83%E6%95%B4" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>V1 会将 Q 按行切块，K和V 按列切块，然后进行双重的循环计算。那么谁在外循环，谁在内循环呢？</p>
+<p>因为 O 其实是跟着行走的， 所以若以 Qi 为外循环（按行循环），其实不断地加载 Ki 和 Vi 进来运算，相关部分的 O 其实可以一把搞定。若以 Ki，Vi 为外循环（按列循环），加载 Q1&hellip;Qr 进来运算，则 O 要被不断地写入写出。</p>
+<p><a href="https://imgse.com/i/pktSJ2j"   target="_blank">
+    
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s21.ax1x.com/2024/06/07/pktSJ2j.webp" alt="pktSJ2j.webp" />
+    
+  </figure>
+
+</a></p>
+<p>上图(a)中 V1（列循环）将 K 和 V 按列切为4块，然后分给4个 warp 并行计算，且所有 warp 都可以访问 Q。warp 将 K 乘以 Q 得到部分 Si，然后 Si 经过局部softmax 后还需要乘以 V 的一部分得到 Oi。每次计算完 Qi 还会更新数据到 HBM(对上一次版本 O 先 rescale 再加上当前值)。这导致每个 warp 需要从 HBM 频繁读写Qi 以累加出总结果。这种方式被称为 <code>split-K</code>，非常低效，因为所有 warp 都需要从 HBM 频繁读写中间结果 (Oi,mi,li)。</p>
+<p>上图(b)中 V2（行循环）将对 Q 的遍历移到到了外循环，K 和 V 移到了内循环，并将 Q 按行切到4个 warp，所有 warp 都可以访问 K 和 V。V1 每次内循环会导致 O 的变化，之后通过写 HBM 更新 O。现在每次内循环处理的都是 O，此时 O 是存储在 SRAM 上，效率高于 V1。这样做最大的好处是可以把并行度从串行循环改成并行，拆分为 GPU 运算模型中的 Thread Block。</p>
+
+
+<h2 class="relative group">Performance 
+    <div id="performance" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#performance" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>在A100 80GB 上测量不同设置（有无 Causal mask、head size64 或 128）下的不同注意力机制的运行时间。 结果表明：</p>
+<ul>
+<li>V2 比 V1 和 xformers 中的 FlashAttention 快 2 倍</li>
+<li>V2 在 Forward 时比 Triton 的 FlashAttention Kernel 快 1.3-1.5 倍，在 backward 时快 2 倍</li>
+<li>与 PyTorch 中的标准 kernel 相比，V2 的速度最高可提高 10 倍</li>
+</ul>
+<p><a href="https://imgse.com/i/pktSzFS"   target="_blank">
+    
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s21.ax1x.com/2024/06/07/pktSzFS.webp" alt="pktSzFS.webp" />
+    
+  </figure>
+
+</a></p>
+
+
+<h2 class="relative group">Summary 
+    <div id="summary" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#summary" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
 <p>FlashAttention V2:</p>
 <ul>
-<li>在V1的基础上减少了非矩阵乘法运算的FLOPs。</li>
-<li>通过并行化和任务分配优化提高了计算速度和GPU利用率，性能提升了2-3倍。</li>
-<li>Flash-Decoding借鉴了FlashAttention的优点，将并行化维度扩展到keys/values序列长度，提高了推理速度。</li>
-<li>Flash-Decoding几乎不用额外存储大量数据到全局内存中，减少了内存开销。</li>
-<li>Flash-Decoding++通过异步softmax和统一最大值、flat GEMM优化和双缓冲、启发式数据流和硬件资源适应等方法进一步提高了LLM推理的性能。</li>
+<li>在V1的基础上减少了非矩阵乘法运算的 FLOPs</li>
+<li>通过并行化和任务分配优化提高了计算速度和 GPU 利用率，性能提升了 2-3 倍</li>
+<li>Flash-Decoding 借鉴了 FlashAttention 的优点，将并行化维度扩展到  keys/values 序列长度，提高了推理速度</li>
+<li>Flash-Decoding 几乎不用额外存储大量数据到全局内存中，减少了内存开销</li>
+<li>Flash-Decoding++ 通过异步 softmax 和统一最大值、flat GEMM 优化和双缓冲、启发式数据流和硬件资源适应等方法进一步提高了LLM推理的性能</li>
+</ul>
+<p>Reference</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2307.08691"   target="_blank">
+    FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzkzNDM4MDQyMg==&amp;mid=2247485280&amp;idx=1&amp;sn=8cc173d8c3b88865c56f386e6b3683b3&amp;chksm=c2bf5189f5c8d89f05914feb51ee228e5fbea009e10b756f7ee7086f33d8d1e7adccb15623e6&amp;mpshare=1&amp;scene=1&amp;srcid=06074EnR1glvtb3wbbOhNhsu&amp;sharer_shareinfo=cc784831ffcd9f6610aedb913ab3834f&amp;sharer_shareinfo_first=cc784831ffcd9f6610aedb913ab3834f#rd"   target="_blank">
+    轻松读懂FlashAttention2</a></li>
 </ul>
 
         </div>
@@ -653,7 +957,16 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         <a href="http://localhost:1313/posts/llm/paged_attention_v1/">
-            Part [1 4]: Paged Attention V1(vLLM)
+            Part [4]: Paged Attention V1(vLLM)
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/llm/attention/">
+            Part 1: Attention and KV Cache
         </a>
     </div>
     
@@ -663,15 +976,6 @@
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         <a href="http://localhost:1313/posts/llm/flash_attention/">
             Part 2: Flash Attention
-        </a>
-    </div>
-    
-    
-    
-    <div
-        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/llm/attention/">
-            Part [1 1]: Attention and KV Cache
         </a>
     </div>
     

@@ -1,5 +1,5 @@
 ---
-title: "PTQ for LLM"
+title: "PTQ Methods for LLM"
 date: 2024-05-28T22:43:31Z
 lastmod: 2024-06-01
 draft: false
@@ -102,6 +102,9 @@ GPTQ 把量化问题视作优化问题，逐层寻找最优的量化权重，使
 缺陷： 
 - 对 GPU 要求较高
 - 量化预训练模型带来量化误差
+- AutoGPTQ 中存在加减一的操作，使得qzeros存在数据溢出的风险：
+    - 导致 GPTQ 的非对称量化效果甚至不如对称量化，以至于社区大量上传了对称量化的GPTQ权重（[TheBloke](https://huggingface.co/TheBloke)），这一定程度上拉低了GPTQ算法的表现
+    - 使得其他非对称量化方法的模型权重（如AWQ），无法安全地转换为 GPTQ 的权重，这使得其他量化方法无法与GPTQ算子兼容（例如exllamav2），社区不得不同时维护多套量化方案。
 
 量化和反量化的步骤：
 - 缩放：将输入张量x除以缩放因子scale。这一步是为了将x的值范围调整到预期的量化范围

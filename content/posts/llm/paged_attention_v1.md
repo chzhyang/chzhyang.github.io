@@ -5,8 +5,8 @@ lastmod: 2024-05-24
 draft: false
 description: ""
 tags: ["NLP", "Transformer", "LLM", "vLLM", "Paged Attention"]
-series: ["vLLM", "Attention and Optimization"]
-series_order: [1, 4]
+series: ["Attention and Optimization"]
+series_order: [4]
 # layout: "simple"
 showDate: true
 ---

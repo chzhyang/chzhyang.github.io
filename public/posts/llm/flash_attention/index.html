@@ -107,7 +107,7 @@
     "keywords": ["NLP","Transformer","LLM","Flash Attention"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1518"
+    "wordCount": "1576"
   }]
   </script>
 
@@ -620,7 +620,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-05 22:43:31 &#43;0000 UTC">2024-05-05</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-06 00:00:00 &#43;0000 UTC">Updated: 2024-05-06</time><span class="px-2 text-primary-500">&middot;</span><span>1518 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span>
+  <time datetime="2024-05-05 22:43:31 &#43;0000 UTC">2024-05-05</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-06 00:00:00 &#43;0000 UTC">Updated: 2024-05-06</time><span class="px-2 text-primary-500">&middot;</span><span>1576 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span>
   
 
   
@@ -720,7 +720,7 @@
     class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#背景">背景</a></li>
+    <li><a href="#self-attention">Self-attention</a></li>
     <li><a href="#flashattention-v1">FlashAttention V1</a></li>
     <li><a href="#总结">总结</a></li>
   </ul>
@@ -736,7 +736,7 @@
     class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#背景">背景</a></li>
+    <li><a href="#self-attention">Self-attention</a></li>
     <li><a href="#flashattention-v1">FlashAttention V1</a></li>
     <li><a href="#总结">总结</a></li>
   </ul>
@@ -764,7 +764,16 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         <a href="http://localhost:1313/posts/llm/paged_attention_v1/">
-            Part [1 4]: Paged Attention V1(vLLM)
+            Part [4]: Paged Attention V1(vLLM)
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/llm/attention/">
+            Part 1: Attention and KV Cache
         </a>
     </div>
     
@@ -773,15 +782,6 @@
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         Part 2: This Article
-    </div>
-    
-    
-    
-    <div
-        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/llm/attention/">
-            Part [1 1]: Attention and KV Cache
-        </a>
     </div>
     
     
@@ -814,19 +814,19 @@
 </blockquote>
 
 
-<h2 class="relative group">背景 
-    <div id="%E8%83%8C%E6%99%AF" class="anchor"></div>
+<h2 class="relative group">Self-attention 
+    <div id="self-attention" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#%E8%83%8C%E6%99%AF" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#self-attention" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
 <p>GPU中存储单元主要有 HBM 和 SRAM：HBM 容量大但是访问速度慢，SRAM容量小却有着较高的访问速度。例如：A100 GPU有40-80GB的HBM，带宽为1.5-2.0TB/s；每108个流式多核处理器各有192KB的片上SRAM，带宽估计约为 19TB/s。可以看出，片上的SRAM比HBM快一个数量级，但尺寸要小许多数量级。</p>
 <p>当输入序列（sequence length）较长时，Transformer的计算过程缓慢且耗费内存，这是因为 self-attention 的 time 和 memory complexity 会随着 sequence length 的增加成二次增长。</p>
-<p>标准Attention的计算过程：
+<p>标准 Attention 的计算过程：
 
 
 $$
@@ -838,29 +838,7 @@ $$
 $$
 O=P V \in \mathbb{R}^{N \times N}
 $$</p>
-<p>标准Attention的中间结果 𝑆, 𝑃 通常需要通过高带宽内存（HBM）进行存取，两者所需内存空间复杂度为\(O(Nd+N^2)\), 对 HBM 的重复读写是主要瓶颈。要解决这个问题，需要做两件事：</p>
-<ul>
-<li>在不访问整个输入的情况下计算 softmax</li>
-<li>不为反向传播存储大的中间 attention 矩阵(\(N^2\))</li>
-</ul>
-
-
-<h2 class="relative group">FlashAttention V1 
-    <div id="flashattention-v1" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#flashattention-v1" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<p>FlashAttention 提出了两种方法来解决上述问题：tiling 和 recomputation。</p>
-<ul>
-<li>tiling - <strong>注意力计算被重新构造</strong>，将输入分割成块，并通过在输入块上进行多次传递来递增地执行softmax操作。</li>
-<li>recomputation - 存储来自前向的 softmax 归一化因子，以便在反向中快速重新计算芯片上的 attention，这比从HBM读取中间矩阵的标准注意力方法更快。可以把它看作基于 tiling 的特殊的 gradient checkpointing</li>
-</ul>
-<p>正常的softmax计算：</p>
+<p>softmax 计算：</p>
 <p>$$m(x):=\max _i x i$$
 $$f(x):=\left[e^{x_1-m(x)} \ldots e^{x_B-m(x)}\right]$$
 $$\ell(x):=\sum_i f(x)_i$$
@@ -878,18 +856,52 @@ $$\operatorname{softmax}(x):=\frac{f(x)}{\ell(x)}$$</p>
 
 </p>
 <p>softmax 函数需要三个循环，第一个循环计算数组的最大值，第二个循环计算 softmax 的分母，第三个循环计算 softmax 输出。</p>
-<p>分块的 softmax 计算(假设分2块并行计算)：</p>
-<p>$$m(x)=m\left(\left[x^{(1)} x^{(2)}\right]\right)=\max \left(m\left(x^{(1)}\right), m\left(x^{(2)}\right)\right) $$
-$$f(x)=\left[e^{m\left(x^{(1)}\right)-m(x)} f\left(x^{(1)}\right) \quad e^{m\left(x^{(2)}\right)-m(x)} f\left(x^{(2)}\right)\right] $$
-$$\ell(x)=\ell\left(\left[x^{(1)} x^{(2)}\right]\right)=e^{m\left(x^{(1)}\right)-m(x)} \ell\left(x^{(1)}\right)+e^{m\left(x^{(2)}\right)-m(x)} \ell\left(x^{(2)}\right) $$
-$$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
 <p>复杂度分析：</p>
 <ul>
 <li>读取Q，K，写入\(S=QK^T\)，内存访问复杂度\(O(Nd+N^2)\)</li>
 <li>读取S，写入\(P=softmax(S)\)，内存访问复杂度\(O(N^2)\)</li>
 <li>读取V和P，写入\(O=PV\)，内存访问复杂度\(O(Nd+N^2)\)</li>
 </ul>
-<p>综上，self-attention的 HBM 访问复杂度\(O(Nd+N^2)\)</p>
+<p>综上，self-attention 的中间结果 𝑆, 𝑃 通常需要通过高带宽内存（HBM）进行存取，self-attention 的 HBM 访问复杂度\(O(Nd+N^2)\)，对 HBM 的重复读写是主要瓶颈。要解决这个问题，需要做两件事：</p>
+<ul>
+<li>在不访问整个输入的情况下计算 softmax</li>
+<li>不为反向传播存储大的中间 attention 矩阵(\(N^2\))</li>
+</ul>
+
+
+<h2 class="relative group">FlashAttention V1 
+    <div id="flashattention-v1" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#flashattention-v1" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>FlashAttention-V1 提出了两种方法来解决上述问题：tiling 和 recomputation。</p>
+<ul>
+<li>tiling - <strong>注意力计算被重新构造</strong>，将输入分割成块，并通过在输入块上进行多次传递来递增地执行softmax操作。</li>
+<li>recomputation - 存储来自前向的 softmax 归一化因子，以便在反向中快速重新计算芯片上的 attention，这比从HBM读取中间矩阵的标准注意力方法更快。可以把它看作基于 tiling 的特殊的 gradient checkpointing</li>
+</ul>
+<p>FlashAttention 设计了一套分而治之的算法，将大的矩阵切块加载到SRAM，计算每个分块的m和l值。利用上一轮m和l结合新的子块迭代计算，最终算出整个矩阵的数值。整个过程不用存储中间变量S和P矩阵，因此节省了效率。</p>
+<p><a href="https://imgse.com/i/pkYzPhQ"   target="_blank">
+    
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s21.ax1x.com/2024/06/07/pkYzPhQ.jpg" alt="flashattention-1.jpg" />
+    
+  </figure>
+
+</a></p>
+<p>分块的 softmax 计算(假设分2块并行计算)：</p>
+<p>$$m(x)=m\left(\left[x^{(1)} x^{(2)}\right]\right)=\max \left(m\left(x^{(1)}\right), m\left(x^{(2)}\right)\right) $$
+$$f(x)=\left[e^{m\left(x^{(1)}\right)-m(x)} f\left(x^{(1)}\right) \quad e^{m\left(x^{(2)}\right)-m(x)} f\left(x^{(2)}\right)\right] $$
+$$\ell(x)=\ell\left(\left[x^{(1)} x^{(2)}\right]\right)=e^{m\left(x^{(1)}\right)-m(x)} \ell\left(x^{(1)}\right)+e^{m\left(x^{(2)}\right)-m(x)} \ell\left(x^{(2)}\right) $$
+$$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
 <p>分块的 softmax 伪代码:
 
 
@@ -968,7 +980,16 @@ $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         <a href="http://localhost:1313/posts/llm/paged_attention_v1/">
-            Part [1 4]: Paged Attention V1(vLLM)
+            Part [4]: Paged Attention V1(vLLM)
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/llm/attention/">
+            Part 1: Attention and KV Cache
         </a>
     </div>
     
@@ -977,15 +998,6 @@ $$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)}$$</p>
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         Part 2: This Article
-    </div>
-    
-    
-    
-    <div
-        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
-        <a href="http://localhost:1313/posts/llm/attention/">
-            Part [1 1]: Attention and KV Cache
-        </a>
     </div>
     
     

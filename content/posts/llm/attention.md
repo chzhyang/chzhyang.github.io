@@ -6,7 +6,7 @@ draft: false
 description: "量化计算 KVCache"
 tags: ["NLP", "Transformer", "LLM", "Attention", "KVCache"]
 series: ["Attention and Optimization"]
-series_order: [1, 1]
+series_order: 1
 # layout: "simple"
 showDate: true
 ---
