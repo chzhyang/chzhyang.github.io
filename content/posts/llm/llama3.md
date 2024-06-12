@@ -1,7 +1,7 @@
 ---
 title: "Implement Llama3 in Python and Quantitative Analysis"
 date: 2024-05-28T14:16:06Z
-lastmod: 2024-05-29
+lastmod: 2024-06-10
 draft: false
 description: "手动实现 Llama3，并进行量化分析"
 tags: ["LLM", "Llama"]
@@ -10,19 +10,16 @@ series_order: 1
 # layout: "simple"
 ---
 
-## Download Llama3 Model Weight
+本文主要介绍如何一步步使用 python 和 pytorch 加载 llama3 并进行文本生成，并分析llama3的结构和各层的参数，也可以参考本文的jupyter notebook: [implement-llama3](https://github.com/chzhyang/implement-llama3)
 
-[Llama3](https://github.com/meta-llama/llama3)
+## Pre-requirements
 
-Download Llama3 weights from [https://llama.meta.com/llama-downloads/](https://llama.meta.com/llama-downloads/)
+Download [Llama3](https://github.com/meta-llama/llama3) weights from [https://llama.meta.com/llama-downloads/](https://llama.meta.com/llama-downloads/)
 
-## Install requirements
 
 ```
 pip install -r requirements.txt
 ```
-
-## Tokenizer
 
 Use tiktoken as the tokenizer
 
@@ -60,7 +57,7 @@ tokenizer.decode(tokenizer.encode("Im AI!"))
 
 ## Load model weights and model config
 
-![llamam3-arch]()
+![25a6f577fa5fc38a7ca5367f70594183.png](https://s2.loli.net/2024/06/12/GOjrIe1SfQPqXx8.png)
 
 模型权重：
 
@@ -207,6 +204,8 @@ token_embeddings.shape # torch.Size([17, 4096])
 
 ### AttentionLayer
 
+![Screenshot from 2024-06-12 15-18-57.png](https://s2.loli.net/2024/06/12/lMWxwcPyJb2vptV.png)
+
 输入为norm后的 x， 维度为(17, 4096), 查看 attention weight 的维度
 
 ```python
@@ -346,7 +345,7 @@ torch.Size([17, 128])
 
 #### QK^T
 
-Q 和 K 的维度 都是 torch.Size([17, 128]), 通过矩阵乘得到 \\(QK^T/sqrt(head_dim)\\) 矩阵， 矩阵中的每个值都代表了对应位置 token 的 Q 和 K 的相关程度， 这就是 self-attention 的过程
+Q 和 K 的维度 都是 torch.Size([17, 128]), 通过矩阵乘得到 \\(\frac{QK^T}{\sqrt{d_k}}\\) 矩阵， 矩阵中的每个值都代表了对应位置 token 的 Q 和 K 的相关程度， 这就是 self-attention 的过程
 
 ```python
 qk_per_token = torch.matmul(q_per_token_rotated, k_per_token_rotated.T)/(head_dim)**0.5
@@ -363,13 +362,232 @@ mask = torch.triu(mask, diagonal=1)
 qk_per_token_after_masking = qk_per_token + mask
 print(mask)
 ```
+```
+tensor([[0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]])
+```
+
+通过 heatmap 观察下 qk 在应用 mask 前后的变化
+
+```python
+def display_qk_heatmap(qk_per_token):
+    _, ax = plt.subplots()
+    im = ax.imshow(qk_per_token.to(float).detach(), cmap='viridis')
+    ax.set_xticks(range(len(prompt_split_as_tokens)))
+    ax.set_yticks(range(len(prompt_split_as_tokens)))
+    ax.set_xticklabels(prompt_split_as_tokens)
+    ax.set_yticklabels(prompt_split_as_tokens)
+    ax.figure.colorbar(im, ax=ax)
+display_qk_heatmap(qk_per_token)
+display_qk_heatmap(qk_per_token_after_masking)
+```
+
+![Screenshot from 2024-06-12 14-36-28.png](https://s2.loli.net/2024/06/12/3BA1tCOXcY9zWRE.png)
+![Screenshot from 2024-06-12 14-37-00.png](https://s2.loli.net/2024/06/12/HEZuVxkCdjqvhNG.png)
 
 #### Softmax
 
-未完待续...
+直接调用 pytorch 的 softmax kernel 计算 \\(softmax(\frac{QK^T}{\sqrt{d_k}})\\)
+
+```python
+qk_per_token_after_masking_after_softmax = torch.nn.functional.softmax(qk_per_token_after_masking, dim=1).to(torch.bfloat16)
+display_qk_heatmap(qk_per_token_after_masking_after_softmax)
+```
+![Screenshot from 2024-06-12 14-44-52.png](https://s2.loli.net/2024/06/12/eMVgnyXALKzR4hu.png)
+
+#### Values
+
+value weight 跟 key weight 一样，也有 8 组， 每一组由 4 个 Query head 共享
+
+```python
+v_layer0 = model["layers.0.attention.wv.weight"]
+v_layer0 = v_layer0.view(n_kv_heads, v_layer0.shape[0] // n_kv_heads, dim)
+print(v_layer0.shape)
+v_layer0_head0 = v_layer0[0]
+print(v_layer0_head0.shape)
+v_per_token = torch.matmul(token_embeddings, v_layer0_head0.T)
+print(v_per_token.shape)
+```
+
+```
+torch.Size([8, 128, 4096])
+torch.Size([128, 4096])
+torch.Size([17, 128])
+```
+
+调用torch的矩阵乘算子 torch.matmul 计算 attention \\(softmax(\frac{QK^T}{\sqrt{d_k}})V\\)
+
+```python
+qkv_attention = torch.matmul(qk_per_token_after_masking_after_softmax, v_per_token)
+print(qkv_attention.shape)
+```
+
+```
+torch.Size([17, 128])
+```
+
+至此，获得了第一个 attention layer 的 第一个 head 的 attention 结果，接下来直接通过迭代计算第一层的multi head attention， 因为 query 一共有 32 个 heads， 所以最终 的attention 结果 应该是 32 个 qkv_attention.shape 的 tensor
+
+```python
+qkv_attention_store = []
+
+for head in range(n_heads):
+    q_layer0_head = q_layer0[head]
+    k_layer0_head = k_layer0[head//4] # key weights are shared across 4 heads
+    v_layer0_head = v_layer0[head//4] # value weights are shared across 4 heads
+    q_per_token = torch.matmul(token_embeddings, q_layer0_head.T)
+    k_per_token = torch.matmul(token_embeddings, k_layer0_head.T)
+    v_per_token = torch.matmul(token_embeddings, v_layer0_head.T)
+
+    q_per_token_split_into_pairs = q_per_token.float().view(q_per_token.shape[0], -1, 2)
+    q_per_token_as_complex_numbers = torch.view_as_complex(q_per_token_split_into_pairs)
+    q_per_token_split_into_pairs_rotated = torch.view_as_real(q_per_token_as_complex_numbers * freqs_cis[:len(tokens)])
+    q_per_token_rotated = q_per_token_split_into_pairs_rotated.view(q_per_token.shape)
+
+    k_per_token_split_into_pairs = k_per_token.float().view(k_per_token.shape[0], -1, 2)
+    k_per_token_as_complex_numbers = torch.view_as_complex(k_per_token_split_into_pairs)
+    k_per_token_split_into_pairs_rotated = torch.view_as_real(k_per_token_as_complex_numbers * freqs_cis[:len(tokens)])
+    k_per_token_rotated = k_per_token_split_into_pairs_rotated.view(k_per_token.shape)
+
+    qk_per_token = torch.matmul(q_per_token_rotated, k_per_token_rotated.T)/(128)**0.5
+    mask = torch.full((len(tokens), len(tokens)), float("-inf"), device=tokens.device)
+    mask = torch.triu(mask, diagonal=1)
+    qk_per_token_after_masking = qk_per_token + mask
+    qk_per_token_after_masking_after_softmax = torch.nn.functional.softmax(qk_per_token_after_masking, dim=1).to(torch.bfloat16)
+    qkv_attention = torch.matmul(qk_per_token_after_masking_after_softmax, v_per_token)
+    qkv_attention = torch.matmul(qk_per_token_after_masking_after_softmax, v_per_token)
+    qkv_attention_store.append(qkv_attention)
+
+print(len(qkv_attention_store)) # 32
+```
+
+把列表中的 tensor 拼接成一个高维度 tensor
+```python
+stacked_qkv_attention = torch.cat(qkv_attention_store, dim=-1)
+print(stacked_qkv_attention.shape) # torch.Size([17, 4096])
+```
+
+然后，经过 attention layer 的 wo.weight 对 attention 进行线性变换， 把 tensor 的维度从 torch.Size([4096, 4096]) 转换到最初的 torch.Size([17, 4096])
+
+```python
+w_layer0 = model["layers.0.attention.wo.weight"]
+print(w_layer0.shape) # torch.Size([4096, 4096])
+embedding_delta = torch.matmul(stacked_qkv_attention, w_layer0.T)
+print(embedding_delta.shape) # torch.Size([17, 4096])
+```
+
+最后，接一个 attention layer 最初输入(token_embeddings_unnormalized)的残差连接，就得到了第 1 个 attention layer 的 output，接下来输入到 FFN layer
+
+```python
+embedding_after_edit = token_embeddings_unnormalized + embedding_delta
+print(embedding_after_edit.shape) # torch.Size([17, 4096])
+```
 
 ### FFNLayer
 
+Llama3 使用了 SwiGLU feedforward network(FFN)，FFN 有 三个 权重层，分别代表了 gate, up, down 三个线性变换。首先将 FFN 的输入归一化为 embedding_after_edit_normalized，然后调用 torch.matmul, torch.functional.F.silu 算子 将 embedding_after_edit_normalized 进行线性变换和激活，得到FFN的output: layer_0_embedding
+
+![Screenshot from 2024-06-12 15-19-13.png](https://s2.loli.net/2024/06/12/uIXbiQEfR6cOlC7.png)
+
+```python
+# norm
+embedding_after_edit_normalized = rms_norm(embedding_after_edit, model["layers.0.ffn_norm.weight"])
+embedding_after_edit_normalized.shape
+w1 = model["layers.0.feed_forward.w1.weight"]
+w2 = model["layers.0.feed_forward.w2.weight"]
+w3 = model["layers.0.feed_forward.w3.weight"]
+# ff
+output_after_feedforward = torch.matmul(torch.functional.F.silu(torch.matmul(embedding_after_edit_normalized, w1.T)) * torch.matmul(embedding_after_edit_normalized, w3.T), w2.T)
+print(output_after_feedforward.shape) # torch.Size([17, 4096])
+# 残差
+layer_0_embedding = embedding_after_edit+output_after_feedforward
+print(layer_0_embedding.shape) # torch.Size([17, 4096])
+```
+
+至此，第 1 个 Decoderlayer 结束，
+
+## Total Steps
+
+Decoderlayer 的 output 作为 下一个 DecoderLayer 的 input，一共迭代 32 次， 然后在经过Norm 和 线性变化得到 logits（torch.Size([128256])），对 logit 施加 Softmax 分类（采用贪心策略，获取最高得分的token）即可得到 generated token，最后解码即可得到 生成的第一个 word
+
+```python
+final_embedding = token_embeddings_unnormalized
+for layer in range(n_layers):
+    qkv_attention_store = []
+    layer_embedding_norm = rms_norm(final_embedding, model[f"layers.{layer}.attention_norm.weight"])
+    q_layer = model[f"layers.{layer}.attention.wq.weight"]
+    q_layer = q_layer.view(n_heads, q_layer.shape[0] // n_heads, dim)
+    k_layer = model[f"layers.{layer}.attention.wk.weight"]
+    k_layer = k_layer.view(n_kv_heads, k_layer.shape[0] // n_kv_heads, dim)
+    v_layer = model[f"layers.{layer}.attention.wv.weight"]
+    v_layer = v_layer.view(n_kv_heads, v_layer.shape[0] // n_kv_heads, dim)
+    w_layer = model[f"layers.{layer}.attention.wo.weight"]
+    for head in range(n_heads):
+        q_layer_head = q_layer[head]
+        k_layer_head = k_layer[head//4]
+        v_layer_head = v_layer[head//4]
+        q_per_token = torch.matmul(layer_embedding_norm, q_layer_head.T)
+        k_per_token = torch.matmul(layer_embedding_norm, k_layer_head.T)
+        v_per_token = torch.matmul(layer_embedding_norm, v_layer_head.T)
+        q_per_token_split_into_pairs = q_per_token.float().view(q_per_token.shape[0], -1, 2)
+        q_per_token_as_complex_numbers = torch.view_as_complex(q_per_token_split_into_pairs)
+        q_per_token_split_into_pairs_rotated = torch.view_as_real(q_per_token_as_complex_numbers * freqs_cis)
+        q_per_token_rotated = q_per_token_split_into_pairs_rotated.view(q_per_token.shape)
+        k_per_token_split_into_pairs = k_per_token.float().view(k_per_token.shape[0], -1, 2)
+        k_per_token_as_complex_numbers = torch.view_as_complex(k_per_token_split_into_pairs)
+        k_per_token_split_into_pairs_rotated = torch.view_as_real(k_per_token_as_complex_numbers * freqs_cis)
+        k_per_token_rotated = k_per_token_split_into_pairs_rotated.view(k_per_token.shape)
+        qk_per_token = torch.matmul(q_per_token_rotated, k_per_token_rotated.T)/(128)**0.5
+        mask = torch.full((len(token_embeddings_unnormalized), len(token_embeddings_unnormalized)), float("-inf"))
+        mask = torch.triu(mask, diagonal=1)
+        qk_per_token_after_masking = qk_per_token + mask
+        qk_per_token_after_masking_after_softmax = torch.nn.functional.softmax(qk_per_token_after_masking, dim=1).to(torch.bfloat16)
+        qkv_attention = torch.matmul(qk_per_token_after_masking_after_softmax, v_per_token)
+        qkv_attention_store.append(qkv_attention)
+
+    stacked_qkv_attention = torch.cat(qkv_attention_store, dim=-1)
+    w_layer = model[f"layers.{layer}.attention.wo.weight"]
+    embedding_delta = torch.matmul(stacked_qkv_attention, w_layer.T)
+    embedding_after_edit = final_embedding + embedding_delta
+    embedding_after_edit_normalized = rms_norm(embedding_after_edit, model[f"layers.{layer}.ffn_norm.weight"])
+    w1 = model[f"layers.{layer}.feed_forward.w1.weight"]
+    w2 = model[f"layers.{layer}.feed_forward.w2.weight"]
+    w3 = model[f"layers.{layer}.feed_forward.w3.weight"]
+    output_after_feedforward = torch.matmul(torch.functional.F.silu(torch.matmul(embedding_after_edit_normalized, w1.T)) * torch.matmul(embedding_after_edit_normalized, w3.T), w2.T)
+    final_embedding = embedding_after_edit+output_after_feedforward
+
+final_embedding = rms_norm(final_embedding, model["norm.weight"])
+print(final_embedding.shape) # torch.Size([17, 4096])
+print(model["output.weight"].shape) # torch.Size([128256, 4096])
+logits = torch.matmul(final_embedding[-1], model["output.weight"].T)
+print(logits.shape) # torch.Size([128256])
+next_token = torch.argmax(logits, dim=-1) # softmax
+print(next_token) # tensor(2983)
+print(tokenizer.decode([next_token.item()])) # 42
+```
+
+至此，我们得到了第一个生成的 token，它与最初的 prompt token 组成新的 input 用于生成下一个token
+
+## Summary
+
+本文介绍了如何一步步得使用 python 和 pytorch 加载 llama3 并进行文本生成。重点介绍了 Llama3模型结构，DecoderLayer的实现，包括其中的 AttentionLayer 和 FFNLayer，并深入探讨了模型的各层参数和维度。
+
+本文的 AttentionLayer 采用了标准的 multi-head-attention，未体现 KVCache 和 FlashAttention、PagedAttention等优化，这些优化技术可参考我的这个系列文章: [Attention and Optimization](https://chzhyang.github.io/series/attention-and-optimization/)
 
 Reference:
 

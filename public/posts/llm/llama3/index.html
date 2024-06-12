@@ -86,7 +86,7 @@
     "name": "Implement Llama3 in Python and Quantitative Analysis",
     "headline": "Implement Llama3 in Python and Quantitative Analysis",
     "description": "手动实现 Llama3，并进行量化分析",
-    "abstract": "Download Llama3 Model Weight # Llama3 Download Llama3 weights from https:\/\/llama.meta.com\/llama-downloads\/ Install requirements # pip install -r requirements.txt Tokenizer #",
+    "abstract": "本文主要介绍如何一步步使用 python 和 pytorch 加载 llama3 并",
     "inLanguage": "en",
     "url" : "http:\/\/localhost:1313\/posts\/llm\/llama3\/",
     "author" : {
@@ -102,7 +102,7 @@
     "keywords": ["LLM","Llama"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1699"
+    "wordCount": "3239"
   }]
   </script>
 
@@ -613,7 +613,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-29 00:00:00 &#43;0000 UTC">Updated: 2024-05-29</time><span class="px-2 text-primary-500">&middot;</span><span>1699 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span>
+  <time datetime="2024-05-29 00:00:00 &#43;0000 UTC">Updated: 2024-05-29</time><span class="px-2 text-primary-500">&middot;</span><span>3239 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">7 mins</span>
   
 
   
@@ -697,9 +697,7 @@
     class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#download-llama3-model-weight">Download Llama3 Model Weight</a></li>
-    <li><a href="#install-requirements">Install requirements</a></li>
-    <li><a href="#tokenizer">Tokenizer</a></li>
+    <li><a href="#pre-requirements">Pre-requirements</a></li>
     <li><a href="#load-model-weights-and-model-config">Load model weights and model config</a></li>
     <li><a href="#prepare-prompt-tokens">Prepare prompt tokens</a></li>
     <li><a href="#embedding-layer">Embedding layer</a></li>
@@ -715,11 +713,14 @@
             <li><a href="#qkt">QK^T</a></li>
             <li><a href="#mask">Mask</a></li>
             <li><a href="#softmax">Softmax</a></li>
+            <li><a href="#values">Values</a></li>
           </ul>
         </li>
         <li><a href="#ffnlayer">FFNLayer</a></li>
       </ul>
     </li>
+    <li><a href="#total-steps">Total Steps</a></li>
+    <li><a href="#summary">Summary</a></li>
   </ul>
 </nav>
   </div>
@@ -733,9 +734,7 @@
     class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#download-llama3-model-weight">Download Llama3 Model Weight</a></li>
-    <li><a href="#install-requirements">Install requirements</a></li>
-    <li><a href="#tokenizer">Tokenizer</a></li>
+    <li><a href="#pre-requirements">Pre-requirements</a></li>
     <li><a href="#load-model-weights-and-model-config">Load model weights and model config</a></li>
     <li><a href="#prepare-prompt-tokens">Prepare prompt tokens</a></li>
     <li><a href="#embedding-layer">Embedding layer</a></li>
@@ -751,11 +750,14 @@
             <li><a href="#qkt">QK^T</a></li>
             <li><a href="#mask">Mask</a></li>
             <li><a href="#softmax">Softmax</a></li>
+            <li><a href="#values">Values</a></li>
           </ul>
         </li>
         <li><a href="#ffnlayer">FFNLayer</a></li>
       </ul>
     </li>
+    <li><a href="#total-steps">Total Steps</a></li>
+    <li><a href="#summary">Summary</a></li>
   </ul>
 </nav>
   </div>
@@ -791,48 +793,25 @@
 
 
         <div class="article-content max-w-prose mb-20">
-          
+          <p>本文主要介绍如何一步步使用 python 和 pytorch 加载 llama3 并进行文本生成，并分析llama3的结构和各层的参数，也可以参考本文的jupyter notebook: <a href="https://github.com/chzhyang/implement-llama3"   target="_blank">
+    implement-llama3</a></p>
 
-<h2 class="relative group">Download Llama3 Model Weight 
-    <div id="download-llama3-model-weight" class="anchor"></div>
+
+<h2 class="relative group">Pre-requirements 
+    <div id="pre-requirements" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#download-llama3-model-weight" aria-label="Anchor">#</a>
+            style="text-decoration-line: none !important;" href="#pre-requirements" aria-label="Anchor">#</a>
     </span>        
     
 </h2>
-<p><a href="https://github.com/meta-llama/llama3"   target="_blank">
-    Llama3</a></p>
-<p>Download Llama3 weights from <a href="https://llama.meta.com/llama-downloads/"   target="_blank">
+<p>Download <a href="https://github.com/meta-llama/llama3"   target="_blank">
+    Llama3</a> weights from <a href="https://llama.meta.com/llama-downloads/"   target="_blank">
     https://llama.meta.com/llama-downloads/</a></p>
-
-
-<h2 class="relative group">Install requirements 
-    <div id="install-requirements" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#install-requirements" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
 <pre tabindex="0"><code>pip install -r requirements.txt
-</code></pre>
-
-<h2 class="relative group">Tokenizer 
-    <div id="tokenizer" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
-        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
-            style="text-decoration-line: none !important;" href="#tokenizer" aria-label="Anchor">#</a>
-    </span>        
-    
-</h2>
-<p>Use tiktoken as the tokenizer</p>
+</code></pre><p>Use tiktoken as the tokenizer</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">tiktoken</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tiktoken.load</span> <span class="kn">import</span> <span class="n">load_tiktoken_bpe</span>
@@ -879,14 +858,10 @@
 
 
 
-  
-  
-  
-    <figure>
-      <img class="my-0 rounded-md" loading="lazy" src="" alt="llamam3-arch" />
-      
-    </figure>
-  
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/06/12/GOjrIe1SfQPqXx8.png" alt="25a6f577fa5fc38a7ca5367f70594183.png" />
+    
+  </figure>
 
 </p>
 <p>模型权重：</p>
@@ -1056,6 +1031,17 @@
     </span>        
     
 </h3>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/06/12/lMWxwcPyJb2vptV.png" alt="Screenshot from 2024-06-12 15-18-57.png" />
+    
+  </figure>
+
+</p>
 <p>输入为norm后的 x， 维度为(17, 4096), 查看 attention weight 的维度</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="p">[</span><span class="s2">&#34;layers.0.attention.wq.weight&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
@@ -1196,7 +1182,7 @@ torch.Size([17, 128])
     </span>        
     
 </h4>
-<p>Q 和 K 的维度 都是 torch.Size([17, 128]), 通过矩阵乘得到 \(QK^T/sqrt(head_dim)\) 矩阵， 矩阵中的每个值都代表了对应位置 token 的 Q 和 K 的相关程度， 这就是 self-attention 的过程</p>
+<p>Q 和 K 的维度 都是 torch.Size([17, 128]), 通过矩阵乘得到 \(\frac{QK^T}{\sqrt{d_k}}\) 矩阵， 矩阵中的每个值都代表了对应位置 token 的 Q 和 K 的相关程度， 这就是 self-attention 的过程</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">qk_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">q_per_token_rotated</span><span class="p">,</span> <span class="n">k_per_token_rotated</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">head_dim</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
 </span></span><span class="line"><span class="cl"><span class="n">qk_per_token</span><span class="o">.</span><span class="n">shape</span>
 </span></span></code></pre></div>
@@ -1216,7 +1202,57 @@ torch.Size([17, 128])
 </span></span><span class="line"><span class="cl"><span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">qk_per_token_after_masking</span> <span class="o">=</span> <span class="n">qk_per_token</span> <span class="o">+</span> <span class="n">mask</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
-</span></span></code></pre></div>
+</span></span></code></pre></div><pre tabindex="0"><code>tensor([[0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf, -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., -inf],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]])
+</code></pre><p>通过 heatmap 观察下 qk 在应用 mask 前后的变化</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">display_qk_heatmap</span><span class="p">(</span><span class="n">qk_per_token</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">qk_per_token</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt_split_as_tokens</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt_split_as_tokens</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">prompt_split_as_tokens</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">prompt_split_as_tokens</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">display_qk_heatmap</span><span class="p">(</span><span class="n">qk_per_token</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">display_qk_heatmap</span><span class="p">(</span><span class="n">qk_per_token_after_masking</span><span class="p">)</span>
+</span></span></code></pre></div><p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/06/12/3BA1tCOXcY9zWRE.png" alt="Screenshot from 2024-06-12 14-36-28.png" />
+    
+  </figure>
+
+
+
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/06/12/HEZuVxkCdjqvhNG.png" alt="Screenshot from 2024-06-12 14-37-00.png" />
+    
+  </figure>
+
+</p>
+
 
 <h4 class="relative group">Softmax 
     <div id="softmax" class="anchor"></div>
@@ -1228,8 +1264,90 @@ torch.Size([17, 128])
     </span>        
     
 </h4>
-<p>未完待续&hellip;</p>
+<p>直接调用 pytorch 的 softmax kernel 计算 \(softmax(\frac{QK^T}{\sqrt{d_k}})\)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">qk_per_token_after_masking_after_softmax</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">qk_per_token_after_masking</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">display_qk_heatmap</span><span class="p">(</span><span class="n">qk_per_token_after_masking_after_softmax</span><span class="p">)</span>
+</span></span></code></pre></div><p>
 
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/06/12/eMVgnyXALKzR4hu.png" alt="Screenshot from 2024-06-12 14-44-52.png" />
+    
+  </figure>
+
+</p>
+
+
+<h4 class="relative group">Values 
+    <div id="values" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#values" aria-label="Anchor">#</a>
+    </span>        
+    
+</h4>
+<p>value weight 跟 key weight 一样，也有 8 组， 每一组由 4 个 Query head 共享</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">v_layer0</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&#34;layers.0.attention.wv.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">v_layer0</span> <span class="o">=</span> <span class="n">v_layer0</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">n_kv_heads</span><span class="p">,</span> <span class="n">v_layer0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">n_kv_heads</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">v_layer0</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">v_layer0_head0</span> <span class="o">=</span> <span class="n">v_layer0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">v_layer0_head0</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">v_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">token_embeddings</span><span class="p">,</span> <span class="n">v_layer0_head0</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">v_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span></code></pre></div><pre tabindex="0"><code>torch.Size([8, 128, 4096])
+torch.Size([128, 4096])
+torch.Size([17, 128])
+</code></pre><p>调用torch的矩阵乘算子 torch.matmul 计算 attention \(softmax(\frac{QK^T}{\sqrt{d_k}})V\)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">qkv_attention</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">qk_per_token_after_masking_after_softmax</span><span class="p">,</span> <span class="n">v_per_token</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">qkv_attention</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span></code></pre></div><pre tabindex="0"><code>torch.Size([17, 128])
+</code></pre><p>至此，获得了第一个 attention layer 的 第一个 head 的 attention 结果，接下来直接通过迭代计算第一层的multi head attention， 因为 query 一共有 32 个 heads， 所以最终 的attention 结果 应该是 32 个 qkv_attention.shape 的 tensor</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">qkv_attention_store</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">head</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_heads</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q_layer0_head</span> <span class="o">=</span> <span class="n">q_layer0</span><span class="p">[</span><span class="n">head</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k_layer0_head</span> <span class="o">=</span> <span class="n">k_layer0</span><span class="p">[</span><span class="n">head</span><span class="o">//</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># key weights are shared across 4 heads</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v_layer0_head</span> <span class="o">=</span> <span class="n">v_layer0</span><span class="p">[</span><span class="n">head</span><span class="o">//</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># value weights are shared across 4 heads</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">token_embeddings</span><span class="p">,</span> <span class="n">q_layer0_head</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">token_embeddings</span><span class="p">,</span> <span class="n">k_layer0_head</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">token_embeddings</span><span class="p">,</span> <span class="n">v_layer0_head</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">q_per_token_split_into_pairs</span> <span class="o">=</span> <span class="n">q_per_token</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">q_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q_per_token_as_complex_numbers</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">view_as_complex</span><span class="p">(</span><span class="n">q_per_token_split_into_pairs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q_per_token_split_into_pairs_rotated</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">view_as_real</span><span class="p">(</span><span class="n">q_per_token_as_complex_numbers</span> <span class="o">*</span> <span class="n">freqs_cis</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q_per_token_rotated</span> <span class="o">=</span> <span class="n">q_per_token_split_into_pairs_rotated</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">q_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">k_per_token_split_into_pairs</span> <span class="o">=</span> <span class="n">k_per_token</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">k_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k_per_token_as_complex_numbers</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">view_as_complex</span><span class="p">(</span><span class="n">k_per_token_split_into_pairs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k_per_token_split_into_pairs_rotated</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">view_as_real</span><span class="p">(</span><span class="n">k_per_token_as_complex_numbers</span> <span class="o">*</span> <span class="n">freqs_cis</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k_per_token_rotated</span> <span class="o">=</span> <span class="n">k_per_token_split_into_pairs_rotated</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">k_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">qk_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">q_per_token_rotated</span><span class="p">,</span> <span class="n">k_per_token_rotated</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&#34;-inf&#34;</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">tokens</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qk_per_token_after_masking</span> <span class="o">=</span> <span class="n">qk_per_token</span> <span class="o">+</span> <span class="n">mask</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qk_per_token_after_masking_after_softmax</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">qk_per_token_after_masking</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qkv_attention</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">qk_per_token_after_masking_after_softmax</span><span class="p">,</span> <span class="n">v_per_token</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qkv_attention</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">qk_per_token_after_masking_after_softmax</span><span class="p">,</span> <span class="n">v_per_token</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qkv_attention_store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qkv_attention</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">qkv_attention_store</span><span class="p">))</span> <span class="c1"># 32</span>
+</span></span></code></pre></div><p>把列表中的 tensor 拼接成一个高维度 tensor</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">stacked_qkv_attention</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">qkv_attention_store</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">stacked_qkv_attention</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([17, 4096])</span>
+</span></span></code></pre></div><p>然后，经过 attention layer 的 wo.weight 对 attention 进行线性变换， 把 tensor 的维度从 torch.Size([4096, 4096]) 转换到最初的 torch.Size([17, 4096])</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">w_layer0</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&#34;layers.0.attention.wo.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">w_layer0</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([4096, 4096])</span>
+</span></span><span class="line"><span class="cl"><span class="n">embedding_delta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">stacked_qkv_attention</span><span class="p">,</span> <span class="n">w_layer0</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">embedding_delta</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([17, 4096])</span>
+</span></span></code></pre></div><p>最后，接一个 attention layer 最初输入(token_embeddings_unnormalized)的残差连接，就得到了第 1 个 attention layer 的 output，接下来输入到 FFN layer</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">embedding_after_edit</span> <span class="o">=</span> <span class="n">token_embeddings_unnormalized</span> <span class="o">+</span> <span class="n">embedding_delta</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">embedding_after_edit</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([17, 4096])</span>
+</span></span></code></pre></div>
 
 <h3 class="relative group">FFNLayer 
     <div id="ffnlayer" class="anchor"></div>
@@ -1241,6 +1359,113 @@ torch.Size([17, 128])
     </span>        
     
 </h3>
+<p>Llama3 使用了 SwiGLU feedforward network(FFN)，FFN 有 三个 权重层，分别代表了 gate, up, down 三个线性变换。首先将 FFN 的输入归一化为 embedding_after_edit_normalized，然后调用 torch.matmul, torch.functional.F.silu 算子 将 embedding_after_edit_normalized 进行线性变换和激活，得到FFN的output: layer_0_embedding</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/06/12/uIXbiQEfR6cOlC7.png" alt="Screenshot from 2024-06-12 15-19-13.png" />
+    
+  </figure>
+
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># norm</span>
+</span></span><span class="line"><span class="cl"><span class="n">embedding_after_edit_normalized</span> <span class="o">=</span> <span class="n">rms_norm</span><span class="p">(</span><span class="n">embedding_after_edit</span><span class="p">,</span> <span class="n">model</span><span class="p">[</span><span class="s2">&#34;layers.0.ffn_norm.weight&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">embedding_after_edit_normalized</span><span class="o">.</span><span class="n">shape</span>
+</span></span><span class="line"><span class="cl"><span class="n">w1</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&#34;layers.0.feed_forward.w1.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">w2</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&#34;layers.0.feed_forward.w2.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">w3</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&#34;layers.0.feed_forward.w3.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ff</span>
+</span></span><span class="line"><span class="cl"><span class="n">output_after_feedforward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">F</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">embedding_after_edit_normalized</span><span class="p">,</span> <span class="n">w1</span><span class="o">.</span><span class="n">T</span><span class="p">))</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">embedding_after_edit_normalized</span><span class="p">,</span> <span class="n">w3</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">w2</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">output_after_feedforward</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([17, 4096])</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 残差</span>
+</span></span><span class="line"><span class="cl"><span class="n">layer_0_embedding</span> <span class="o">=</span> <span class="n">embedding_after_edit</span><span class="o">+</span><span class="n">output_after_feedforward</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">layer_0_embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([17, 4096])</span>
+</span></span></code></pre></div><p>至此，第 1 个 Decoderlayer 结束，</p>
+
+
+<h2 class="relative group">Total Steps 
+    <div id="total-steps" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#total-steps" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>Decoderlayer 的 output 作为 下一个 DecoderLayer 的 input，一共迭代 32 次， 然后在经过Norm 和 线性变化得到 logits（torch.Size([128256])），对 logit 施加 Softmax 分类（采用贪心策略，获取最高得分的token）即可得到 generated token，最后解码即可得到 生成的第一个 word</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">final_embedding</span> <span class="o">=</span> <span class="n">token_embeddings_unnormalized</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qkv_attention_store</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">layer_embedding_norm</span> <span class="o">=</span> <span class="n">rms_norm</span><span class="p">(</span><span class="n">final_embedding</span><span class="p">,</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.attention_norm.weight&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q_layer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.attention.wq.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q_layer</span> <span class="o">=</span> <span class="n">q_layer</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">n_heads</span><span class="p">,</span> <span class="n">q_layer</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k_layer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.attention.wk.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k_layer</span> <span class="o">=</span> <span class="n">k_layer</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">n_kv_heads</span><span class="p">,</span> <span class="n">k_layer</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">n_kv_heads</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v_layer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.attention.wv.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v_layer</span> <span class="o">=</span> <span class="n">v_layer</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">n_kv_heads</span><span class="p">,</span> <span class="n">v_layer</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">n_kv_heads</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w_layer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.attention.wo.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">head</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_heads</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">q_layer_head</span> <span class="o">=</span> <span class="n">q_layer</span><span class="p">[</span><span class="n">head</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k_layer_head</span> <span class="o">=</span> <span class="n">k_layer</span><span class="p">[</span><span class="n">head</span><span class="o">//</span><span class="mi">4</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v_layer_head</span> <span class="o">=</span> <span class="n">v_layer</span><span class="p">[</span><span class="n">head</span><span class="o">//</span><span class="mi">4</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">q_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer_embedding_norm</span><span class="p">,</span> <span class="n">q_layer_head</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer_embedding_norm</span><span class="p">,</span> <span class="n">k_layer_head</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer_embedding_norm</span><span class="p">,</span> <span class="n">v_layer_head</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">q_per_token_split_into_pairs</span> <span class="o">=</span> <span class="n">q_per_token</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">q_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">q_per_token_as_complex_numbers</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">view_as_complex</span><span class="p">(</span><span class="n">q_per_token_split_into_pairs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">q_per_token_split_into_pairs_rotated</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">view_as_real</span><span class="p">(</span><span class="n">q_per_token_as_complex_numbers</span> <span class="o">*</span> <span class="n">freqs_cis</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">q_per_token_rotated</span> <span class="o">=</span> <span class="n">q_per_token_split_into_pairs_rotated</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">q_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k_per_token_split_into_pairs</span> <span class="o">=</span> <span class="n">k_per_token</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">k_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k_per_token_as_complex_numbers</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">view_as_complex</span><span class="p">(</span><span class="n">k_per_token_split_into_pairs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k_per_token_split_into_pairs_rotated</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">view_as_real</span><span class="p">(</span><span class="n">k_per_token_as_complex_numbers</span> <span class="o">*</span> <span class="n">freqs_cis</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k_per_token_rotated</span> <span class="o">=</span> <span class="n">k_per_token_split_into_pairs_rotated</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">k_per_token</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">qk_per_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">q_per_token_rotated</span><span class="p">,</span> <span class="n">k_per_token_rotated</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">token_embeddings_unnormalized</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_embeddings_unnormalized</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&#34;-inf&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">qk_per_token_after_masking</span> <span class="o">=</span> <span class="n">qk_per_token</span> <span class="o">+</span> <span class="n">mask</span>
+</span></span><span class="line"><span class="cl">        <span class="n">qk_per_token_after_masking_after_softmax</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">qk_per_token_after_masking</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">qkv_attention</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">qk_per_token_after_masking_after_softmax</span><span class="p">,</span> <span class="n">v_per_token</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">qkv_attention_store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qkv_attention</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">stacked_qkv_attention</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">qkv_attention_store</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w_layer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.attention.wo.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">embedding_delta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">stacked_qkv_attention</span><span class="p">,</span> <span class="n">w_layer</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">embedding_after_edit</span> <span class="o">=</span> <span class="n">final_embedding</span> <span class="o">+</span> <span class="n">embedding_delta</span>
+</span></span><span class="line"><span class="cl">    <span class="n">embedding_after_edit_normalized</span> <span class="o">=</span> <span class="n">rms_norm</span><span class="p">(</span><span class="n">embedding_after_edit</span><span class="p">,</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.ffn_norm.weight&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w1</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.feed_forward.w1.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w2</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.feed_forward.w2.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w3</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="sa">f</span><span class="s2">&#34;layers.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.feed_forward.w3.weight&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output_after_feedforward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">F</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">embedding_after_edit_normalized</span><span class="p">,</span> <span class="n">w1</span><span class="o">.</span><span class="n">T</span><span class="p">))</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">embedding_after_edit_normalized</span><span class="p">,</span> <span class="n">w3</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">w2</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">final_embedding</span> <span class="o">=</span> <span class="n">embedding_after_edit</span><span class="o">+</span><span class="n">output_after_feedforward</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">final_embedding</span> <span class="o">=</span> <span class="n">rms_norm</span><span class="p">(</span><span class="n">final_embedding</span><span class="p">,</span> <span class="n">model</span><span class="p">[</span><span class="s2">&#34;norm.weight&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">final_embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([17, 4096])</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">&#34;output.weight&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([128256, 4096])</span>
+</span></span><span class="line"><span class="cl"><span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">final_embedding</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">[</span><span class="s2">&#34;output.weight&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([128256])</span>
+</span></span><span class="line"><span class="cl"><span class="n">next_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># softmax</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">next_token</span><span class="p">)</span> <span class="c1"># tensor(2983)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="n">next_token</span><span class="o">.</span><span class="n">item</span><span class="p">()]))</span> <span class="c1"># 42</span>
+</span></span></code></pre></div><p>至此，我们得到了第一个生成的 token，它与最初的 prompt token 组成新的 input 用于生成下一个token</p>
+
+
+<h2 class="relative group">Summary 
+    <div id="summary" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#summary" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>本文介绍了如何一步步得使用 python 和 pytorch 加载 llama3 并进行文本生成。重点介绍了 Llama3模型结构，DecoderLayer的实现，包括其中的 AttentionLayer 和 FFNLayer，并深入探讨了模型的各层参数和维度。</p>
+<p>本文的 AttentionLayer 采用了标准的 multi-head-attention，未体现 KVCache 和 FlashAttention、PagedAttention等优化，这些优化技术可参考我的这个系列文章: <a href="https://chzhyang.github.io/series/attention-and-optimization/"   target="_blank">
+    Attention and Optimization</a></p>
 <p>Reference:</p>
 <ul>
 <li><a href="https://github.com/meta-llama/llama3"   target="_blank">
