@@ -24,7 +24,7 @@
       <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
       
       <guid>http://localhost:1313/posts/llm/llama3/</guid>
-      <description>Download Llama3 Model Weight # Llama3 Download Llama3 weights from https://llama.meta.com/llama-downloads/ Install requirements # pip install -r requirements.txt Tokenizer #</description>
+      <description>本文主要介绍如何一步步使用 python 和 pytorch 加载 llama3 并</description>
       
     </item>
     

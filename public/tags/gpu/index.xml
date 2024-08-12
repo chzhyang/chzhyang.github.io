@@ -18,5 +18,15 @@
       
     </item>
     
+    <item>
+      <title>NVIDIA Driver and CUDA Installation</title>
+      <link>http://localhost:1313/posts/cuda/nvidia_install/</link>
+      <pubDate>Mon, 18 Mar 2024 09:47:15 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/cuda/nvidia_install/</guid>
+      <description>Pre-requirements # OS: ubuntu 22.04, x86-64, kernel(6.5.0-35-generic) NVIDIA GPU: GeForce RTX 3090, 24GB 搜索和下载合适</description>
+      
+    </item>
+    
   </channel>
 </rss>

@@ -7,13 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Sat, 01 Jun 2024 19:15:49 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 12 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>奇绩创坛：Efficient Long-context Generation</title>
+      <link>http://localhost:1313/life/diary20240812/</link>
+      <pubDate>Mon, 12 Aug 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/life/diary20240812/</guid>
+      <description>今天在奇绩创坛参加了 Betty 关于 Long Context 的讨论，越</description>
+      
+    </item>
+    
     <item>
       <title>Quantitative Trading</title>
-      <link>http://localhost:1313/posts/finance/quant/</link>
+      <link>http://localhost:1313/finance/quant/</link>
       <pubDate>Sat, 01 Jun 2024 19:15:49 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/finance/quant/</guid>
+      <guid>http://localhost:1313/finance/quant/</guid>
       <description></description>
       
     </item>
@@ -34,7 +44,7 @@
       <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
       
       <guid>http://localhost:1313/posts/llm/llama3/</guid>
-      <description>Download Llama3 Model Weight # Llama3 Download Llama3 weights from https://llama.meta.com/llama-downloads/ Install requirements # pip install -r requirements.txt Tokenizer #</description>
+      <description>本文主要介绍如何一步步使用 python 和 pytorch 加载 llama3 并</description>
       
     </item>
     
@@ -195,6 +205,16 @@
       
       <guid>http://localhost:1313/posts/llm/quantize_intro/</guid>
       <description>Introduction # LLMs的巨大模型规模和边缘设备的限</description>
+      
+    </item>
+    
+    <item>
+      <title>NVIDIA Driver and CUDA Installation</title>
+      <link>http://localhost:1313/posts/cuda/nvidia_install/</link>
+      <pubDate>Mon, 18 Mar 2024 09:47:15 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/cuda/nvidia_install/</guid>
+      <description>Pre-requirements # OS: ubuntu 22.04, x86-64, kernel(6.5.0-35-generic) NVIDIA GPU: GeForce RTX 3090, 24GB 搜索和下载合适</description>
       
     </item>
     

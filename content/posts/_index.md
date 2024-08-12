@@ -1,5 +1,5 @@
 ---
-title: "Blogs"
+title: "Tech Blogs"
 # description: "Blogs"
 
 cascade:

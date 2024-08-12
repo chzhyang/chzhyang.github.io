@@ -11,24 +11,58 @@
 # ordered by weight from lowest to highest.
 
 [[main]]
- name = "Blogs"
+ name = "Tech"
  pageRef = "posts"
  weight = 10
 
 [[main]]
+ name = "LLM"
+ pageRef = "posts/llm"
+ parent = "Tech"
+ weight = 10
+
+[[main]]
+ name = "CUDA"
+ pageRef = "posts/cuda"
+ parent = "Tech"
+ weight = 20
+
+[[main]]
+ name = "Algorithm"
+ pageRef = "posts/algorithm"
+ parent = "Tech"
+ weight = 40
+
+[[main]]
+ name = "PyTorch"
+ pageRef = "posts/pytorch"
+ parent = "Tech"
+ weight = 20
+
+[[main]]
+ name = "Life"
+ pageRef = "life"
+ weight =20
+
+[[main]]
+ name = "Finance"
+ pageRef = "finance"
+ weight = 30
+
+[[main]]
  name = "Series"
  pageRef = "series"
- weight = 20
+ weight = 50
 
 [[main]]
  name = "Tags"
  pageRef = "tags"
- weight = 30
+ weight = 60
 
 [[main]]
  name = "About"
  pageRef = "about"
- weight = 40
+ weight = 100
 
 # [[main]]
 #   pre = "github"
