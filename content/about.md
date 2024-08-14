@@ -28,5 +28,5 @@ class Me:
 - Parallel Computing: `CUDA`, `GPU`, `Horovod`, `MPI`
 - Machine Learning:  `AI Framework`, `PyTorch`, `Federated Learning`
 - Programming Language: `Python`, `C++`, `GoLang`
-- Cloud Native: `Knative`, `Ray`, `Docker`
+- Cloud: `Serverless`, `Ray`, `Docker`
 - Others: `Linux`

@@ -9,12 +9,12 @@
     <copyright>© 2024 Victor Yang</copyright>
     <lastBuildDate>Mon, 12 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>奇绩创坛：Efficient Long-context Generation</title>
-      <link>http://localhost:1313/life/diary20240812/</link>
+      <title>MiraclePlus：Efficient Long-context Generation</title>
+      <link>http://localhost:1313/life/events/event-20240812/</link>
       <pubDate>Mon, 12 Aug 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/life/diary20240812/</guid>
-      <description>今天在奇绩创坛参加了 Betty 关于 Long Context 的讨论，越</description>
+      <guid>http://localhost:1313/life/events/event-20240812/</guid>
+      <description>Today I attended a discussion led by Betty at MiraclePlus on LLM Long Context, and it just kept getting better and better.</description>
       
     </item>
     
@@ -215,36 +215,6 @@
       
       <guid>http://localhost:1313/posts/cuda/nvidia_install/</guid>
       <description>Pre-requirements # OS: ubuntu 22.04, x86-64, kernel(6.5.0-35-generic) NVIDIA GPU: GeForce RTX 3090, 24GB 搜索和下载合适</description>
-      
-    </item>
-    
-    <item>
-      <title>标签</title>
-      <link>http://localhost:1313/tags/_index.zh-cn/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/_index.zh-cn/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>欢迎来到我的博客</title>
-      <link>http://localhost:1313/_index.zh-cn/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/_index.zh-cn/</guid>
-      <description>欢迎来到我的博客!</description>
-      
-    </item>
-    
-    <item>
-      <title>高级</title>
-      <link>http://localhost:1313/tags/advanced/_index.zh-cn/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/advanced/_index.zh-cn/</guid>
-      <description>这是高级标记。类似其他 Blowfish 中的其他列表页面</description>
       
     </item>
     

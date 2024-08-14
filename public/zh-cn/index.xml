@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>欢迎来到我的博客 on Victor&#39;s Blog</title>
+    <link>http://localhost:1313/zh-cn/</link>
+    <description>Recent content in 欢迎来到我的博客 on Victor&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© 2024 Victor Yang</copyright>
+    <lastBuildDate>Mon, 12 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>奇绩创坛：Efficient Long-context Generation</title>
+      <link>http://localhost:1313/zh-cn/life/events/event-20240812/</link>
+      <pubDate>Mon, 12 Aug 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/life/events/event-20240812/</guid>
+      <description>今天在奇绩创坛参加了 Betty 关于 Long Context 的讨论，越</description>
+      
+    </item>
+    
+    <item>
+      <title>作者</title>
+      <link>http://localhost:1313/zh-cn/about/</link>
+      <pubDate>Wed, 01 May 2024 21:26:03 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/about/</guid>
+      <description>关于我 # class Me: def __init__(self): self.names = &amp;#34;Victor Yang&amp;#34; self.prefer_name = &amp;#34;Victor&amp;#34; self.profession = &amp;#34;Programmer&amp;#34; self.hometown =</description>
+      
+    </item>
+    
+  </channel>
+</rss>

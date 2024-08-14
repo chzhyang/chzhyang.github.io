@@ -45,6 +45,18 @@
  weight =20
 
 [[main]]
+ name = "Events"
+ pageRef = "life/events"
+ parent = "Life"
+ weight =20
+
+[[main]]
+ name = "Travel"
+ pageRef = "life/travel"
+ parent = "Life"
+ weight =20
+
+[[main]]
  name = "Finance"
  pageRef = "finance"
  weight = 30
