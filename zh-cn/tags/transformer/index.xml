@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Transformer on Victor&#39;s Blog</title>
+    <link>https://chzhyang.github.com/zh-cn/tags/transformer/</link>
+    <description>Recent content in Transformer on Victor&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© 2024 Victor Yang</copyright>
+    <lastBuildDate>Tue, 28 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/tags/transformer/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PTQ Methods for LLM</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/quantize_ptq/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/quantize_ptq/</guid>
+      <description>PTQ # PTQ(Post-Training Quantization)，即后训</description>
+      
+    </item>
+    
+    <item>
+      <title>Flash Attention V2</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/flash_attention_2/</link>
+      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/flash_attention_2/</guid>
+      <description>FlashAttention-V2 # FlashAttention2 对FlashAttention 的改</description>
+      
+    </item>
+    
+    <item>
+      <title>Paged Attention V1(vLLM)</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/paged_attention_v1/</link>
+      <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/paged_attention_v1/</guid>
+      <description>vLLM # vLLM是吞吐性能卓越的大模型推理框</description>
+      
+    </item>
+    
+    <item>
+      <title>Flash Attention</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/flash_attention/</link>
+      <pubDate>Sun, 05 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/flash_attention/</guid>
+      <description>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness 与标准 attention 相比，Flash</description>
+      
+    </item>
+    
+    <item>
+      <title>Attention and KV Cache</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/attention/</link>
+      <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/attention/</guid>
+      <description>Self-Attention # 对于self-attention，由</description>
+      
+    </item>
+    
+    <item>
+      <title>vLLM(1)</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm/</link>
+      <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm/</guid>
+      <description>Reference vLLM核心技术 PagedAttent</description>
+      
+    </item>
+    
+    <item>
+      <title>DataType in AI</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/quantize_datatype/</link>
+      <pubDate>Sun, 28 Apr 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/quantize_datatype/</guid>
+      <description>Data in Memory # Float 和 Double 类型的数据在内存中以二进制</description>
+      
+    </item>
+    
+    <item>
+      <title>Quantization Introduction</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/quantize_intro/</link>
+      <pubDate>Sun, 28 Apr 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/quantize_intro/</guid>
+      <description>Introduction # LLMs的巨大模型规模和边缘设备的限</description>
+      
+    </item>
+    
+  </channel>
+</rss>

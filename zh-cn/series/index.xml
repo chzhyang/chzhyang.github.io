@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Series on Victor&#39;s Blog</title>
+    <link>https://chzhyang.github.com/zh-cn/series/</link>
+    <description>Recent content in Series on Victor&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© 2024 Victor Yang</copyright>
+    <lastBuildDate>Tue, 28 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI Quantization</title>
+      <link>https://chzhyang.github.com/zh-cn/series/ai-quantization/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/series/ai-quantization/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>LLM Architecture</title>
+      <link>https://chzhyang.github.com/zh-cn/series/llm-architecture/</link>
+      <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/series/llm-architecture/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Parallel Programming</title>
+      <link>https://chzhyang.github.com/zh-cn/series/cuda-parallel-programming/</link>
+      <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/series/cuda-parallel-programming/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Attention and Optimization</title>
+      <link>https://chzhyang.github.com/zh-cn/series/attention-and-optimization/</link>
+      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/series/attention-and-optimization/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>PyTorch</title>
+      <link>https://chzhyang.github.com/zh-cn/series/pytorch/</link>
+      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/series/pytorch/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>VLLM</title>
+      <link>https://chzhyang.github.com/zh-cn/series/vllm/</link>
+      <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/series/vllm/</guid>
+      <description></description>
+      
+    </item>
+    
+  </channel>
+</rss>

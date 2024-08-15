@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>欢迎来到我的博客 on Victor&#39;s Blog</title>
+    <link>https://chzhyang.github.com/zh-cn/</link>
+    <description>Recent content in 欢迎来到我的博客 on Victor&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© 2024 Victor Yang</copyright>
+    <lastBuildDate>Mon, 12 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>奇绩创坛：Efficient Long-context Generation</title>
+      <link>https://chzhyang.github.com/zh-cn/life/events/event-20240812/</link>
+      <pubDate>Mon, 12 Aug 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/life/events/event-20240812/</guid>
+      <description>今天在奇绩创坛参加了 Betty 关于 Long Context 的讨论，越</description>
+      
+    </item>
+    
+    <item>
+      <title>奇绩创坛：美杜莎</title>
+      <link>https://chzhyang.github.com/zh-cn/life/events/event-2024077/</link>
+      <pubDate>Sun, 07 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/life/events/event-2024077/</guid>
+      <description>今天在奇绩创坛参加了蔡天乐大佬的大模型技</description>
+      
+    </item>
+    
+    <item>
+      <title>奇绩创坛：OpenSora</title>
+      <link>https://chzhyang.github.com/zh-cn/life/events/event-20240628/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/life/events/event-20240628/</guid>
+      <description>AI infra 顶级大佬尤洋老师分享 open-sor</description>
+      
+    </item>
+    
+    <item>
+      <title>奇绩创坛：Rabbit R1</title>
+      <link>https://chzhyang.github.com/zh-cn/life/events/event-20240621/</link>
+      <pubDate>Fri, 21 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/life/events/event-20240621/</guid>
+      <description>吕骋(Jesse)，Rabbit 创始人，</description>
+      
+    </item>
+    
+    <item>
+      <title>微软 AI Day</title>
+      <link>https://chzhyang.github.com/zh-cn/life/events/event-20240614/</link>
+      <pubDate>Fri, 14 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/life/events/event-20240614/</guid>
+      <description>今天在北京参加了微软的 AI Day，这次活动</description>
+      
+    </item>
+    
+    <item>
+      <title>PTQ Methods for LLM</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/quantize_ptq/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/quantize_ptq/</guid>
+      <description>PTQ # PTQ(Post-Training Quantization)，即后训</description>
+      
+    </item>
+    
+    <item>
+      <title>Implement Llama3 in Python and Quantitative Analysis</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/llama3/</link>
+      <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/llama3/</guid>
+      <description>本文主要介绍如何一步步使用 python 和 pytorch 加载 llama3 并</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Optimization</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/cuda/cuda_optimize/</link>
+      <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/cuda/cuda_optimize/</guid>
+      <description>CUDA 程序获得高性能的必要（但不充分）条件有</description>
+      
+    </item>
+    
+    <item>
+      <title>Flash Attention V2</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/flash_attention_2/</link>
+      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/flash_attention_2/</guid>
+      <description>FlashAttention-V2 # FlashAttention2 对FlashAttention 的改</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Memory and Optimization</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/cuda/cuda_memory/</link>
+      <pubDate>Thu, 23 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/cuda/cuda_memory/</guid>
+      <description>Global Memory # 全局内存的访问模式，有合并（coa</description>
+      
+    </item>
+    
+    <item>
+      <title>PyTorch Architecture</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/pytorch/pytorch/</link>
+      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/pytorch/pytorch/</guid>
+      <description>PyTorch 代码结构 # PyTroch 主要由C10、ATen、t</description>
+      
+    </item>
+    
+    <item>
+      <title>Paged Attention V1(vLLM)</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/paged_attention_v1/</link>
+      <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/paged_attention_v1/</guid>
+      <description>vLLM # vLLM是吞吐性能卓越的大模型推理框</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Conv</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/cuda/cuda_conv/</link>
+      <pubDate>Mon, 20 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/cuda/cuda_conv/</guid>
+      <description>CUDA Conv # 在 PyTorch 上实现Conv很简单 import torch from torch.nn.functional import</description>
+      
+    </item>
+    
+    <item>
+      <title>GPU 结构</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/cuda/gpu/</link>
+      <pubDate>Sat, 18 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/cuda/gpu/</guid>
+      <description>CPU 与 GPU 的不同 # CPU，4个 ALU，主要负</description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA Programming</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/cuda/cuda_basic/</link>
+      <pubDate>Fri, 10 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/cuda/cuda_basic/</guid>
+      <description>Kernel Function # gridDim gridDim.x、gridDi</description>
+      
+    </item>
+    
+    <item>
+      <title>Flash Attention</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/flash_attention/</link>
+      <pubDate>Sun, 05 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/flash_attention/</guid>
+      <description>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness 与标准 attention 相比，Flash</description>
+      
+    </item>
+    
+    <item>
+      <title>Attention and KV Cache</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/attention/</link>
+      <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/attention/</guid>
+      <description>Self-Attention # 对于self-attention，由</description>
+      
+    </item>
+    
+    <item>
+      <title>vLLM(1)</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm/</link>
+      <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm/</guid>
+      <description>Reference vLLM核心技术 PagedAttent</description>
+      
+    </item>
+    
+    <item>
+      <title>作者</title>
+      <link>https://chzhyang.github.com/zh-cn/about/</link>
+      <pubDate>Wed, 01 May 2024 21:26:03 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/about/</guid>
+      <description>关于我 # class Me: def __init__(self): self.names = &amp;#34;Victor Yang&amp;#34; self.prefer_name = &amp;#34;Victor&amp;#34; self.profession = &amp;#34;Programmer&amp;#34; self.hometown =</description>
+      
+    </item>
+    
+    <item>
+      <title>DataType in AI</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/quantize_datatype/</link>
+      <pubDate>Sun, 28 Apr 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/quantize_datatype/</guid>
+      <description>Data in Memory # Float 和 Double 类型的数据在内存中以二进制</description>
+      
+    </item>
+    
+    <item>
+      <title>Quantization Introduction</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/quantize_intro/</link>
+      <pubDate>Sun, 28 Apr 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/quantize_intro/</guid>
+      <description>Introduction # LLMs的巨大模型规模和边缘设备的限</description>
+      
+    </item>
+    
+    <item>
+      <title>NVIDIA Driver and CUDA Installation</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/cuda/nvidia_install/</link>
+      <pubDate>Mon, 18 Mar 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/cuda/nvidia_install/</guid>
+      <description>Pre-requirements # OS: ubuntu 22.04, x86-64, kernel(6.5.0-35-generic) NVIDIA GPU: GeForce RTX 3090, 24GB 搜索和下载合适</description>
+      
+    </item>
+    
+  </channel>
+</rss>

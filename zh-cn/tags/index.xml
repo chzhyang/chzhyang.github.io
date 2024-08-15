@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>标签 on Victor&#39;s Blog</title>
+    <link>https://chzhyang.github.com/zh-cn/tags/</link>
+    <description>Recent content in 标签 on Victor&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© 2024 Victor Yang</copyright>
+    <lastBuildDate>Mon, 12 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Event</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/event/</link>
+      <pubDate>Mon, 12 Aug 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/event/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>LLM</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/llm/</link>
+      <pubDate>Mon, 12 Aug 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/llm/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>AI Quantization</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/ai-quantization/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/ai-quantization/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>NLP</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/nlp/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/nlp/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Transformer</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/transformer/</link>
+      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/transformer/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Llama</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/llama/</link>
+      <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/llama/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>CUDA</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/cuda/</link>
+      <pubDate>Fri, 24 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/cuda/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Attention</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/attention/</link>
+      <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/attention/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>AI</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/ai/</link>
+      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/ai/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Pytorch</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/pytorch/</link>
+      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/pytorch/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Paged Attention</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/paged-attention/</link>
+      <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/paged-attention/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>VLLM</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/vllm/</link>
+      <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/vllm/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Conv</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/conv/</link>
+      <pubDate>Mon, 20 May 2024 13:57:32 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/conv/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>GPU</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/gpu/</link>
+      <pubDate>Sat, 18 May 2024 09:47:15 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/gpu/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Flash Attention</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/flash-attention/</link>
+      <pubDate>Sun, 05 May 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/flash-attention/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>KVCache</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/kvcache/</link>
+      <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/kvcache/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>高级</title>
+      <link>https://chzhyang.github.com/zh-cn/tags/advanced/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tags/advanced/</guid>
+      <description>这是高级标记。类似其他 Blowfish 中的其他列表页面</description>
+      
+    </item>
+    
+  </channel>
+</rss>
