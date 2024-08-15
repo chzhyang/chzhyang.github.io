@@ -12,30 +12,30 @@
 
 [[main]]
  name = "Tech"
- pageRef = "posts"
+ pageRef = "tech"
  weight = 10
 
 [[main]]
  name = "LLM"
- pageRef = "posts/llm"
+ pageRef = "tech/llm"
  parent = "Tech"
  weight = 10
 
 [[main]]
  name = "CUDA"
- pageRef = "posts/cuda"
+ pageRef = "tech/cuda"
  parent = "Tech"
  weight = 20
 
 [[main]]
  name = "Algorithm"
- pageRef = "posts/algorithm"
+ pageRef = "tech/algorithm"
  parent = "Tech"
  weight = 40
 
 [[main]]
  name = "PyTorch"
- pageRef = "posts/pytorch"
+ pageRef = "tech/pytorch"
  parent = "Tech"
  weight = 20
 

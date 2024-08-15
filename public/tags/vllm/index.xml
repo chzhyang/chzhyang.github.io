@@ -10,20 +10,20 @@
     <lastBuildDate>Mon, 20 May 2024 15:15:49 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/vllm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Paged Attention V1(vLLM)</title>
-      <link>http://localhost:1313/posts/llm/paged_attention_v1/</link>
+      <link>http://localhost:1313/tech/llm/paged_attention_v1/</link>
       <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/llm/paged_attention_v1/</guid>
+      <guid>http://localhost:1313/tech/llm/paged_attention_v1/</guid>
       <description>vLLM # vLLM是吞吐性能卓越的大模型推理框</description>
       
     </item>
     
     <item>
       <title>vLLM(1)</title>
-      <link>http://localhost:1313/posts/llm/vllm/</link>
+      <link>http://localhost:1313/tech/llm/vllm/</link>
       <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/llm/vllm/</guid>
+      <guid>http://localhost:1313/tech/llm/vllm/</guid>
       <description>Reference vLLM核心技术 PagedAttent</description>
       
     </item>

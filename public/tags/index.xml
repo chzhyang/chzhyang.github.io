@@ -9,11 +9,11 @@
     <copyright>© 2024 Victor Yang</copyright>
     <lastBuildDate>Mon, 12 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Diary</title>
-      <link>http://localhost:1313/tags/diary/</link>
+      <title>Event</title>
+      <link>http://localhost:1313/tags/event/</link>
       <pubDate>Mon, 12 Aug 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/diary/</guid>
+      <guid>http://localhost:1313/tags/event/</guid>
       <description></description>
       
     </item>

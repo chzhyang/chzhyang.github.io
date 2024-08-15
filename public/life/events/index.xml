@@ -18,5 +18,46 @@
       
     </item>
     
+    <item>
+      <title>MiraclePlus：Medusa</title>
+      <link>http://localhost:1313/life/events/event-2024077/</link>
+      <pubDate>Sun, 07 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/life/events/event-2024077/</guid>
+      <description>Today, I attended a LLM tech talk by Tianle Cai at MiraclePlus(Beijing).
+The key topics discussed include #Medusa, #System co-design, #AI-infra business models, #Fast and Slow Thinking, and #Multimodal Performance Optimization.</description>
+      
+    </item>
+    
+    <item>
+      <title>MiraclePlus：OpenSora</title>
+      <link>http://localhost:1313/life/events/event-20240628/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/life/events/event-20240628/</guid>
+      <description>Today, I got a deep dive into open-sora from top AI infra expert Yang You. His insights were spot on, especially on low-cost training strategies—definitely worth checking out.</description>
+      
+    </item>
+    
+    <item>
+      <title>MiraclePlus：Rabbit R1</title>
+      <link>http://localhost:1313/life/events/event-20240621/</link>
+      <pubDate>Fri, 21 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/life/events/event-20240621/</guid>
+      <description>The forum experience was incredible—way beyond expectations. Jesse, founder of Rabbit and RCT STUDIO, really opened up new perspectives on product design and business models.</description>
+      
+    </item>
+    
+    <item>
+      <title>Microsoft AI Day</title>
+      <link>http://localhost:1313/life/events/event-20240614/</link>
+      <pubDate>Fri, 14 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/life/events/event-20240614/</guid>
+      <description>Today, I attended Microsoft&amp;rsquo;s AI Day in Beijing. This event focused on the commercialization of LLMs, which was pretty interesting.</description>
+      
+    </item>
+    
   </channel>
 </rss>

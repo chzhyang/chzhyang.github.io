@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr" class="scroll-smooth" data-default-appearance="light"
+  data-auto-appearance="true"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  
+  <meta http-equiv="content-language" content="zh-cn" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  
+  <title>Quantization Introduction &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="Quantization Introduction &middot; Victor&#39;s Blog" />
+  
+  
+  <meta name="keywords" content="NLP, Transformer, LLM, AI Quantization, " />
+  
+  
+  <link rel="canonical" href="http://localhost:1313/zh-cn/tech/llm/quantize_intro/" />
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.ac59a1b8eaafef739c129d12787ac29f6a420bcb348c7aeec8949a8d0b7d6c2023766c169d14b9031b751504eb3c976efe786fec135b340a49868acd8caa4127.css"
+    integrity="sha512-rFmhuOqv73OcEp0SeHrCn2pCC8s0jHruyJSajQt9bCAjdmwWnRS5Axt1FQTrPJdu/nhv7BNbNApJhorNjKpBJw==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.516a16745bea5a9bd011138d254cc0fd3973cd55ce6e15f3dec763e7c7c2c7448f8fe7b54cca811cb821b0c7e12cd161caace1dd794ac3d34d40937cbcc9ee12.js"
+    integrity="sha512-UWoWdFvqWpvQERONJUzA/TlzzVXObhXz3sdj58fCx0SPj&#43;e1TMqBHLghsMfhLNFhyqzh3XlKw9NNQJN8vMnuEg=="></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script defer type="text/javascript" id="script-bundle" src="/js/main.bundle.min.b36dda9ec4ec11e967fd341e7d57b8c484ac7a39f8f329f7bcf7ce4812569de8607db866a086d4789956ac0b74967e251c9a566d94d469dd28b8787fed4f46f5.js"
+    integrity="sha512-s23ansTsEeln/TQefVe4xISsejn48yn3vPfOSBJWnehgfbhmoIbUeJlWrAt0ln4lHJpWbZTUad0ouHh/7U9G9Q==" data-copy="" data-copied=""></script>
+  
+  
+  <script src="/js/zoom.min.js"></script>
+  
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:url" content="http://localhost:1313/zh-cn/tech/llm/quantize_intro/">
+  <meta property="og:site_name" content="Victor&#39;s Blog">
+  <meta property="og:title" content="Quantization Introduction">
+  <meta property="og:description" content="Introduction # LLMs的巨大模型规模和边缘设备的限">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="tech">
+    <meta property="article:published_time" content="2024-04-28T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-04-30T00:00:00+00:00">
+    <meta property="article:tag" content="NLP">
+    <meta property="article:tag" content="Transformer">
+    <meta property="article:tag" content="LLM">
+    <meta property="article:tag" content="AI Quantization">
+      <meta property="og:see_also" content="http://localhost:1313/zh-cn/tech/llm/quantize_ptq/">
+      <meta property="og:see_also" content="http://localhost:1313/zh-cn/tech/llm/quantize_datatype/">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Quantization Introduction">
+  <meta name="twitter:description" content="Introduction # LLMs的巨大模型规模和边缘设备的限">
+
+  
+  <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "技术",
+    "name": "Quantization Introduction",
+    "headline": "Quantization Introduction",
+    
+    "abstract": "Introduction # LLMs的巨大模型规模和边缘设备的限",
+    "inLanguage": "zh-cn",
+    "url" : "http:\/\/localhost:1313\/zh-cn\/tech\/llm\/quantize_intro\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Victor Yang"
+    },
+    "copyrightYear": "2024",
+    "dateCreated": "2024-04-28T00:00:00\u002b00:00",
+    "datePublished": "2024-04-28T00:00:00\u002b00:00",
+    
+    "dateModified": "2024-04-30T00:00:00\u002b00:00",
+    
+    "keywords": ["NLP","Transformer","LLM","AI Quantization"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "2194"
+  }]
+  </script>
+
+
+  
+  
+  <meta name="author" content="Victor Yang" />
+  
+  
+  
+  <link href="https://github.com/chzhyang" rel="me" />
+  
+  
+  <link href="https://www.linkedin.com/in/victor-yang-0101x" rel="me" />
+  
+  
+  <link href="mailto:chzhyangchn@gmail.com" rel="me" />
+  
+  
+  
+  
+
+<script src="/lib/jquery/jquery.slim.min.js" integrity=""></script>
+
+
+
+
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2&#43;FkHzf1u0&#43;SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3&#43;jMqG/zPtRor/q4qaUCYQpmSjTw8M&#43;g==" />
+
+
+<script defer src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4&#43;aQiLo9/uaQqckDpdJ8Zm3M0QBs&#43;Pktg4pz0kEklUg=="></script>
+
+
+<script defer src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF&#43;NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w=="
+  onload="renderMathInElement(document.body);"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+  
+  
+  <meta name="theme-color"/>
+  
+  
+</head>
+<body
+  class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32">
+  <div id="the-top" class="absolute flex self-center">
+    <a class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+      href="#main-content"><span
+        class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400">&darr;</span>跳过正文</a>
+  </div>
+  
+  
+  <div style="padding-left:0;padding-right:0;padding-top:2px;padding-bottom:3px"
+    class="main-menu flex items-center justify-between px-4 py-6 sm:px-6 md:justify-start space-x-3">
+    
+    <div class="flex flex-1 items-center justify-between">
+        <nav class="flex space-x-3">
+
+            
+            <a href="/zh-cn/" class="text-base font-medium text-gray-500 hover:text-gray-900">Victor&rsquo;s Blog</a>
+            
+
+        </nav>
+        <nav class="hidden md:flex items-center space-x-5 md:ml-12 h-12">
+
+            
+            
+             
+  <div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    
+    <a  href="/zh-cn/tech/"   class="text-base font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="">
+      技术
+    </a>
+    <span>
+      
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+    </span>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/zh-cn/tech/llm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            LLM
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/cuda/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            CUDA
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/pytorch/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            PyTorch
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/algorithm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            算法
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+             
+  <div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    
+    <a  href="/zh-cn/life/"   class="text-base font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="">
+      生活
+    </a>
+    <span>
+      
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+    </span>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/zh-cn/life/events/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            活动
+          </p>
+        </a>
+        
+        <a href="/zh-cn/life/travel/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            旅行
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+            
+  <a href=""  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        金融
+    </p>
+</a>
+
+
+            
+            
+  <a href="/zh-cn/series/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        系列
+    </p>
+</a>
+
+
+            
+            
+  <a href="/zh-cn/tags/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        标签
+    </p>
+</a>
+
+
+            
+            
+  <a href="/zh-cn/about/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        作者
+    </p>
+</a>
+
+
+            
+            
+
+            
+<div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    <span class="mr-1">
+      
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+    <path fill="currentColor" d="M0 128C0 92.7 28.7 64 64 64H256h48 16H576c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H320 304 256 64c-35.3 0-64-28.7-64-64V128zm320 0V384H576V128H320zM178.3 175.9c-3.2-7.2-10.4-11.9-18.3-11.9s-15.1 4.7-18.3 11.9l-64 144c-4.5 10.1 .1 21.9 10.2 26.4s21.9-.1 26.4-10.2l8.9-20.1h73.6l8.9 20.1c4.5 10.1 16.3 14.6 26.4 10.2s14.6-16.3 10.2-26.4l-64-144zM160 233.2L179 276H141l19-42.8zM448 164c11 0 20 9 20 20v4h44 16c11 0 20 9 20 20s-9 20-20 20h-2l-1.6 4.5c-8.9 24.4-22.4 46.6-39.6 65.4c.9 .6 1.8 1.1 2.7 1.6l18.9 11.3c9.5 5.7 12.5 18 6.9 27.4s-18 12.5-27.4 6.9l-18.9-11.3c-4.5-2.7-8.8-5.5-13.1-8.5c-10.6 7.5-21.9 14-34 19.4l-3.6 1.6c-10.1 4.5-21.9-.1-26.4-10.2s.1-21.9 10.2-26.4l3.6-1.6c6.4-2.9 12.6-6.1 18.5-9.8l-12.2-12.2c-7.8-7.8-7.8-20.5 0-28.3s20.5-7.8 28.3 0l14.6 14.6 .5 .5c12.4-13.1 22.5-28.3 29.8-45H448 376c-11 0-20-9-20-20s9-20 20-20h52v-4c0-11 9-20 20-20z"/></svg>
+  </span>
+
+
+    </span>
+    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="Quantization Introduction">简体中文</div>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/tech/llm/quantize_intro/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="Quantization Introduction">
+            EN
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/llm/quantize_intro/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="Quantization Introduction">
+            简体中文
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+            <button id="search-button" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+                title="">
+                
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+            </button>
+            
+
+
+            
+            
+            <div
+                class="ltr:mr-14 rtl:ml-14 flex items-center">
+                <button id="appearance-switcher" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400">
+                    <div class="flex items-center justify-center dark:hidden">
+                        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+  </span>
+
+
+                    </div>
+                    <div class="items-center justify-center hidden dark:flex">
+                        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+  </span>
+
+
+                    </div>
+                </button>
+            </div>
+            
+
+        </nav>
+        <div class="flex md:hidden items-center space-x-5 md:ml-12 h-12">
+
+            <span></span>
+
+            
+<div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    <span class="mr-1">
+      
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+    <path fill="currentColor" d="M0 128C0 92.7 28.7 64 64 64H256h48 16H576c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H320 304 256 64c-35.3 0-64-28.7-64-64V128zm320 0V384H576V128H320zM178.3 175.9c-3.2-7.2-10.4-11.9-18.3-11.9s-15.1 4.7-18.3 11.9l-64 144c-4.5 10.1 .1 21.9 10.2 26.4s21.9-.1 26.4-10.2l8.9-20.1h73.6l8.9 20.1c4.5 10.1 16.3 14.6 26.4 10.2s14.6-16.3 10.2-26.4l-64-144zM160 233.2L179 276H141l19-42.8zM448 164c11 0 20 9 20 20v4h44 16c11 0 20 9 20 20s-9 20-20 20h-2l-1.6 4.5c-8.9 24.4-22.4 46.6-39.6 65.4c.9 .6 1.8 1.1 2.7 1.6l18.9 11.3c9.5 5.7 12.5 18 6.9 27.4s-18 12.5-27.4 6.9l-18.9-11.3c-4.5-2.7-8.8-5.5-13.1-8.5c-10.6 7.5-21.9 14-34 19.4l-3.6 1.6c-10.1 4.5-21.9-.1-26.4-10.2s.1-21.9 10.2-26.4l3.6-1.6c6.4-2.9 12.6-6.1 18.5-9.8l-12.2-12.2c-7.8-7.8-7.8-20.5 0-28.3s20.5-7.8 28.3 0l14.6 14.6 .5 .5c12.4-13.1 22.5-28.3 29.8-45H448 376c-11 0-20-9-20-20s9-20 20-20h52v-4c0-11 9-20 20-20z"/></svg>
+  </span>
+
+
+    </span>
+    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="Quantization Introduction">简体中文</div>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/tech/llm/quantize_intro/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="Quantization Introduction">
+            EN
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/llm/quantize_intro/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="Quantization Introduction">
+            简体中文
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+            <button id="search-button-mobile" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+                title="">
+                
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+            </button>
+            
+
+            
+            
+            <button id="appearance-switcher-mobile" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400" style="margin-right:5px">
+                <div class="flex items-center justify-center dark:hidden">
+                    
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+  </span>
+
+
+                </div>
+                <div class="items-center justify-center hidden dark:flex">
+                    
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+  </span>
+
+
+                </div>
+            </button>
+            
+
+        </div>
+    </div>
+    <div class="-my-2 -mr-2 md:hidden">
+
+        <label id="menu-button" for="menu-controller" class="block">
+            <input type="checkbox" id="menu-controller" class="hidden" />
+            
+            <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+                
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+            </div>
+            <div id="menu-wrapper" style="padding-top:5px;"
+                class="fixed inset-0 z-30 invisible w-screen h-screen m-0 overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50">
+                <ul
+                    class="flex space-y-2 mt-3 flex-col items-end w-full px-6 py-6 mx-auto overflow-visible list-none ltr:text-right rtl:text-left max-w-7xl">
+
+                    <li>
+                        <span
+                            class="cursor-pointer inline-block align-text-bottom hover:text-primary-600 dark:hover:text-primary-400">
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span>
+                    </li>
+
+                    
+
+                     
+  <li class="mt-1">
+    <a class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            技术
+        </p>
+        <span>
+            
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+        </span>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/tech/llm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            LLM
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/tech/cuda/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            CUDA
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/tech/pytorch/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            PyTorch
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/tech/algorithm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            算法
+        </p>
+    </a>
+</li>
+
+<li class="mb-2"></li>
+
+
+
+                    
+
+                     
+  <li class="mt-1">
+    <a class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            生活
+        </p>
+        <span>
+            
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+        </span>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/life/events/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            活动
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/life/travel/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            旅行
+        </p>
+    </a>
+</li>
+
+<li class="mb-2"></li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href=""  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            金融
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/zh-cn/series/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            系列
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/zh-cn/tags/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            标签
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/zh-cn/about/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            作者
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                </ul>
+                
+                
+
+            </div>
+        </label>
+    </div>
+</div>
+
+
+
+
+
+  
+  <div class="relative flex flex-col grow">
+    <main id="main-content" class="grow">
+      
+
+
+<article>
+  
+
+  <header id="single_header" class="mt-5 max-w-prose">
+    
+    <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+      Quantization Introduction
+    </h1>
+    <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+      
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="flex flex-row flex-wrap items-center">
+  
+  
+  <time datetime="2024-04-28 00:00:00 &#43;0000 UTC">2024-04-28</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-04-30 00:00:00 &#43;0000 UTC">更新于: 2024-04-30</time><span class="px-2 text-primary-500">&middot;</span><span>2194 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">5 分钟</span>
+  
+
+  
+  
+</div>
+
+
+
+
+
+<div class="flex flex-row flex-wrap items-center">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/zh-cn/tags/nlp/&#34;,'_self');">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    NLP
+  </span>
+</span>
+  </span>
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/zh-cn/tags/transformer/&#34;,'_self');">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    Transformer
+  </span>
+</span>
+  </span>
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/zh-cn/tags/llm/&#34;,'_self');">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    LLM
+  </span>
+</span>
+  </span>
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/zh-cn/tags/ai-quantization/&#34;,'_self');">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    AI Quantization
+  </span>
+</span>
+  </span>
+  
+  
+  
+  
+</div>
+
+
+
+    </div>
+
+    
+    
+    
+    
+    
+
+    
+
+    
+      
+      
+
+      
+
+      
+
+    
+
+  </header>
+  
+  <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+    
+     <div
+      class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
+      <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
+
+         <details open class="toc-right mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+  <summary
+    class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    目录
+  </summary>
+  <div
+    class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#quantize-object">Quantize Object</a></li>
+    <li><a href="#llm-quantization-example">LLM Quantization Example</a></li>
+    <li><a href="#asymmetry-and-symmetry-quantization">Asymmetry and symmetry quantization</a></li>
+    <li><a href="#量化的粒度">量化的粒度</a></li>
+    <li><a href="#量化方法的分类">量化方法的分类</a></li>
+    <li><a href="#llm-量化的挑战">LLM 量化的挑战</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+<details class="toc-inside mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 lg:hidden">
+  <summary
+    class="py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    目录
+  </summary>
+  <div
+    class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#quantize-object">Quantize Object</a></li>
+    <li><a href="#llm-quantization-example">LLM Quantization Example</a></li>
+    <li><a href="#asymmetry-and-symmetry-quantization">Asymmetry and symmetry quantization</a></li>
+    <li><a href="#量化的粒度">量化的粒度</a></li>
+    <li><a href="#量化方法的分类">量化方法的分类</a></li>
+    <li><a href="#llm-量化的挑战">LLM 量化的挑战</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+
+   </div>
+      </div>
+      
+
+      <div class="min-w-0 min-h-0 max-w-fit">
+        
+        
+<details style="margin-left:0px" class="mt-2 mb-5 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5"  open >
+    
+    <summary
+        class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
+        AI Quantization - 这篇文章属于一个选集。
+    </summary>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/llm/quantize_datatype/">
+            § 1: DataType in AI
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        § 2: 本文
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/llm/quantize_ptq/">
+            § 3: PTQ Methods for LLM
+        </a>
+    </div>
+    
+    
+
+
+</details>
+
+
+
+        <div class="article-content max-w-prose mb-20">
+          
+
+
+
+<h2 class="relative group">Introduction 
+    <div id="introduction" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#introduction" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<p>LLMs的巨大模型规模和边缘设备的限制（主要是内存大小和带宽）给部署带来了显著挑战。</p>
+<p>模型量化是指以较低的推理精度损失将连续取值（通常为float32或者大量可能的离散值）的浮点型权重近似为有限多个离散值（通常为int8）的过程。</p>
+<p>通过以更少的位数表示浮点数据，可以有效降低 LLMs 对内存和带宽的需求，在一些低精度运算较快的处理器上可以增加推理速度。</p>
+
+
+<h2 class="relative group">Quantize Object 
+    <div id="quantize-object" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#quantize-object" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<ul>
+<li>权重，最常规的量化对象</li>
+<li>激活，activation 往往是占内存使用的大头，量化 activation 不仅可以减少内存占用，结合 weight 量化可以充分利用整数计算获得性能提升</li>
+<li>KV Cache，有助于提高长序列生成的吞吐量</li>
+<li>梯度</li>
+</ul>
+
+
+<h2 class="relative group">LLM Quantization Example 
+    <div id="llm-quantization-example" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#llm-quantization-example" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成维度为（5,5）的FP16格式的矩阵m1</span>
+</span></span><span class="line"><span class="cl"><span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 求scale</span>
+</span></span><span class="line"><span class="cl"><span class="n">oldMax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">scale</span> <span class="o">=</span> <span class="mi">127</span><span class="o">/</span><span class="n">oldMax</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">oldMax</span><span class="p">,</span><span class="n">scale</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 量化为m2</span>
+</span></span><span class="line"><span class="cl"><span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">m1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 反量化为m3</span>
+</span></span><span class="line"><span class="cl"><span class="n">m3</span> <span class="o">=</span> <span class="p">(</span><span class="n">m2</span><span class="o">/</span><span class="n">scale</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">m3</span><span class="p">)</span>
+</span></span></code></pre></div><p>现有 FP16 格式的权重矩阵m1:</p>
+<pre tabindex="0"><code>[[0.549   0.7153  0.6025  0.545   0.4236 ]
+ [0.646   0.4375  0.8916  0.964   0.3835 ]
+ [0.7915  0.529   0.568   0.926   0.07104]
+ [0.08716 0.02022 0.8325  0.7783  0.87   ]
+ [0.9785  0.7993  0.4614  0.781   0.1183 ]]
+</code></pre><p>量化为 INT8 格式的步骤：</p>
+<ul>
+<li>旧范围： FP16 格式中的最大权重值 - FP16 格式中的最小权重值 = 0.9785–0.07104</li>
+<li>新范围： INT8 包含从 -128 到 127 的数字。因此，范围 = 127-(-128)</li>
+<li>缩放比例(Scale)： 新范围中的最大值 / 旧范围中的最大值 = 127 / 0.9785 = 129.7884231536926</li>
+<li>量化值： Scale * 原始值, 四舍五入</li>
+</ul>
+<p>m2:</p>
+<pre tabindex="0"><code>[[ 71  93  78  71  55]
+ [ 84  57 116 125  50]
+ [103  69  74 120   9]
+ [ 11   3 108 101 113]
+ [127 104  60 101  15]]
+</code></pre><ul>
+<li>反量化： 量化值 / Scale</li>
+</ul>
+<p>m3:</p>
+<pre tabindex="0"><code>[[0.547   0.7163  0.601   0.547   0.4238 ]
+ [0.647   0.4392  0.8936  0.963   0.3853 ]
+ [0.7935  0.5317  0.5703  0.925   0.06934]
+ [0.0848  0.02312 0.832   0.7783  0.8706 ]
+ [0.9785  0.8013  0.4624  0.7783  0.1156 ]]
+</code></pre><blockquote>
+<p>量化往往以 group 为单位，group 的划分对旧范围有影响</p>
+</blockquote>
+<blockquote>
+<p>由于量化时产生了四舍五入和误差，导致反量化回到 FP16 格式后与原始数据略有误差</p>
+</blockquote>
+
+
+<h2 class="relative group">Asymmetry and symmetry quantization 
+    <div id="asymmetry-and-symmetry-quantization" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#asymmetry-and-symmetry-quantization" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<p>量化的形式：</p>
+<p>根据原始数据范围是否均匀，可以将量化方法分为线性量化和非线性量化。DL中的权重和激活值通常是不均匀的，因此理论上使用非线性量化导致的精度损失更小，但在实际推理中非线性量化的计算复杂度较高，<strong>通常使用线性量化</strong>。</p>
+<p>线性量化的原理。假设 r 表示量化前的浮点数，量化后的整数 q 可以表示为：</p>
+<p>$q=clip(round(r/s+z),q_{min},q_{max})$</p>
+<p>其中，$round()$和$clip()$ 分别表示取整和截断操作，$q_{min}$和$q_{max}$表示量化后的上下限，$s$是数据量化的间隔，$z$是表示数据偏移的偏置。</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p6_2.png" alt="sym-quantize" />
+    
+  </figure>
+
+</p>
+<p>当z=0时称为<strong>对称（Symmetric）量化</strong>，不为0时称为<strong>非对称（Asymmetric）量化</strong>。对于对称量化，原数值的 0 量化后仍然是 0，量化前后的数值都是以 0 为中点对称分布，但实际上有些数值的分布并不是左右对称的，比如 ReLU 激活后都是大于 0，这样会导致量化后 q 的范围只用到了一半，而非对称量化则解决了这个问题</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p6_3.png" alt="asym-quantize" />
+    
+  </figure>
+
+</p>
+<p>非对称量化的 min、max 独立统计，Z 的值根据 r 的分布不同而不同，这样可以使 q 的范围被充分利用。</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://miro.medium.com/v2/resize:fit:828/format:webp/1*vbOT2mU7Op0Re4i2VtbaSg.png" alt="Asymmetry and symmetry quantization" />
+    
+  </figure>
+
+</p>
+<p>对称量化可以避免量化算子在推理中计算z相关的部分，降低推理时的计算复杂度；非对称量化可以根据实际数据的分布确定最小值和最小值，可以更加充分的利用量化数据信息，使得量化导致的损失更低</p>
+
+
+<h2 class="relative group">量化的粒度 
+    <div id="%E9%87%8F%E5%8C%96%E7%9A%84%E7%B2%92%E5%BA%A6" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E9%87%8F%E5%8C%96%E7%9A%84%E7%B2%92%E5%BA%A6" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<p>量化粒度指选取多少个待量化参数共享一个量化系数，通常来说粒度越大，精度损失越大。根据量化参数 s 和 z 的共享范围（即量化粒度），量化方法的粒度可以分为：</p>
+<ul>
+<li>逐层量化(per-tensor, per-layer)，是范围最大的粒度，以一层网络为量化单位，每层网络一组量化参数</li>
+<li>逐通道(per-token &amp; per-channel 或 vector-wise quantization) 量化，以一层网络的每个量化通道为单位，每个通道单独使用一组量化参数
+<ul>
+<li>per-token：对激活来说，每行对应一个量化系数</li>
+<li>per-channel：对权重来说，每列对应一个量化系数</li>
+</ul>
+</li>
+<li>逐组量化(per-group, per-block, Group-wise)，粒度处于 per-tensor 和 per-channel 之间，每个group（如 K 行或 K 列）使用一组 s 和 z</li>
+</ul>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://robot9.me/wp-content/uploads/2023/12/p13_2.png" alt="quantize 粒度" />
+    
+  </figure>
+
+</p>
+<blockquote>
+<p>权重和激活可以选择不同的量化粒度。譬如权重用 per-tensor，激活用 per-token。并且对于激活分动态量化与静态量化</p>
+</blockquote>
+
+
+<h2 class="relative group">量化方法的分类 
+    <div id="%E9%87%8F%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%88%86%E7%B1%BB" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E9%87%8F%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%88%86%E7%B1%BB" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<p>根据应用量化压缩模型的阶段，可以将模型量化分为：</p>
+<ul>
+<li>量化感知训练（Quantization Aware Training, QAT）：在模型训练过程中加入伪量化算子，通过训练时统计输入输出的数据范围可以提升量化后模型的精度，适用于对模型精度要求较高的场景；其量化目标无缝地集成到模型的训练过程中。这种方法使LLM在训练过程中适应低精度表示，增强其处理由量化引起的精度损失的能力。这种适应旨在量化过程之后保持更高性能
+<ul>
+<li>LLM-QAT</li>
+</ul>
+</li>
+<li>量化感知微调（Quantization-Aware Fine-tuning，QAF）：在微调过程中对LLM进行量化。主要目标是确保经过微调的LLM在量化为较低位宽后仍保持性能。通过将量化感知整合到微调中，以在模型压缩和保持性能之间取得平衡
+<ul>
+<li>QLoRA</li>
+</ul>
+</li>
+<li>训练后量化（Post Training Quantization, PTQ）：在LLM训练完成后对其参数进行量化，只需要少量校准数据，适用于追求高易用性和缺乏训练资源的场景。主要目标是减少LLM的存储和计算复杂性，而无需对LLM架构进行修改或进行重新训练。PTQ的主要优势在于其简单性和高效性。但PTQ可能会在量化过程中引入一定程度的精度损失。
+<ul>
+<li>LLM.int8()</li>
+<li>GPTQ</li>
+<li>AWQ</li>
+</ul>
+</li>
+</ul>
+
+
+<h2 class="relative group">LLM 量化的挑战 
+    <div id="llm-%E9%87%8F%E5%8C%96%E7%9A%84%E6%8C%91%E6%88%98" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#llm-%E9%87%8F%E5%8C%96%E7%9A%84%E6%8C%91%E6%88%98" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<ul>
+<li>量化激活比量化权重更难（LLM.int8()表明，使用 INT8 甚至 INT4 量化 LLM 的权重不会降低准确性）</li>
+<li>异常值让量化激活更困难（激活的异常值比大多数激活值大 100 倍，使用 INT8 量化，大多数值将被清零）</li>
+<li>异常值持续存在于固定的通道中（固定通道存在异常值，并且异常值通道值较大）</li>
+</ul>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1712927348344dd4b4426dc2befc61bd~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1280&amp;h=395&amp;s=2026136&amp;e=png&amp;b=f9f9f9" alt="LLM quantize challenge" />
+    
+  </figure>
+
+</p>
+<p>Reference</p>
+<ul>
+<li><a href="https://www.bilibili.com/video/BV1WT411k724/?spm_id_from=333.788&amp;vd_source=0937fafa4d5fa1b43ea250393f22ec7d"   target="_blank">
+    int8/fp16/bf16/tf32在AI芯片中什么作用？</a></li>
+<li><a href="https://blog.csdn.net/djfjkj52/article/details/114963916"   target="_blank">
+    fp16和fp32神经网络混合精度训练</a></li>
+<li><a href="https://juejin.cn/post/7291931852800524329"   target="_blank">
+    大模型量化概述</a></li>
+<li><a href="https://robot9.me/ai-model-quantization-principles-practice/"   target="_blank">
+    模型量化原理与实践</a></li>
+</ul>
+
+        </div>
+        
+        
+
+        
+<details style="margin-left:0px" class="mt-2 mb-5 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5">
+    
+    <summary
+        class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
+        AI Quantization - 这篇文章属于一个选集。
+    </summary>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/llm/quantize_datatype/">
+            § 1: DataType in AI
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        § 2: 本文
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/llm/quantize_ptq/">
+            § 3: PTQ Methods for LLM
+        </a>
+    </div>
+    
+    
+
+
+</details>
+
+        
+
+          
+      </div>
+     
+      
+      
+        
+        
+          
+          
+        
+          
+          
+        
+      <script>
+        var oid = "views_tech\/llm\/quantize_intro.md"
+        var oid_likes = "likes_tech\/llm\/quantize_intro.md"
+      </script>
+      
+      
+      
+      <script type="text/javascript" src="/js/page.min.0860cf4e04fa2d72cc33ddba263083464d48f67de06114529043cb4623319efed4f484fd7f1730df5abea0e2da6f3538855634081d02f2d6e920b956f063e823.js" integrity="sha512-CGDPTgT6LXLMM926JjCDRk1I9n3gYRRSkEPLRiMxnv7U9IT9fxcw31q&#43;oOLabzU4hVY0CB0C8tbpILlW8GPoIw=="></script>
+  
+    </section>
+  <footer class="pt-8 max-w-prose print:hidden">
+
+    
+  
+    
+    
+    
+      
+      
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="flex group mr-3" href="/zh-cn/tech/llm/quantize_datatype/">
+              <span
+                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >DataType in AI</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2024-04-28 00:00:00 &#43;0000 UTC">2024-04-28</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+    
+  </footer>
+</article>
+
+      <div id="top-scroller" class="pointer-events-none absolute top-[110vh] bottom-0 w-12 ltr:right-0 rtl:left-0">
+  <a href="#the-top"
+    class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 mb-16 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+    aria-label="返回顶部" title="返回顶部">
+    &uarr;
+  </a>
+</div>
+    </main><footer id="site-footer" class="py-10 print:hidden">
+  
+  
+    
+  
+  <div class="flex items-center justify-between">
+
+    
+    
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+      &copy;
+      2024
+      Victor Yang
+    </p>
+    
+
+    
+    
+    <p class="text-xs text-neutral-500 dark:text-neutral-400">
+      
+      
+      由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a> 强力驱动
+    </p>
+    
+
+  </div>
+  <script>
+    
+    mediumZoom(document.querySelectorAll("img:not(.nozoom)"), {
+      margin: 24,
+      background: 'rgba(0,0,0,0.5)',
+      scrollOffset: 0,
+    })
+    
+  </script>
+  
+  
+  <script type="text/javascript" src="/js/process.min.ee03488f19c93c2efb199e2e3014ea5f3cb2ce7d45154adb3399a158cac27ca52831db249ede5bb602700ef87eb02434139de0858af1818ab0fb4182472204a4.js" integrity="sha512-7gNIjxnJPC77GZ4uMBTqXzyyzn1FFUrbM5mhWMrCfKUoMdsknt5btgJwDvh&#43;sCQ0E53ghYrxgYqw&#43;0GCRyIEpA=="></script>
+  
+  
+</footer><div
+  id="search-wrapper"
+  class="invisible fixed inset-0 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="http://localhost:1313/zh-cn/"
+  style="z-index:500"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+  </div>
+</body>
+
+</html>

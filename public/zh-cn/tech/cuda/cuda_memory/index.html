@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr" class="scroll-smooth" data-default-appearance="light"
+  data-auto-appearance="true"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  
+  <meta http-equiv="content-language" content="zh-cn" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  
+  <title>CUDA Memory and Optimization &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="CUDA Memory and Optimization &middot; Victor&#39;s Blog" />
+  
+  
+  <meta name="keywords" content="CUDA, " />
+  
+  
+  <link rel="canonical" href="http://localhost:1313/zh-cn/tech/cuda/cuda_memory/" />
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.ac59a1b8eaafef739c129d12787ac29f6a420bcb348c7aeec8949a8d0b7d6c2023766c169d14b9031b751504eb3c976efe786fec135b340a49868acd8caa4127.css"
+    integrity="sha512-rFmhuOqv73OcEp0SeHrCn2pCC8s0jHruyJSajQt9bCAjdmwWnRS5Axt1FQTrPJdu/nhv7BNbNApJhorNjKpBJw==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.516a16745bea5a9bd011138d254cc0fd3973cd55ce6e15f3dec763e7c7c2c7448f8fe7b54cca811cb821b0c7e12cd161caace1dd794ac3d34d40937cbcc9ee12.js"
+    integrity="sha512-UWoWdFvqWpvQERONJUzA/TlzzVXObhXz3sdj58fCx0SPj&#43;e1TMqBHLghsMfhLNFhyqzh3XlKw9NNQJN8vMnuEg=="></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script defer type="text/javascript" id="script-bundle" src="/js/main.bundle.min.b36dda9ec4ec11e967fd341e7d57b8c484ac7a39f8f329f7bcf7ce4812569de8607db866a086d4789956ac0b74967e251c9a566d94d469dd28b8787fed4f46f5.js"
+    integrity="sha512-s23ansTsEeln/TQefVe4xISsejn48yn3vPfOSBJWnehgfbhmoIbUeJlWrAt0ln4lHJpWbZTUad0ouHh/7U9G9Q==" data-copy="" data-copied=""></script>
+  
+  
+  <script src="/js/zoom.min.js"></script>
+  
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:url" content="http://localhost:1313/zh-cn/tech/cuda/cuda_memory/">
+  <meta property="og:site_name" content="Victor&#39;s Blog">
+  <meta property="og:title" content="CUDA Memory and Optimization">
+  <meta property="og:description" content="Global Memory # 全局内存的访问模式，有合并（coa">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="tech">
+    <meta property="article:published_time" content="2024-05-23T13:57:32+00:00">
+    <meta property="article:modified_time" content="2024-05-29T00:00:00+00:00">
+    <meta property="article:tag" content="CUDA">
+      <meta property="og:see_also" content="http://localhost:1313/zh-cn/tech/cuda/cuda_optimize/">
+      <meta property="og:see_also" content="http://localhost:1313/zh-cn/tech/cuda/cuda_conv/">
+      <meta property="og:see_also" content="http://localhost:1313/zh-cn/tech/cuda/gpu/">
+      <meta property="og:see_also" content="http://localhost:1313/zh-cn/tech/cuda/cuda_basic/">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CUDA Memory and Optimization">
+  <meta name="twitter:description" content="Global Memory # 全局内存的访问模式，有合并（coa">
+
+  
+  <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "技术",
+    "name": "CUDA Memory and Optimization",
+    "headline": "CUDA Memory and Optimization",
+    
+    "abstract": "Global Memory # 全局内存的访问模式，有合并（coa",
+    "inLanguage": "zh-cn",
+    "url" : "http:\/\/localhost:1313\/zh-cn\/tech\/cuda\/cuda_memory\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Victor Yang"
+    },
+    "copyrightYear": "2024",
+    "dateCreated": "2024-05-23T13:57:32\u002b00:00",
+    "datePublished": "2024-05-23T13:57:32\u002b00:00",
+    
+    "dateModified": "2024-05-29T00:00:00\u002b00:00",
+    
+    "keywords": ["CUDA"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "3569"
+  }]
+  </script>
+
+
+  
+  
+  <meta name="author" content="Victor Yang" />
+  
+  
+  
+  <link href="https://github.com/chzhyang" rel="me" />
+  
+  
+  <link href="https://www.linkedin.com/in/victor-yang-0101x" rel="me" />
+  
+  
+  <link href="mailto:chzhyangchn@gmail.com" rel="me" />
+  
+  
+  
+  
+
+<script src="/lib/jquery/jquery.slim.min.js" integrity=""></script>
+
+
+
+
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2&#43;FkHzf1u0&#43;SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3&#43;jMqG/zPtRor/q4qaUCYQpmSjTw8M&#43;g==" />
+
+
+<script defer src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4&#43;aQiLo9/uaQqckDpdJ8Zm3M0QBs&#43;Pktg4pz0kEklUg=="></script>
+
+
+<script defer src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF&#43;NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w=="
+  onload="renderMathInElement(document.body);"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+  
+  
+  <meta name="theme-color"/>
+  
+  
+</head>
+<body
+  class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32">
+  <div id="the-top" class="absolute flex self-center">
+    <a class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+      href="#main-content"><span
+        class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400">&darr;</span>跳过正文</a>
+  </div>
+  
+  
+  <div style="padding-left:0;padding-right:0;padding-top:2px;padding-bottom:3px"
+    class="main-menu flex items-center justify-between px-4 py-6 sm:px-6 md:justify-start space-x-3">
+    
+    <div class="flex flex-1 items-center justify-between">
+        <nav class="flex space-x-3">
+
+            
+            <a href="/zh-cn/" class="text-base font-medium text-gray-500 hover:text-gray-900">Victor&rsquo;s Blog</a>
+            
+
+        </nav>
+        <nav class="hidden md:flex items-center space-x-5 md:ml-12 h-12">
+
+            
+            
+             
+  <div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    
+    <a  href="/zh-cn/tech/"   class="text-base font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="">
+      技术
+    </a>
+    <span>
+      
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+    </span>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/zh-cn/tech/llm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            LLM
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/cuda/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            CUDA
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/pytorch/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            PyTorch
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/algorithm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            算法
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+             
+  <div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    
+    <a  href="/zh-cn/life/"   class="text-base font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="">
+      生活
+    </a>
+    <span>
+      
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+    </span>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/zh-cn/life/events/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            活动
+          </p>
+        </a>
+        
+        <a href="/zh-cn/life/travel/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            旅行
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+            
+  <a href=""  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        金融
+    </p>
+</a>
+
+
+            
+            
+  <a href="/zh-cn/series/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        系列
+    </p>
+</a>
+
+
+            
+            
+  <a href="/zh-cn/tags/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        标签
+    </p>
+</a>
+
+
+            
+            
+  <a href="/zh-cn/about/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        作者
+    </p>
+</a>
+
+
+            
+            
+
+            
+<div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    <span class="mr-1">
+      
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+    <path fill="currentColor" d="M0 128C0 92.7 28.7 64 64 64H256h48 16H576c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H320 304 256 64c-35.3 0-64-28.7-64-64V128zm320 0V384H576V128H320zM178.3 175.9c-3.2-7.2-10.4-11.9-18.3-11.9s-15.1 4.7-18.3 11.9l-64 144c-4.5 10.1 .1 21.9 10.2 26.4s21.9-.1 26.4-10.2l8.9-20.1h73.6l8.9 20.1c4.5 10.1 16.3 14.6 26.4 10.2s14.6-16.3 10.2-26.4l-64-144zM160 233.2L179 276H141l19-42.8zM448 164c11 0 20 9 20 20v4h44 16c11 0 20 9 20 20s-9 20-20 20h-2l-1.6 4.5c-8.9 24.4-22.4 46.6-39.6 65.4c.9 .6 1.8 1.1 2.7 1.6l18.9 11.3c9.5 5.7 12.5 18 6.9 27.4s-18 12.5-27.4 6.9l-18.9-11.3c-4.5-2.7-8.8-5.5-13.1-8.5c-10.6 7.5-21.9 14-34 19.4l-3.6 1.6c-10.1 4.5-21.9-.1-26.4-10.2s.1-21.9 10.2-26.4l3.6-1.6c6.4-2.9 12.6-6.1 18.5-9.8l-12.2-12.2c-7.8-7.8-7.8-20.5 0-28.3s20.5-7.8 28.3 0l14.6 14.6 .5 .5c12.4-13.1 22.5-28.3 29.8-45H448 376c-11 0-20-9-20-20s9-20 20-20h52v-4c0-11 9-20 20-20z"/></svg>
+  </span>
+
+
+    </span>
+    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="CUDA Memory and Optimization">简体中文</div>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/tech/cuda/cuda_memory/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="CUDA Memory and Optimization">
+            EN
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/cuda/cuda_memory/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="CUDA Memory and Optimization">
+            简体中文
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+            <button id="search-button" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+                title="">
+                
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+            </button>
+            
+
+
+            
+            
+            <div
+                class="ltr:mr-14 rtl:ml-14 flex items-center">
+                <button id="appearance-switcher" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400">
+                    <div class="flex items-center justify-center dark:hidden">
+                        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+  </span>
+
+
+                    </div>
+                    <div class="items-center justify-center hidden dark:flex">
+                        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+  </span>
+
+
+                    </div>
+                </button>
+            </div>
+            
+
+        </nav>
+        <div class="flex md:hidden items-center space-x-5 md:ml-12 h-12">
+
+            <span></span>
+
+            
+<div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    <span class="mr-1">
+      
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+    <path fill="currentColor" d="M0 128C0 92.7 28.7 64 64 64H256h48 16H576c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H320 304 256 64c-35.3 0-64-28.7-64-64V128zm320 0V384H576V128H320zM178.3 175.9c-3.2-7.2-10.4-11.9-18.3-11.9s-15.1 4.7-18.3 11.9l-64 144c-4.5 10.1 .1 21.9 10.2 26.4s21.9-.1 26.4-10.2l8.9-20.1h73.6l8.9 20.1c4.5 10.1 16.3 14.6 26.4 10.2s14.6-16.3 10.2-26.4l-64-144zM160 233.2L179 276H141l19-42.8zM448 164c11 0 20 9 20 20v4h44 16c11 0 20 9 20 20s-9 20-20 20h-2l-1.6 4.5c-8.9 24.4-22.4 46.6-39.6 65.4c.9 .6 1.8 1.1 2.7 1.6l18.9 11.3c9.5 5.7 12.5 18 6.9 27.4s-18 12.5-27.4 6.9l-18.9-11.3c-4.5-2.7-8.8-5.5-13.1-8.5c-10.6 7.5-21.9 14-34 19.4l-3.6 1.6c-10.1 4.5-21.9-.1-26.4-10.2s.1-21.9 10.2-26.4l3.6-1.6c6.4-2.9 12.6-6.1 18.5-9.8l-12.2-12.2c-7.8-7.8-7.8-20.5 0-28.3s20.5-7.8 28.3 0l14.6 14.6 .5 .5c12.4-13.1 22.5-28.3 29.8-45H448 376c-11 0-20-9-20-20s9-20 20-20h52v-4c0-11 9-20 20-20z"/></svg>
+  </span>
+
+
+    </span>
+    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="CUDA Memory and Optimization">简体中文</div>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/tech/cuda/cuda_memory/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="CUDA Memory and Optimization">
+            EN
+          </p>
+        </a>
+        
+        <a href="/zh-cn/tech/cuda/cuda_memory/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="CUDA Memory and Optimization">
+            简体中文
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+            <button id="search-button-mobile" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+                title="">
+                
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+            </button>
+            
+
+            
+            
+            <button id="appearance-switcher-mobile" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400" style="margin-right:5px">
+                <div class="flex items-center justify-center dark:hidden">
+                    
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+  </span>
+
+
+                </div>
+                <div class="items-center justify-center hidden dark:flex">
+                    
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+  </span>
+
+
+                </div>
+            </button>
+            
+
+        </div>
+    </div>
+    <div class="-my-2 -mr-2 md:hidden">
+
+        <label id="menu-button" for="menu-controller" class="block">
+            <input type="checkbox" id="menu-controller" class="hidden" />
+            
+            <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+                
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+            </div>
+            <div id="menu-wrapper" style="padding-top:5px;"
+                class="fixed inset-0 z-30 invisible w-screen h-screen m-0 overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50">
+                <ul
+                    class="flex space-y-2 mt-3 flex-col items-end w-full px-6 py-6 mx-auto overflow-visible list-none ltr:text-right rtl:text-left max-w-7xl">
+
+                    <li>
+                        <span
+                            class="cursor-pointer inline-block align-text-bottom hover:text-primary-600 dark:hover:text-primary-400">
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span>
+                    </li>
+
+                    
+
+                     
+  <li class="mt-1">
+    <a class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            技术
+        </p>
+        <span>
+            
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+        </span>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/tech/llm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            LLM
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/tech/cuda/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            CUDA
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/tech/pytorch/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            PyTorch
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/tech/algorithm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            算法
+        </p>
+    </a>
+</li>
+
+<li class="mb-2"></li>
+
+
+
+                    
+
+                     
+  <li class="mt-1">
+    <a class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            生活
+        </p>
+        <span>
+            
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+        </span>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/life/events/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            活动
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/zh-cn/life/travel/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            旅行
+        </p>
+    </a>
+</li>
+
+<li class="mb-2"></li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href=""  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            金融
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/zh-cn/series/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            系列
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/zh-cn/tags/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            标签
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/zh-cn/about/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            作者
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                </ul>
+                
+                
+
+            </div>
+        </label>
+    </div>
+</div>
+
+
+
+
+
+  
+  <div class="relative flex flex-col grow">
+    <main id="main-content" class="grow">
+      
+
+
+<article>
+  
+
+  <header id="single_header" class="mt-5 max-w-prose">
+    
+    <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+      CUDA Memory and Optimization
+    </h1>
+    <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+      
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="flex flex-row flex-wrap items-center">
+  
+  
+  <time datetime="2024-05-29 00:00:00 &#43;0000 UTC">更新于: 2024-05-29</time><span class="px-2 text-primary-500">&middot;</span><span>3569 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">8 分钟</span>
+  
+
+  
+  
+</div>
+
+
+
+
+
+<div class="flex flex-row flex-wrap items-center">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/zh-cn/tags/cuda/&#34;,'_self');">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    CUDA
+  </span>
+</span>
+  </span>
+  
+  
+  
+  
+</div>
+
+
+
+    </div>
+
+    
+    
+    
+    
+    
+
+    
+
+    
+      
+      
+
+      
+
+      
+
+    
+
+  </header>
+  
+  <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+    
+     <div
+      class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
+      <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
+
+         <details open class="toc-right mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+  <summary
+    class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    目录
+  </summary>
+  <div
+    class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#global-memory">Global Memory</a>
+      <ul>
+        <li><a href="#cuda-kernel---matrix-transpose">CUDA Kernel - Matrix Transpose</a></li>
+      </ul>
+    </li>
+    <li><a href="#shared-memory">Shared memory</a>
+      <ul>
+        <li><a href="#cuda-kernel---array-reduce">CUDA Kernel - Array Reduce</a></li>
+        <li><a href="#bank-conflict-in-shared-memory">Bank Conflict in Shared Memory</a></li>
+        <li><a href="#cuda-kernel---matrix-transposeshared-memory">CUDA Kernel - Matrix Transpose(Shared Memory)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</details>
+<details class="toc-inside mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 lg:hidden">
+  <summary
+    class="py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    目录
+  </summary>
+  <div
+    class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#global-memory">Global Memory</a>
+      <ul>
+        <li><a href="#cuda-kernel---matrix-transpose">CUDA Kernel - Matrix Transpose</a></li>
+      </ul>
+    </li>
+    <li><a href="#shared-memory">Shared memory</a>
+      <ul>
+        <li><a href="#cuda-kernel---array-reduce">CUDA Kernel - Array Reduce</a></li>
+        <li><a href="#bank-conflict-in-shared-memory">Bank Conflict in Shared Memory</a></li>
+        <li><a href="#cuda-kernel---matrix-transposeshared-memory">CUDA Kernel - Matrix Transpose(Shared Memory)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+
+   </div>
+      </div>
+      
+
+      <div class="min-w-0 min-h-0 max-w-fit">
+        
+        
+<details style="margin-left:0px" class="mt-2 mb-5 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5"  open >
+    
+    <summary
+        class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
+        CUDA Parallel Programming - 这篇文章属于一个选集。
+    </summary>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/cuda/gpu/">
+            § 1: GPU 结构
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/cuda/cuda_basic/">
+            § 2: CUDA Programming
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/cuda/cuda_conv/">
+            § 3: CUDA Conv
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/cuda/cuda_optimize/">
+            § 4: CUDA Optimization
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        § 5: 本文
+    </div>
+    
+    
+
+
+</details>
+
+
+
+        <div class="article-content max-w-prose mb-20">
+          
+
+<h2 class="relative group">Global Memory 
+    <div id="global-memory" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#global-memory" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<p>全局内存的访问模式，有合并（coalesced）与非合并（uncoalesced）之分。</p>
+<p>合并访问指的是一个线程束对全局内存的一次访问请求（读或者写）导致最少数量的数据传输，否则称访问是非合并的。</p>
+<p>合并度（degree of coalescing）等于线程束请求的字节数除以由该请求导致的所有数据传输处理的字节数。如果所有数据传输中处理的数据都是线程束所需要的，那么合并度就是 100%，即对应合并访问。也可以将合并度理解为一种资源利用率。利用率越高，核函数中与全局内存访问有关的部分的性能就更好</p>
+<p>顺序的合并访问:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">add</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">z</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="o">&lt;&lt;&lt;</span><span class="mi">128</span><span class="p">,</span> <span class="mi">32</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">);</span>
+</span></span></code></pre></div><p>第一个线程块中的线程束将访问数组 x 中第 0-31 个元素，对应 128 字节的连续内存，而且首地址一定是 256 字节的整数倍。这样的访问只需要 4 次数据传输即可完成，所以是合并访问，合并度为 100%</p>
+<p>乱序的合并访问:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">add_permuted</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">z</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">tid_permuted</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">^</span> <span class="mh">0x1</span><span class="p">;</span><span class="c1">//是将 0-31 的整数做某种置换（交换两个相邻的数）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">tid_permuted</span> <span class="o">+</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_permuted</span><span class="o">&lt;&lt;&lt;</span><span class="mi">128</span><span class="p">,</span> <span class="mi">32</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">);</span>
+</span></span></code></pre></div><p>第一个线程块中的线程束将依然访问数组 x 中第 0-31 个元素，只不过线程号与数组元素指标不完全一致而已，合并度也为 100%</p>
+<p>不对齐的非合并访问:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">add_offset</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">z</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">add_offset</span><span class="o">&lt;&lt;&lt;</span><span class="mi">128</span><span class="p">,</span> <span class="mi">32</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">);</span>
+</span></span></code></pre></div><p>第一个线程块中的线程束将访问数组 x 中第 1-32 个元素。假如数组 x 的首地址为 256字节，该线程束将访问设备内存的 260-387 字节。这将触发 5 次数据传输，对应的内存地址分别是256-287 字节、288-319 字节、320-351 字节、352-383 字节和 384-415 字节，合并度为 4/5 = 80%</p>
+<p>跨越式的非合并访问</p>
+<pre tabindex="0"><code>void __global__ add_stride(float *x, float *y, float *z)
+{
+int n = blockIdx.x + threadIdx.x * gridDim.x;
+z[n] = x[n] + y[n];
+}
+add_stride&lt;&lt;&lt;128, 32&gt;&gt;&gt;(x, y, z);
+</code></pre><p>第一个线程块中的线程束将访问数组 x 中指标为 0、128、256、384 等的元素。每一对数据都不在一个连续的 32 字节的内存片段，故该线程束的访问将触发 32 次数据传输，合并度为 4/32 = 12.5%</p>
+
+
+<h3 class="relative group">CUDA Kernel - Matrix Transpose 
+    <div id="cuda-kernel---matrix-transpose" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#cuda-kernel---matrix-transpose" aria-label="锚点">#</a>
+    </span>        
+    
+</h3>
+<p>对于多维数组，x 维度的线程指标 threadIdx.x 是最内层的（变化最快），所以相邻的 threadIdx.x 对应相邻的线程，即对threadIdx.x相邻的数据的访问是连续的。</p>
+<p>CUDA中，<code>顺序读</code>的性能理论上高于<code>非顺序读</code>，但是实际性能一致。因为从帕斯卡架构开始，如果编译器能够判断一个全局内存变量在整个核函数的范围都只可读（如这里的矩阵 A），则会自动用函数 __ldg() 读取全局内存，从而对数据的读取进行缓存，缓解非合并访问带来的影响。</p>
+<p>但是写操作没有这种自动配置，所以 <code>顺序写</code>的实际性能高于<code>非顺序写</code>。<strong>所以，CUDA中访问全局内存时，要注意优先做到顺序写。</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose1</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">[</span><span class="n">nx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ny</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">ny</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">nx</span><span class="p">];</span> <span class="c1">//顺序读，非顺序写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose2</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">[</span><span class="n">ny</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">nx</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">nx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ny</span><span class="p">];</span><span class="c1">//顺序写，非顺序读
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose3</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">[</span><span class="n">ny</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">nx</span><span class="p">]</span> <span class="o">=</span> <span class="n">__ldg</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">[</span><span class="n">nx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ny</span><span class="p">]);</span><span class="c1">//顺序写，自动化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>并行配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">N</span><span class="o">=</span><span class="mi">1024</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">TILE_DIM</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span><span class="c1">//32 = float32的大小，一个thread访问一个float32数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">grid_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="n">TILE_DIM</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">TILE_DIM</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl"><span class="n">dim3</span> <span class="nf">grid</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">dim3</span> <span class="nf">block</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">)</span><span class="c1">//block最多1024个threads
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">M</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="o">*</span> <span class="n">N2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">real</span> <span class="o">*</span><span class="n">d_A</span><span class="p">,</span> <span class="o">*</span><span class="n">d_B</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_A</span><span class="p">,</span> <span class="n">M</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_B</span><span class="p">,</span> <span class="n">M</span><span class="p">);</span>
+</span></span></code></pre></div><p>在Tesla T4上测试结果：</p>
+<pre tabindex="0"><code>transpose with coalesced read:
+Time = 0.193677 +- 0.000643045 ms.
+
+transpose with coalesced write:
+Time = 0.129763 +- 0.00107203 ms.
+
+transpose with coalesced write and __ldg read:
+Time = 0.130074 +- 0.00122755 ms.
+</code></pre>
+
+<h2 class="relative group">Shared memory 
+    <div id="shared-memory" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#shared-memory" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<p>上面的矩阵转置例子中，对全局内存的读和写这两个操作，总有一个是合并的，另—个是非合并的。<strong>利用共享内存可以改善全局内存的访问模式，使得对全局内存的读和写都是合并的。</strong></p>
+<p>全局内存的访问速度是所有内存中最低的，应该尽量减少对它的使用。所有设备内存中，寄存器是最高效的，但在需要线程合作的问题中，用仅对单个线程可见的寄存器是不够的, 需要使用对整个线程块可见的共享内存：</p>
+<ul>
+<li>在核函数中，要将一个变量定义为共享内存变量，就要在定义语句中加上一个限定符 <code>__shared__</code>。一般情况下，共享内存的数组长度等于线程块大小</li>
+<li>线程块的处理逻辑完成后，在利用共享内存进行线程块之间的合作（通信）之前，都要进行同步 <code>__syncthreads()</code>，以确保共享内存变量中的数据对线程块内的所有线程来说都准备就绪</li>
+<li>因为共享内存变量的生命周期仅仅在核函数内，所以必须在核函数结束之前将共享内存中的某些结果保存到全局内存</li>
+</ul>
+<p>动态共享内存和静态共享内存：</p>
+<ul>
+<li>静态的限定符 <code>__shared__</code>， 需要指定内存大小，如 <code>__shared__ real s_y[128]</code></li>
+<li>动态的限定符 <code>__extern__</code>, 定义变量时不用指定内存大小，如 <code>extern __shared__ real s_y[]</code>， 但是需要在调用 kernel 时，加入共享内存的参数，即<strong>共享内存的数组长度等于线程块大小</strong>，如 <code>kernel&lt;&lt;&lt;grid_size, block_size, sizeof(real) * block_size&gt;&gt;&gt;()</code>, 这个效果与静态共享内存是一样的，但可以防止使用静态共享内存时指定内存长度时出错</li>
+<li>使用动态共享内存的核函数和使用静态共享内存的核函数在执行时间上几乎没有差别。但使用动态共享内存容易可提高程序的可维护性</li>
+</ul>
+<p>上面的矩阵转置例子使用共享内存的思路是用一个 block 处理 BLOCK_SIZE * BLOCK_SIZE 的矩阵块</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">block_size</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">matrix_trans</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">in</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">out</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="kt">int</span> <span class="n">buf</span><span class="p">[</span><span class="n">block_size</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">in</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buf</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">in</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">j</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">j</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="o">&amp;&amp;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="o">&gt;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
+
+<h3 class="relative group">CUDA Kernel - Array Reduce 
+    <div id="cuda-kernel---array-reduce" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#cuda-kernel---array-reduce" aria-label="锚点">#</a>
+    </span>        
+    
+</h3>
+
+
+<p>一个有 N（\(10^8\)） 个元素的数组 x，假如我们需要计算该数组中所有元素的和，即 sum = x[0] + x[1] + &hellip; + x[N - 1]。</p>
+<ul>
+<li>先调用 kernel 将数组 x 归约到 grid_size 大小，即每个线程块完成 block_size 大小的归约，结果写到数组 y (y 的长度为 grid_size)</li>
+<li>然后在 host 上 完成最后一步的归约，即 y[0&hellip;grid_size-1] -&gt; result</li>
+</ul>
+<p>Kernel如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// 全局内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">reduce_global</span><span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="n">d_x</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">d_y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">real</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">d_x</span> <span class="o">+</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">tid</span> <span class="o">+</span> <span class="n">offset</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">d_y</span><span class="p">[</span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 静态共享内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">reduce_shared</span><span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="n">d_x</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">d_y</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">bid</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">tid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="n">real</span> <span class="n">s_y</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">&lt;</span><span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="n">d_x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">offset</span><span class="o">=</span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">tid</span><span class="o">&lt;</span><span class="n">offset</span><span class="o">&gt;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span><span class="o">=</span><span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="o">+</span><span class="n">offset</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">d_y</span><span class="p">[</span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//动态共享内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">__global__</span> <span class="nf">reduce_dynamic</span><span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="n">d_x</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">d_y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">bid</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">*</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">tid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">extern</span> <span class="n">__shared__</span> <span class="n">real</span> <span class="n">s_y</span><span class="p">[];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="n">d_x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">offset</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">+=</span> <span class="n">s_y</span><span class="p">[</span><span class="n">tid</span> <span class="o">+</span> <span class="n">offset</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">tid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">d_y</span><span class="p">[</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_y</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Host上完成最后一步：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">real</span> <span class="n">result</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">grid_size</span><span class="p">;</span> <span class="o">++</span><span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">+=</span> <span class="n">h_y</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Telsa T4上的性能对比，详细参数见 <a href="https://github.com/MAhaitao999/CUDA_Programming/blob/master/CUDA/chapter8_%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8/reduce2gpu.cu"   target="_blank">
+    code</a>：</p>
+<pre tabindex="0"><code>Using global memory only:
+Time sum = 123633392.000000.
+
+Using static shared memory:
+Time sum = 123633392.000000.
+
+Using dynamic shared memory:
+Time sum = 123633392.000000.
+</code></pre>
+
+<h3 class="relative group">Bank Conflict in Shared Memory 
+    <div id="bank-conflict-in-shared-memory" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#bank-conflict-in-shared-memory" aria-label="锚点">#</a>
+    </span>        
+    
+</h3>
+<p>有一个内存 bank 的概念值得注意。为了获得高的内存带宽，共享内存在物理上被分为 32 个（刚好等于一个线程束中的线程数目，即内建变量 warpSize 的值）同样宽度的、能被同时访问的内存 bank。</p>
+<p>将 32 个 bank 从 0 到 31 编号。在每一个 bank 中，又可以对其中的内存地址从 0 开始编号。所有 bank 中编号为 0 的内存称为第一层内存；将所有 bank 中编号为 1 的内存称为第二层内存。</p>
+<p>对于 bank 宽度为 4 字节的架构(开普勒)，共享内存数组是按如下方式线性地映射到内存 bank 的：共享内存数组中连续的 128 字节的内容分摊到 32 个 bank 的某一层中，每个 bank 负责 4 字节的内容。例如：对一个长度为 128 的单精度浮点数变量的共享内存数组来说，每个 bank 分摊 4 个在地址上相差 128 字节的数据：</p>
+<ul>
+<li>第 0-31 个数组元素依次对应到 32 个 bank 的第一层</li>
+<li>第 32-63 个数组元素依次对应到 32 个 bank 的第二层</li>
+<li>第 64-95 个数组元素依次对应到 32 个 bank 的第三层</li>
+<li>第 96-127 个数组元素依次对应到 32 个 bank 的第四层</li>
+</ul>
+<p>只要同一线程束内的多个线程不同时访问同一个 bank 中不同层的数据，该线程束对共享内存的访问就只需要一次内存事务（memory transaction）。当同一线程束内的多个线程试图访问同一个 bank 中不同层的数据时，就会发生 bank 冲突。在一个线程束内对同一个 bank 中的 n 层数据同时访问将导致 n 次内存事务，称为发生了 n 路 bank 冲突。最坏的情况是线程束内的 32 个线程同时访问同一个 bank 中 32 个不同层的地址，这将导致 32 路 bank 冲突。这种 n 很大的 bank 冲突是要尽量避免的。</p>
+<p>如何消除冲突？ 可以用改变共享内存数组大小的方式来消除或减轻共享内存的 bank 冲突。详细方法见下面的矩阵转置例子transpose2。</p>
+
+
+<h3 class="relative group">CUDA Kernel - Matrix Transpose(Shared Memory) 
+    <div id="cuda-kernel---matrix-transposeshared-memory" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#cuda-kernel---matrix-transposeshared-memory" aria-label="锚点">#</a>
+    </span>        
+    
+</h3>
+<p>核心思想：</p>
+<ul>
+<li>用一个线程块处理一块(tile)的矩阵，比如设置 tile 的边长 TILE_DIM = 32</li>
+<li>将一个 tile 的矩阵从全局内存数组 A 中读入线程块的共享内存（二维数组 S[TILE_DIM][TILE_DIM], 线程也是按照二维的方式去执行）</li>
+<li>线程块迭代归约整个 tile（）</li>
+</ul>
+<p>Kernel:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// N 为矩阵的边长
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose1</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="n">real</span> <span class="n">S</span><span class="p">[</span><span class="n">TILE_DIM</span><span class="p">][</span><span class="n">TILE_DIM</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">TILE_DIM</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">by</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">TILE_DIM</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nx1</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ny1</span> <span class="o">=</span> <span class="n">by</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx1</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny1</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">S</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">ny1</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">nx1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nx2</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ny2</span> <span class="o">=</span> <span class="n">by</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx2</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny2</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">[</span><span class="n">nx2</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ny2</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 消除bank conflict
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">transpose2</span><span class="p">(</span><span class="k">const</span> <span class="n">real</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">real</span> <span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__shared__</span> <span class="n">real</span> <span class="n">S</span><span class="p">[</span><span class="n">TILE_DIM</span><span class="p">][</span><span class="n">TILE_DIM</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">TILE_DIM</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">by</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">TILE_DIM</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nx1</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ny1</span> <span class="o">=</span> <span class="n">by</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx1</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny1</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">S</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">ny1</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">nx1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">__syncthreads</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">nx2</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ny2</span> <span class="o">=</span> <span class="n">by</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">nx2</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">ny2</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">[</span><span class="n">nx2</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ny2</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">TILE_DIM</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span><span class="c1">// 线程块 要处理的二维数据的维度为（TILE_DIM，TILE_DIM）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="n">dim3</span> <span class="nf">block_size</span><span class="p">(</span><span class="n">TILE_DIM</span><span class="p">,</span><span class="n">TILE_DIM</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">grid_size_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="n">TILE_DIM</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">dim3</span> <span class="nf">grid_size</span><span class="p">(</span><span class="n">grid_size_x</span><span class="p">,</span><span class="n">grid_size_x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">M</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span><span class="o">*</span><span class="n">N</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">real</span> <span class="o">*</span><span class="n">d_A</span> <span class="o">=</span> <span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="n">M</span><span class="p">);</span><span class="c1">//输入数组X
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">real</span> <span class="o">*</span><span class="n">d_B</span> <span class="o">=</span> <span class="p">(</span><span class="n">real</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="n">M</span><span class="p">);</span><span class="c1">//结果数组Y，需要做最后一轮归约
+</span></span></span><span class="line"><span class="cl"><span class="c1">// init A
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="o">*</span><span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h_A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_A</span><span class="p">,</span> <span class="n">M</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_B</span><span class="p">,</span> <span class="n">M</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">transpose1</span><span class="o">&lt;&lt;&lt;</span><span class="n">grid_size</span><span class="p">,</span> <span class="n">block_size</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">d_A</span><span class="p">,</span> <span class="n">d_B</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_A</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_B</span><span class="p">);</span>
+</span></span></code></pre></div>
+        </div>
+        
+        
+
+        
+<details style="margin-left:0px" class="mt-2 mb-5 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5">
+    
+    <summary
+        class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
+        CUDA Parallel Programming - 这篇文章属于一个选集。
+    </summary>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/cuda/gpu/">
+            § 1: GPU 结构
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/cuda/cuda_basic/">
+            § 2: CUDA Programming
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/cuda/cuda_conv/">
+            § 3: CUDA Conv
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/zh-cn/tech/cuda/cuda_optimize/">
+            § 4: CUDA Optimization
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        § 5: 本文
+    </div>
+    
+    
+
+
+</details>
+
+        
+
+          
+      </div>
+     
+      
+      
+        
+        
+          
+          
+        
+          
+          
+        
+      <script>
+        var oid = "views_tech\/cuda\/cuda_memory.md"
+        var oid_likes = "likes_tech\/cuda\/cuda_memory.md"
+      </script>
+      
+      
+      
+      <script type="text/javascript" src="/js/page.min.0860cf4e04fa2d72cc33ddba263083464d48f67de06114529043cb4623319efed4f484fd7f1730df5abea0e2da6f3538855634081d02f2d6e920b956f063e823.js" integrity="sha512-CGDPTgT6LXLMM926JjCDRk1I9n3gYRRSkEPLRiMxnv7U9IT9fxcw31q&#43;oOLabzU4hVY0CB0C8tbpILlW8GPoIw=="></script>
+  
+    </section>
+  <footer class="pt-8 max-w-prose print:hidden">
+
+    
+  
+    
+    
+    
+      
+      
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="flex group mr-3" href="/zh-cn/tech/cuda/cuda_optimize/">
+              <span
+                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >CUDA Optimization</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="flex text-right group ml-3" href="/zh-cn/tech/cuda/cuda_conv/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >CUDA Conv</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+              <span
+                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+    
+  </footer>
+</article>
+
+      <div id="top-scroller" class="pointer-events-none absolute top-[110vh] bottom-0 w-12 ltr:right-0 rtl:left-0">
+  <a href="#the-top"
+    class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 mb-16 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+    aria-label="返回顶部" title="返回顶部">
+    &uarr;
+  </a>
+</div>
+    </main><footer id="site-footer" class="py-10 print:hidden">
+  
+  
+    
+  
+  <div class="flex items-center justify-between">
+
+    
+    
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+      &copy;
+      2024
+      Victor Yang
+    </p>
+    
+
+    
+    
+    <p class="text-xs text-neutral-500 dark:text-neutral-400">
+      
+      
+      由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a> 强力驱动
+    </p>
+    
+
+  </div>
+  <script>
+    
+    mediumZoom(document.querySelectorAll("img:not(.nozoom)"), {
+      margin: 24,
+      background: 'rgba(0,0,0,0.5)',
+      scrollOffset: 0,
+    })
+    
+  </script>
+  
+  
+  <script type="text/javascript" src="/js/process.min.ee03488f19c93c2efb199e2e3014ea5f3cb2ce7d45154adb3399a158cac27ca52831db249ede5bb602700ef87eb02434139de0858af1818ab0fb4182472204a4.js" integrity="sha512-7gNIjxnJPC77GZ4uMBTqXzyyzn1FFUrbM5mhWMrCfKUoMdsknt5btgJwDvh&#43;sCQ0E53ghYrxgYqw&#43;0GCRyIEpA=="></script>
+  
+  
+</footer><div
+  id="search-wrapper"
+  class="invisible fixed inset-0 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="http://localhost:1313/zh-cn/"
+  style="z-index:500"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+  </div>
+</body>
+
+</html>
