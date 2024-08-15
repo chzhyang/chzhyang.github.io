@@ -48,8 +48,8 @@ disableTextInHeader = false
 
 [article]
   showDate = true
-  showViews = false
-  showLikes = false
+  showViews = true
+  showLikes = true
   showDateOnlyInArticle = false
   showDateUpdated = true
   showAuthor = true
@@ -119,13 +119,13 @@ disableTextInHeader = false
   cardViewScreenWidth = false
 
 [firebase]
-  # apiKey = "XXXXXX"
-  # authDomain = "XXXXXX"
-  # projectId = "XXXXXX"
-  # storageBucket = "XXXXXX"
-  # messagingSenderId = "XXXXXX"
-  # appId = "XXXXXX"
-  # measurementId = "XXXXXX"
+  apiKey = "AIzaSyAZrJyGRJn2u_1RhDsrG4v5RWRo1unz7zU"
+  authDomain = "victor-blog-630fa.firebaseapp.com"
+  projectId = "victor-blog-630fa"
+  storageBucket = "victor-blog-630fa.appspot.com"
+  messagingSenderId = "756127978198"
+  appId = "1:756127978198:web:3fd2bd0259fa1d830caf77"
+  measurementId = "G-8ZRED8S1YS"
 
 [fathomAnalytics]
   # site = "ABC12345"

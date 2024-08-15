@@ -145,6 +145,29 @@
   <meta name="theme-color"/>
   
   
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script>
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAZrJyGRJn2u_1RhDsrG4v5RWRo1unz7zU",
+      authDomain: "AIzaSyAZrJyGRJn2u_1RhDsrG4v5RWRo1unz7zU",
+      projectId: "victor-blog-630fa",
+      storageBucket: "victor-blog-630fa.appspot.com",
+      messagingSenderId: "756127978198",
+      appId: "1:756127978198:web:3fd2bd0259fa1d830caf77",
+      measurementId: "G-8ZRED8S1YS"
+    };
+
+    var app = firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+    var auth = firebase.auth();
+
+  </script>
+  
+  
 </head>
 <body
   class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32">

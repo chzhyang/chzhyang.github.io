@@ -115,10 +115,68 @@
     />
   </url>
   <url>
-    <loc>http://localhost:1313/life/events/event-20240708/</loc>
+    <loc>http://localhost:1313/life/events/event-2024077/</loc>
     <lastmod>2024-07-07T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
+    <xhtml:link
+      rel="alternate"
+      hreflang="zh-cn"
+      href="http://localhost:1313/zh-cn/life/events/event-2024077/"
+    />
+    <xhtml:link
+      rel="alternate"
+      hreflang="en"
+      href="http://localhost:1313/life/events/event-2024077/"
+    />
+  </url>
+  <url>
+    <loc>http://localhost:1313/life/events/event-20240628/</loc>
+    <lastmod>2024-06-28T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+      rel="alternate"
+      hreflang="zh-cn"
+      href="http://localhost:1313/zh-cn/life/events/event-20240628/"
+    />
+    <xhtml:link
+      rel="alternate"
+      hreflang="en"
+      href="http://localhost:1313/life/events/event-20240628/"
+    />
+  </url>
+  <url>
+    <loc>http://localhost:1313/life/events/event-20240621/</loc>
+    <lastmod>2024-06-21T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+      rel="alternate"
+      hreflang="zh-cn"
+      href="http://localhost:1313/zh-cn/life/events/event-20240621/"
+    />
+    <xhtml:link
+      rel="alternate"
+      hreflang="en"
+      href="http://localhost:1313/life/events/event-20240621/"
+    />
+  </url>
+  <url>
+    <loc>http://localhost:1313/life/events/event-20240614/</loc>
+    <lastmod>2024-06-14T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+      rel="alternate"
+      hreflang="zh-cn"
+      href="http://localhost:1313/zh-cn/life/events/event-20240614/"
+    />
+    <xhtml:link
+      rel="alternate"
+      hreflang="en"
+      href="http://localhost:1313/life/events/event-20240614/"
+    />
   </url>
   <url>
     <loc>http://localhost:1313/finance/</loc>

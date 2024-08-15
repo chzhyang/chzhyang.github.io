@@ -20,11 +20,41 @@
     
     <item>
       <title>奇绩创坛：美杜莎</title>
-      <link>http://localhost:1313/zh-cn/life/events/event-20240707/</link>
+      <link>http://localhost:1313/zh-cn/life/events/event-2024077/</link>
       <pubDate>Sun, 07 Jul 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/zh-cn/life/events/event-20240707/</guid>
+      <guid>http://localhost:1313/zh-cn/life/events/event-2024077/</guid>
       <description>今天在奇绩创坛参加了蔡天乐大佬的大模型技</description>
+      
+    </item>
+    
+    <item>
+      <title>奇绩创坛：OpenSora</title>
+      <link>http://localhost:1313/zh-cn/life/events/event-20240628/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/life/events/event-20240628/</guid>
+      <description>AI infra 顶级大佬尤洋老师分享 open-sor</description>
+      
+    </item>
+    
+    <item>
+      <title>奇绩创坛：Rabbit R1</title>
+      <link>http://localhost:1313/zh-cn/life/events/event-20240621/</link>
+      <pubDate>Fri, 21 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/life/events/event-20240621/</guid>
+      <description>吕骋(Jesse)，Rabbit 创始人，</description>
+      
+    </item>
+    
+    <item>
+      <title>微软 AI Day</title>
+      <link>http://localhost:1313/zh-cn/life/events/event-20240614/</link>
+      <pubDate>Fri, 14 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/life/events/event-20240614/</guid>
+      <description>今天在北京参加了微软的 AI Day，这次活动</description>
       
     </item>
     
