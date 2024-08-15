@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth" data-default-appearance="light"
+  data-auto-appearance="true"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  
+  <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  
+  <title>GPU 结构 &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="GPU 结构 &middot; Victor&#39;s Blog" />
+  
+  
+  <meta name="keywords" content="GPU, CUDA, " />
+  
+  
+  <link rel="canonical" href="http://localhost:1313/posts/cuda/gpu/" />
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.ac59a1b8eaafef739c129d12787ac29f6a420bcb348c7aeec8949a8d0b7d6c2023766c169d14b9031b751504eb3c976efe786fec135b340a49868acd8caa4127.css"
+    integrity="sha512-rFmhuOqv73OcEp0SeHrCn2pCC8s0jHruyJSajQt9bCAjdmwWnRS5Axt1FQTrPJdu/nhv7BNbNApJhorNjKpBJw==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.516a16745bea5a9bd011138d254cc0fd3973cd55ce6e15f3dec763e7c7c2c7448f8fe7b54cca811cb821b0c7e12cd161caace1dd794ac3d34d40937cbcc9ee12.js"
+    integrity="sha512-UWoWdFvqWpvQERONJUzA/TlzzVXObhXz3sdj58fCx0SPj&#43;e1TMqBHLghsMfhLNFhyqzh3XlKw9NNQJN8vMnuEg=="></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script defer type="text/javascript" id="script-bundle" src="/js/main.bundle.min.b36dda9ec4ec11e967fd341e7d57b8c484ac7a39f8f329f7bcf7ce4812569de8607db866a086d4789956ac0b74967e251c9a566d94d469dd28b8787fed4f46f5.js"
+    integrity="sha512-s23ansTsEeln/TQefVe4xISsejn48yn3vPfOSBJWnehgfbhmoIbUeJlWrAt0ln4lHJpWbZTUad0ouHh/7U9G9Q==" data-copy="" data-copied=""></script>
+  
+  
+  <script src="/js/zoom.min.js"></script>
+  
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:url" content="http://localhost:1313/posts/cuda/gpu/">
+  <meta property="og:site_name" content="Victor&#39;s Blog">
+  <meta property="og:title" content="GPU 结构">
+  <meta property="og:description" content="CPU 与 GPU 的不同 # CPU，4个 ALU，主要负">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-05-18T09:47:15+00:00">
+    <meta property="article:modified_time" content="2024-05-18T09:47:15+00:00">
+    <meta property="article:tag" content="GPU">
+    <meta property="article:tag" content="CUDA">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_optimize/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_memory/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_conv/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/cuda/cuda_basic/">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="GPU 结构">
+  <meta name="twitter:description" content="CPU 与 GPU 的不同 # CPU，4个 ALU，主要负">
+
+  
+  <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Tech Blogs",
+    "name": "GPU 结构",
+    "headline": "GPU 结构",
+    
+    "abstract": "CPU 与 GPU 的不同 # CPU，4个 ALU，主要负",
+    "inLanguage": "en",
+    "url" : "http:\/\/localhost:1313\/posts\/cuda\/gpu\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Victor Yang"
+    },
+    "copyrightYear": "2024",
+    "dateCreated": "2024-05-18T09:47:15\u002b00:00",
+    "datePublished": "2024-05-18T09:47:15\u002b00:00",
+    
+    "dateModified": "2024-05-18T09:47:15\u002b00:00",
+    
+    "keywords": ["GPU","CUDA"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "4351"
+  }]
+  </script>
+
+
+  
+  
+  <meta name="author" content="Victor Yang" />
+  
+  
+  
+  <link href="https://github.com/chzhyang" rel="me" />
+  
+  
+  <link href="https://www.linkedin.com/in/victor-yang-0101x" rel="me" />
+  
+  
+  <link href="mailto:chzhyangchn@gmail.com" rel="me" />
+  
+  
+  
+  
+
+<script src="/lib/jquery/jquery.slim.min.js" integrity=""></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+  
+  
+  <meta name="theme-color"/>
+  
+  
+</head>
+<body
+  class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32">
+  <div id="the-top" class="absolute flex self-center">
+    <a class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+      href="#main-content"><span
+        class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400">&darr;</span>Skip to main content</a>
+  </div>
+  
+  
+  <div style="padding-left:0;padding-right:0;padding-top:2px;padding-bottom:3px"
+    class="main-menu flex items-center justify-between px-4 py-6 sm:px-6 md:justify-start space-x-3">
+    
+    <div class="flex flex-1 items-center justify-between">
+        <nav class="flex space-x-3">
+
+            
+            <a href="/" class="text-base font-medium text-gray-500 hover:text-gray-900">Victor&rsquo;s Blog</a>
+            
+
+        </nav>
+        <nav class="hidden md:flex items-center space-x-5 md:ml-12 h-12">
+
+            
+            
+             
+  <div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    
+    <a  href="/posts/"   class="text-base font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="">
+      Tech
+    </a>
+    <span>
+      
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+    </span>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/posts/llm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            LLM
+          </p>
+        </a>
+        
+        <a href="/posts/cuda/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            CUDA
+          </p>
+        </a>
+        
+        <a href="/posts/pytorch/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            PyTorch
+          </p>
+        </a>
+        
+        <a href="/posts/algorithm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            Algorithm
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+             
+  <div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    
+    <a  href="/life/"   class="text-base font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="">
+      Life
+    </a>
+    <span>
+      
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+    </span>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/life/events/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            Events
+          </p>
+        </a>
+        
+        <a href="/life/travel/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+          
+          <p class="text-sm font-sm" title="">
+            Travel
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            
+            
+  <a href="/finance/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        Finance
+    </p>
+</a>
+
+
+            
+            
+  <a href="/series/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        Series
+    </p>
+</a>
+
+
+            
+            
+  <a href="/tags/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        Tags
+    </p>
+</a>
+
+
+            
+            
+  <a href="/about/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        About
+    </p>
+</a>
+
+
+            
+            
+
+            
+
+
+            
+            <button id="search-button" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+                title="">
+                
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+            </button>
+            
+
+
+            
+            
+            <div
+                class="ltr:mr-14 rtl:ml-14 flex items-center">
+                <button id="appearance-switcher" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400">
+                    <div class="flex items-center justify-center dark:hidden">
+                        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+  </span>
+
+
+                    </div>
+                    <div class="items-center justify-center hidden dark:flex">
+                        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+  </span>
+
+
+                    </div>
+                </button>
+            </div>
+            
+
+        </nav>
+        <div class="flex md:hidden items-center space-x-5 md:ml-12 h-12">
+
+            <span></span>
+
+            
+
+
+            
+            <button id="search-button-mobile" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+                title="">
+                
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+            </button>
+            
+
+            
+            
+            <button id="appearance-switcher-mobile" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400" style="margin-right:5px">
+                <div class="flex items-center justify-center dark:hidden">
+                    
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+  </span>
+
+
+                </div>
+                <div class="items-center justify-center hidden dark:flex">
+                    
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+  </span>
+
+
+                </div>
+            </button>
+            
+
+        </div>
+    </div>
+    <div class="-my-2 -mr-2 md:hidden">
+
+        <label id="menu-button" for="menu-controller" class="block">
+            <input type="checkbox" id="menu-controller" class="hidden" />
+            
+            <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+                
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+            </div>
+            <div id="menu-wrapper" style="padding-top:5px;"
+                class="fixed inset-0 z-30 invisible w-screen h-screen m-0 overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50">
+                <ul
+                    class="flex space-y-2 mt-3 flex-col items-end w-full px-6 py-6 mx-auto overflow-visible list-none ltr:text-right rtl:text-left max-w-7xl">
+
+                    <li>
+                        <span
+                            class="cursor-pointer inline-block align-text-bottom hover:text-primary-600 dark:hover:text-primary-400">
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span>
+                    </li>
+
+                    
+
+                     
+  <li class="mt-1">
+    <a class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Tech
+        </p>
+        <span>
+            
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+        </span>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/posts/llm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            LLM
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/posts/cuda/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            CUDA
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/posts/pytorch/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            PyTorch
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/posts/algorithm/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            Algorithm
+        </p>
+    </a>
+</li>
+
+<li class="mb-2"></li>
+
+
+
+                    
+
+                     
+  <li class="mt-1">
+    <a class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Life
+        </p>
+        <span>
+            
+
+  <span class="relative block icon">
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 20"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+    clip-rule="evenodd"
+  />
+</svg>
+
+  </span>
+
+
+        </span>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/life/events/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            Events
+        </p>
+    </a>
+</li>
+
+<li class="mt-1">
+    <a href="/life/travel/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-sm font-small" title="">
+            Travel
+        </p>
+    </a>
+</li>
+
+<li class="mb-2"></li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/finance/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Finance
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/series/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Series
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/tags/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Tags
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/about/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            About
+        </p>
+    </a>
+</li>
+
+
+
+                    
+
+                </ul>
+                
+                
+
+            </div>
+        </label>
+    </div>
+</div>
+
+
+
+
+
+  
+  <div class="relative flex flex-col grow">
+    <main id="main-content" class="grow">
+      
+
+
+<article>
+  
+
+  <header id="single_header" class="mt-5 max-w-prose">
+    
+    <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+      GPU 结构
+    </h1>
+    <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+      
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="flex flex-row flex-wrap items-center">
+  
+  
+  <time datetime="2024-05-18 09:47:15 &#43;0000 UTC">2024-05-18</time><span class="px-2 text-primary-500">&middot;</span><span>4351 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">9 mins</span>
+  
+
+  
+  
+</div>
+
+
+
+
+
+<div class="flex flex-row flex-wrap items-center">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/tags/gpu/&#34;,'_self');">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    GPU
+  </span>
+</span>
+  </span>
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/tags/cuda/&#34;,'_self');">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    CUDA
+  </span>
+</span>
+  </span>
+  
+  
+  
+  
+</div>
+
+
+
+    </div>
+
+    
+    
+    
+    
+    
+
+    
+
+    
+      
+      
+
+      
+
+      
+
+    
+
+  </header>
+  
+  <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+    
+     <div
+      class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
+      <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
+
+         <details open class="toc-right mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+  <summary
+    class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    Table of Contents
+  </summary>
+  <div
+    class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#cpu-与-gpu-的不同">CPU 与 GPU 的不同</a></li>
+    <li><a href="#gpu-cuda-ai-framework-的关系">GPU, CUDA, AI Framework 的关系</a></li>
+    <li><a href="#gpu-内部结构">GPU 内部结构</a></li>
+    <li><a href="#gpu-内存结构">GPU 内存结构</a></li>
+    <li><a href="#sm-的构成">SM 的构成</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+<details class="toc-inside mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 lg:hidden">
+  <summary
+    class="py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    Table of Contents
+  </summary>
+  <div
+    class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#cpu-与-gpu-的不同">CPU 与 GPU 的不同</a></li>
+    <li><a href="#gpu-cuda-ai-framework-的关系">GPU, CUDA, AI Framework 的关系</a></li>
+    <li><a href="#gpu-内部结构">GPU 内部结构</a></li>
+    <li><a href="#gpu-内存结构">GPU 内存结构</a></li>
+    <li><a href="#sm-的构成">SM 的构成</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+
+   </div>
+      </div>
+      
+
+      <div class="min-w-0 min-h-0 max-w-fit">
+        
+        
+<details style="margin-left:0px" class="mt-2 mb-5 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5"  open >
+    
+    <summary
+        class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
+        CUDA Parallel Programming - This article is part of a series.
+    </summary>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        Part 1: This Article
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_basic/">
+            Part 2: CUDA Programming
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_conv/">
+            Part 3: CUDA Conv
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_optimize/">
+            Part 4: CUDA Optimization
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_memory/">
+            Part 5: CUDA Memory and Optimization
+        </a>
+    </div>
+    
+    
+
+
+</details>
+
+
+
+        <div class="article-content max-w-prose mb-20">
+          
+
+<h2 class="relative group">CPU 与 GPU 的不同 
+    <div id="cpu-%E4%B8%8E-gpu-%E7%9A%84%E4%B8%8D%E5%90%8C" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#cpu-%E4%B8%8E-gpu-%E7%9A%84%E4%B8%8D%E5%90%8C" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img class="my-0 rounded-md" loading="lazy" src="diff_gpu_cpu.png" alt="diff_gpu_cpu" />
+      
+    </figure>
+  
+
+</p>
+<ul>
+<li>CPU，4个 ALU，主要负责逻辑计算，1个控制单元 Control，1个 DRAM，1个 Cache</li>
+<li>GPU，绿色小方块看作 ALU，红色框看作一个 SM，SM 中的多个 ALU share 一个Control 和 Cache，SM 可以看作一个多核 CPU，但是 ALU 更多，control 更少，也就是算力提升，控制力减弱</li>
+</ul>
+<p>所以，CPU 适合控制逻辑复杂的任务，GPU 适合逻辑简单、数据量大、计算量大的任务。</p>
+
+
+<h2 class="relative group">GPU, CUDA, AI Framework 的关系 
+    <div id="gpu-cuda-ai-framework-%E7%9A%84%E5%85%B3%E7%B3%BB" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#gpu-cuda-ai-framework-%E7%9A%84%E5%85%B3%E7%B3%BB" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://img-blog.csdnimg.cn/5d8d7665a06942fe95195257ae3a80e5.png" alt="relationshape" />
+    
+  </figure>
+
+</p>
+<p>Reference:</p>
+<ul>
+<li><a href="https://developer.nvidia.com/blog/even-easier-introduction-cuda/"   target="_blank">
+    NVIDIA CUDA Docs</a></li>
+<li><a href="https://blog.csdn.net/qq_40514113/article/details/130818169?spm=1001.2014.3001.5502"   target="_blank">
+    cuda编程学习</a></li>
+<li><a href="https://blog.csdn.net/Blackoutdragon/article/details/130233562"   target="_blank">
+    一张图了解GPU、CUDA、CUDA toolkit和pytorch的关系</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/651179378"   target="_blank">
+    GPU 内存概念浅析</a></li>
+</ul>
+
+
+<h2 class="relative group">GPU 内部结构 
+    <div id="gpu-%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#gpu-%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>每一个 SM 有自己的 Wrap scheduler 、寄存器（Register）、指令缓存、L1缓存、共享内存。</p>
+<p>A100 中每个 SM 包括 4 个 SM partition（SMP），里边绿色的就是 Streaming Processor（SP），也叫 CUDA cores，它们是实际执行计算的基本单元。</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://img2024.cnblogs.com/blog/798398/202402/798398-20240219182315457-1097510645.png" alt="gpu arch" />
+    
+  </figure>
+
+</p>
+<p>所有的 SM 共享 L2 缓存。整个 GPU 内存结构如下图所示</p>
+<p>
+
+
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://img2024.cnblogs.com/blog/798398/202402/798398-20240219182333769-1289077570.png" alt="memroy share" />
+    
+  </figure>
+
+</p>
+
+
+<h2 class="relative group">GPU 内存结构 
+    <div id="gpu-%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#gpu-%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>按照存储功能进行细分，GPU 内存可以分为：局部内存（local memory）、全局内存（global memory）、常量内存（constant memory）、共享内存（shared memory）、寄存器（register）、L1/L2 缓存等。</p>
+<p>其中全局内存、局部内存、常量内存都是片下内存(off-chip)，储存在 HBM 上。所以 HBM 的大部分作为全局内存。</p>
+<ul>
+<li>
+<p>on-chip：L1/L2 cache：多级缓存，在 GPU 芯片内部</p>
+</li>
+<li>
+<p>off-chip：GPU DRAM/HBM, global memory</p>
+</li>
+<li>
+<p>L2 缓存可以被所有 SM 访问，速度比全局内存快。Flash attention 的思路就是尽可能地利用 L2 缓存，减少 HBM 的数据读写时间</p>
+</li>
+<li>
+<p>L1 缓存用于存储 SM 内的数据，被 SM 内的 CUDA cores 共享，但是跨 SM 之间的 L1 不能相互访问</p>
+</li>
+<li>
+<p>局部内存 (local memory) 是线程独享的内存资源，线程之间不可以相互访问。局部内存属于off-chip，所以访问速度跟全局内存一样。它主要是用来应对寄存器不足时的场景，即在线程申请的变量超过可用的寄存器大小时，nvcc 会自动将一部数据放置到片下内存里。</p>
+</li>
+<li>
+<p>寄存器（register）是线程能独立访问的资源，它是片上（on chip）存储，用来存储一些线程的暂存数据。寄存器的速度是访问中最快的，但是它的容量较小，只有几百甚至几十 KB，而且要被许多线程均分</p>
+</li>
+<li>
+<p>共享内存（shared memory） 是一种在线程块内能访问的内存，是片上（on chip）存储，访问速度较快。共享内存主要是缓存一些需要反复读写的数据。共享内存与 L1 缓存的位置、速度极其类似，区别在于共享内存的控制与生命周期管理与 L1 不同：共享内存受用户控制，L1 受系统控制。共享内存更利于线程块之间数据交互。</p>
+</li>
+<li>
+<p>常量内存（constant memory）是片下（off chip）存储，但是通过特殊的常量内存缓存（constant cache）进行缓存读取，它是只读内存。常量内存主要是解决一个 warp scheduler 内多个线程访问相同数据时速度太慢的问题。假设所有线程都需要访问一个 constant_A 的常量，在存储介质上 constant_A 的数据只保存了一份，而内存的物理读取方式决定了多个线程不能在同一时刻读取到该变量，所以会出现先后访问的问题，这样使得并行计算的线程出现了运算时差。常量内存正是解决这样的问题而设置的，它有对应的 cache 位置产生多个副本，让线程访问时不存在冲突，从而保证并行度。</p>
+</li>
+</ul>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img class="my-0 rounded-md" loading="lazy" src="./gpu_memory.png" alt="gpu_memory" />
+      
+    </figure>
+  
+
+</p>
+<table>
+<thead>
+<tr>
+<th>内存类型</th>
+<th>物理位置</th>
+<th>访问权限</th>
+<th>可见范围</th>
+<th>生命周期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全局内存</td>
+<td>在芯片外</td>
+<td>可读可写</td>
+<td>所有线程和主机端</td>
+<td>由主机分配与释放</td>
+</tr>
+<tr>
+<td>常量内存</td>
+<td>在芯片外</td>
+<td>仅可读</td>
+<td>所有线程和主机端</td>
+<td>由主机分配与释放</td>
+</tr>
+<tr>
+<td>纹理和表面内存</td>
+<td>在芯片外</td>
+<td>一般仅可读</td>
+<td>所有线程和主机端</td>
+<td>由主机分配与释放</td>
+</tr>
+<tr>
+<td>寄存器内存</td>
+<td>在芯片内</td>
+<td>可读可写</td>
+<td>单个线程</td>
+<td>所在线程</td>
+</tr>
+<tr>
+<td>局部内存</td>
+<td>在芯片外</td>
+<td>可读可写</td>
+<td>单个线程</td>
+<td>所在线程</td>
+</tr>
+<tr>
+<td>共享内存</td>
+<td>在芯片内</td>
+<td>可读可写</td>
+<td>单个线程块</td>
+<td>所在线程块</td>
+</tr>
+</tbody>
+</table>
+<p>“全局内存”（global memory）的含义是核函数中的所有线程都能够访问其中的数
+据. 一般用 cudaMalloc 函数为全局内存变量分配设备内存，用 cudaMemcpy(h_z, d_z, M, cudaMemcpyDeviceToHost) 或 cudaMemcpyDeviceToDevice 拷贝内存。在处理逻辑上的两维或三维问题时，可以用 cudaMallocPitch 和 cudaMalloc3D 函数分配内存，用 cudaMemcpy2D 和 cudaMemcpy3D 复制数据，释放时依然用 cudaFree 函数。</p>
+<p>静态全局内存变量： 所占内存数量是在编译期间就确定的。而且，这样的静态全局内存变量必须在所有主机与设备函数外部定义，所以是一种“全局的静态全局内存变量”。在核函数中，可直接对静态全局内存变量进行访问，并不需要将它们以参数的形式传给核
+函数。静态全局内存变量由以下方式在任何函数外部定义：</p>
+<pre tabindex="0"><code>__device__ T x; // 单个变量
+__device__ T y[N]; // 固定长度的数组
+</code></pre><blockquote>
+<p>不可在主机函数中直接访问静态全局内存变量，但可以用 cudaMemcpyToSymbol 函
+数和 cudaMemcpyFromSymbol 函数在静态全局内存与主机内存之间传输数据。</p>
+</blockquote>
+<p>常量内存（constant memory）是有常量缓存的全局内存，数量有限，一共仅有 64 KB。它的可见范围和生命周期与全局内存一样。常量内存仅可读、不可写。访问速度比全局内存高，但得到高访问速度的前提是一个线程束中的线程（一个线程块中相邻的 32 个线程）要读取相同的常量内存数据。常量内存的方法是在核函数外面用 <strong>constant</strong> 定义变量，用 cudaMemcpyToSymbol 将数据从主机端复制到设备的常量内存后
+供核函数使用</p>
+<p>在核函数中定义的不加任何限定符的变量一般来说就存放于寄存器（register）中。核函数中定义的不加任何限定符的数组有可能存放于寄存器中，但也有可能存放于局部内存中。如 gridDim、blockDim、blockIdx、threadIdx 及 warpSize 都保存在特殊的寄存器中。这里的 n 就是一个寄存器变量:</p>
+<pre tabindex="0"><code>const int n = blockDim.x * blockIdx.x + threadIdx.x;
+</code></pre><p>寄存器变量仅仅被一个线程可见。</p>
+<p>局部内存： 寄存器中放不下的变量，以及索引值不能在编译时就确定的数组，都有可能放在局部内存中。</p>
+<p>共享内存和寄存器类似，存在于芯片上，具有仅次于寄存器的读写速度，数量也有限。共享内存对整个线程块可见，主要作用是减少对全局内存的访问。</p>
+
+
+<h2 class="relative group">SM 的构成 
+    <div id="sm-%E7%9A%84%E6%9E%84%E6%88%90" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#sm-%E7%9A%84%E6%9E%84%E6%88%90" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>一个GPU是由多个SM(Streaming Multiprocessor)构成的。一个SM包含如下资源：</p>
+<ul>
+<li>一定数量的寄存器</li>
+<li>一定数量的共享内存</li>
+<li>常量内存的缓存</li>
+<li>纹理和表面内存的缓存</li>
+<li>L1缓存</li>
+<li>两个（计算能力6.0）或4个（其他计算能力）线程束调度器（warp scheduler）用于不同线程的上下文之间迅速地切换，以及为准备就绪的线程束发出执行指令</li>
+<li>执行核心，包括：
+<ul>
+<li>若干整型数运算的核心（INT32）</li>
+<li>若干单精度浮点数运算的核心（FP32）</li>
+<li>若干双精度浮点数运算的核心（FP64）</li>
+<li>若干单精度浮点数超越函数（transcendental functions）的特殊函数单元（special function units, SFUs）</li>
+<li>若干混合精度的张量核心（tensor cores，由伏特架构引入，适用于机器学习中的低精度矩阵计算）</li>
+</ul>
+</li>
+</ul>
+<p>SM的占有率： 在并行规模足够大（即核函数执行配置中定义的总线程数足够多）的前提下分几种情况来分析SM的理论占有率：</p>
+<p>(1) 寄存器和共享内存使用量很小的情况。此时，SM的占有率完全由执行配置中的线程块大小决定。关于线程块大小，读者也许注意到我们之前一直用128。这是因为，SM中线程的执行是以线程束为单位的，所以最好将线程块大小取为线程束大小（32个线程）的整数倍。例如，假设将线程块大小定义为100，那么一个线程块中将有3个完整的线程束（一共96个线程）和一个不完整的线程束（只有4个线程）。在执行核函数中的指令时，不完整的线程束花的时间和完整的线程束花费的时间一样，这就无形中浪费了计算资源。所以，建议将线程块大小取为32的整数倍。在该前提下，任何不小于$N_t/N_b$而且能整除$N_t$的线程块大小都能得到100%的占有率；线程块大小不小于64时其他架构能获得100%的占有率。根据我们列出的数据，线程块大小不小于128时开普勒架构能获得100%的占有率；线程块大小不小于64时其他架构能获得100%的占有率。作者近几年都用一块开普勒架构的Tesla K40开发程序，所以习惯了在一般情况下用128的线程块大小。</p>
+<p>(2) 有限寄存器数量对占有率的约束情况。我们只针对第三节中列出的几个计算能力进行分析，读者可以类似地分析其他未列出的计算能力。对于第三节中列出的所有计算能力，一个SM最多能使用的寄存器个数为64K（64 x 1024）。除图灵架构外，如果我们希望在一个SM中驻留最多的线程（2048个），核函数中的每个线程最多只能用32个寄存器。当每个线程所用寄存器个数大于64时，SM的占有率将小于50%；当每个线程所用寄存器个数大于128时，SM的占有率将小于25%。对于图灵架构，同样的占有率允许使用更多的寄存器。</p>
+<p>(3) 有限的共享内存对占有率的约束清理。因为共享内存的数量随着计算能力的上升没有显著的变化规律，所以我们这里仅对计算能力3.5进行分析，对其他计算能力可以类似地分析。如果线程块大小为128，那么每个SM要激活16个线程块才能有2048个线程，达到100%的占有率。此时，一个线程块最多能使用3KB的共享内存。在不改变线程块大小的情况下，要达到50%的占有率，一个线程块最多能使用6KB的共享内存；要达到25%的占有率，一个线程块最多能使用12KB的共享内存。如果一个线程块使用了超过48KB的共享内存，会直接导致核函数无法允许。对其他线程块大小可进行类似的分析。</p>
+<p>在 CUDA 工具箱中，有一个 CUDA_Occupancy_Calculator.xls，可用来计算各种情况下的 SM 占有率。</p>
+<pre tabindex="0"><code>## 重要的计算能力技术指标
+
+SM 寄存器数上限、单个线程块寄存器数上限、单个线程寄存器数上限、SM 共享内存上限、单个线程块共享内存上限、SM 线程块上限、 SM 线程数上限
+
+代码中查询技术指标：
+
+```c++
+#include &#34;error.cuh&#34; //CHECK
+#include &lt;cstdio&gt;
+
+int main(int argc, char *argv[])
+{
+    int device_id = 0;
+    if (argc &gt; 1) device_id = atoi(argv[1]);
+    CHECK(cudaSetDevice(device_id));
+
+    cudaDeviceProp prop;
+    CHECK(cudaGetDeviceProperties(&amp;prop, device_id));
+
+    printf(&#34;Device id:                                 %d\n&#34;,
+        device_id);
+    printf(&#34;Device name:                               %s\n&#34;,
+        prop.name);
+    printf(&#34;Compute capability:                        %d.%d\n&#34;,
+        prop.major, prop.minor);
+    printf(&#34;Amount of global memory:                   %g GB\n&#34;,
+        prop.totalGlobalMem / (1024.0 * 1024 * 1024));
+    printf(&#34;Amount of constant memory:                 %g KB\n&#34;,
+        prop.totalConstMem  / 1024.0);
+    printf(&#34;Maximum grid size:                         %d %d %d\n&#34;,
+        prop.maxGridSize[0], 
+        prop.maxGridSize[1], prop.maxGridSize[2]);
+    printf(&#34;Maximum block size:                        %d %d %d\n&#34;,
+        prop.maxThreadsDim[0], prop.maxThreadsDim[1], 
+        prop.maxThreadsDim[2]);
+    printf(&#34;Number of SMs:                             %d\n&#34;,
+        prop.multiProcessorCount);
+    printf(&#34;Maximum amount of shared memory per block: %g KB\n&#34;,
+        prop.sharedMemPerBlock / 1024.0);
+    printf(&#34;Maximum amount of shared memory per SM:    %g KB\n&#34;,
+        prop.sharedMemPerMultiprocessor / 1024.0);
+    printf(&#34;Maximum number of registers per block:     %d K\n&#34;,
+        prop.regsPerBlock / 1024);
+    printf(&#34;Maximum number of registers per SM:        %d K\n&#34;,
+        prop.regsPerMultiprocessor / 1024);
+    printf(&#34;Maximum number of threads per block:       %d\n&#34;,
+        prop.maxThreadsPerBlock);
+    printf(&#34;Maximum number of threads per SM:          %d\n&#34;,
+        prop.maxThreadsPerMultiProcessor);
+}
+
+## Tensor Core
+
+CUDA core 和 Tensor core 的区别：
+- Tensor core 是在 Volta 以及之后的架构中才有的, 相比于CUDA core，它可以提供更高效的运算。
+- 每个 GPU clock，CUDA core 可以进行一次单精度乘加运算，即：in fp32: x += y * z。
+- 每个 GPU clock，Tensor core 可以完成 4 × 4 的混合精度矩阵乘加 (matrix multiply-accumulate, MMA)：D=A * B + C，其中 A、B、C、D 都是 4 × 4 矩阵。A 和 B是 FP16 矩阵，而累加矩阵 C 和 D 可以是 FP16 或 FP32 矩阵（FP16/FP16 或 FP16/FP32 两种模式。所以每个 GPU clock，Tensor core 可以执行 64 个浮点 FMA 混合精度运算（4 × 4 × 4）。
+- Turing 架构中新增了 INT8/INT32, INT4/INT32, INT1/INT32 等模式
+
+![Tensor Core](https://img2024.cnblogs.com/blog/798398/202402/798398-20240219182403297-314074416.png)
+
+V100 中，一个 SM 中有 8 个 Tensor core，每个 GPU clock 共可以执行 1024 个浮点运算（64 × 8 × 2，乘以 2 因为乘加是两个浮点运算）
+
+Reference:
+- [TENSOR CORE DL PERFORMANCE GUIDE](https://link.zhihu.com/?target=https%3A//developer.download.nvidia.com/video/gputechconf/gtc/2019/presentation/s9926-tensor-core-performance-the-ultimate-guide.pdf)
+- [GPU内存概念浅析](https://www.cnblogs.com/ArsenalfanInECNU/p/18021724)
+</code></pre>
+        </div>
+        
+        
+
+        
+<details style="margin-left:0px" class="mt-2 mb-5 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5">
+    
+    <summary
+        class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
+        CUDA Parallel Programming - This article is part of a series.
+    </summary>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        Part 1: This Article
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_basic/">
+            Part 2: CUDA Programming
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_conv/">
+            Part 3: CUDA Conv
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_optimize/">
+            Part 4: CUDA Optimization
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="http://localhost:1313/posts/cuda/cuda_memory/">
+            Part 5: CUDA Memory and Optimization
+        </a>
+    </div>
+    
+    
+
+
+</details>
+
+        
+
+          
+      </div>
+     
+      
+      
+        
+        
+          
+          
+        
+      <script>
+        var oid = "views_posts\/cuda\/gpu.md"
+        var oid_likes = "likes_posts\/cuda\/gpu.md"
+      </script>
+      
+      
+      
+      <script type="text/javascript" src="/js/page.min.0860cf4e04fa2d72cc33ddba263083464d48f67de06114529043cb4623319efed4f484fd7f1730df5abea0e2da6f3538855634081d02f2d6e920b956f063e823.js" integrity="sha512-CGDPTgT6LXLMM926JjCDRk1I9n3gYRRSkEPLRiMxnv7U9IT9fxcw31q&#43;oOLabzU4hVY0CB0C8tbpILlW8GPoIw=="></script>
+  
+    </section>
+  <footer class="pt-8 max-w-prose print:hidden">
+
+    
+  
+    
+    
+    
+      
+      
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="flex group mr-3" href="/posts/cuda/cuda_conv/">
+              <span
+                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+              <span
+                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >CUDA Conv</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2024-05-20 13:57:32 &#43;0000 UTC">2024-05-20</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="flex text-right group ml-3" href="/posts/cuda/cuda_basic/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >CUDA Programming</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2024-05-10 09:47:15 &#43;0000 UTC">2024-05-10</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+    
+  </footer>
+</article>
+
+      <div id="top-scroller" class="pointer-events-none absolute top-[110vh] bottom-0 w-12 ltr:right-0 rtl:left-0">
+  <a href="#the-top"
+    class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 mb-16 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+    aria-label="Scroll to top" title="Scroll to top">
+    &uarr;
+  </a>
+</div>
+    </main><footer id="site-footer" class="py-10 print:hidden">
+  
+  
+    
+  
+  <div class="flex items-center justify-between">
+
+    
+    
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+      &copy;
+      2024
+      Victor Yang
+    </p>
+    
+
+    
+    
+    <p class="text-xs text-neutral-500 dark:text-neutral-400">
+      
+      
+      Powered by <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a>
+    </p>
+    
+
+  </div>
+  <script>
+    
+    mediumZoom(document.querySelectorAll("img:not(.nozoom)"), {
+      margin: 24,
+      background: 'rgba(0,0,0,0.5)',
+      scrollOffset: 0,
+    })
+    
+  </script>
+  
+  
+  <script type="text/javascript" src="/js/process.min.ee03488f19c93c2efb199e2e3014ea5f3cb2ce7d45154adb3399a158cac27ca52831db249ede5bb602700ef87eb02434139de0858af1818ab0fb4182472204a4.js" integrity="sha512-7gNIjxnJPC77GZ4uMBTqXzyyzn1FFUrbM5mhWMrCfKUoMdsknt5btgJwDvh&#43;sCQ0E53ghYrxgYqw&#43;0GCRyIEpA=="></script>
+  
+  
+</footer><div
+  id="search-wrapper"
+  class="invisible fixed inset-0 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="http://localhost:1313/"
+  style="z-index:500"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="Search"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="Close (Esc)"
+      >
+        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+  </div>
+</body>
+
+</html>
