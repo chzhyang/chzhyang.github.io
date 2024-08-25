@@ -49,12 +49,12 @@
     </item>
     
     <item>
-      <title>vLLM: Introduction</title>
-      <link>https://chzhyang.github.com/tech/llm/vllm/</link>
+      <title>vLLM-1: Introduction</title>
+      <link>https://chzhyang.github.com/tech/llm/vllm-1/</link>
       <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       
-      <guid>https://chzhyang.github.com/tech/llm/vllm/</guid>
-      <description>Background # KV cache memory challenges: Longer sequence length and larger batch size lead to large KV cache Dynamic sequence</description>
+      <guid>https://chzhyang.github.com/tech/llm/vllm-1/</guid>
+      <description>Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each</description>
       
     </item>
     
