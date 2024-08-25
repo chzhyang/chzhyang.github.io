@@ -411,6 +411,22 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://chzhyang.github.com/tech/llm/vllm/</loc>
+    <lastmod>2024-05-19T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+      rel="alternate"
+      hreflang="zh-cn"
+      href="https://chzhyang.github.com/zh-cn/tech/llm/vllm/"
+    />
+    <xhtml:link
+      rel="alternate"
+      hreflang="en"
+      href="https://chzhyang.github.com/tech/llm/vllm/"
+    />
+  </url>
+  <url>
     <loc>https://chzhyang.github.com/tech/llm/flash_attention/</loc>
     <lastmod>2024-05-06T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
@@ -440,22 +456,6 @@
       rel="alternate"
       hreflang="en"
       href="https://chzhyang.github.com/tech/llm/attention/"
-    />
-  </url>
-  <url>
-    <loc>https://chzhyang.github.com/tech/llm/vllm/</loc>
-    <lastmod>2024-05-19T00:00:00+00:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-    <xhtml:link
-      rel="alternate"
-      hreflang="zh-cn"
-      href="https://chzhyang.github.com/zh-cn/tech/llm/vllm/"
-    />
-    <xhtml:link
-      rel="alternate"
-      hreflang="en"
-      href="https://chzhyang.github.com/tech/llm/vllm/"
     />
   </url>
   <url>

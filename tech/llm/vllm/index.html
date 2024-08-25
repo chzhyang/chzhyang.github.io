@@ -8,8 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
-  <title>vLLM(1) &middot; Victor&#39;s Blog</title>
-  <meta name="title" content="vLLM(1) &middot; Victor&#39;s Blog" />
+  <title>vLLM: Introduction &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="vLLM: Introduction &middot; Victor&#39;s Blog" />
   
   
   <meta name="keywords" content="NLP, Transformer, LLM, vLLM, " />
@@ -63,12 +63,12 @@
   
   <meta property="og:url" content="https://chzhyang.github.com/tech/llm/vllm/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
-  <meta property="og:title" content="vLLM(1)">
-  <meta property="og:description" content="Reference vLLM核心技术 PagedAttent">
+  <meta property="og:title" content="vLLM: Introduction">
+  <meta property="og:description" content="Background # KV cache memory challenges: Longer sequence length and larger batch size lead to large KV cache Dynamic sequence">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="tech">
-    <meta property="article:published_time" content="2024-05-05T00:00:00+00:00">
+    <meta property="article:published_time" content="2024-05-10T00:00:00+00:00">
     <meta property="article:modified_time" content="2024-05-19T00:00:00+00:00">
     <meta property="article:tag" content="NLP">
     <meta property="article:tag" content="Transformer">
@@ -77,8 +77,8 @@
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="vLLM(1)">
-  <meta name="twitter:description" content="Reference vLLM核心技术 PagedAttent">
+  <meta name="twitter:title" content="vLLM: Introduction">
+  <meta name="twitter:description" content="Background # KV cache memory challenges: Longer sequence length and larger batch size lead to large KV cache Dynamic sequence">
 
   
   <script type="application/ld+json">
@@ -86,10 +86,10 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "Tech",
-    "name": "vLLM(1)",
-    "headline": "vLLM(1)",
+    "name": "vLLM: Introduction",
+    "headline": "vLLM: Introduction",
     
-    "abstract": "Reference vLLM核心技术 PagedAttent",
+    "abstract": "Background # KV cache memory challenges: Longer sequence length and larger batch size lead to large KV cache Dynamic sequence",
     "inLanguage": "en",
     "url" : "https:\/\/chzhyang.github.com\/tech\/llm\/vllm\/",
     "author" : {
@@ -97,15 +97,15 @@
       "name": "Victor Yang"
     },
     "copyrightYear": "2024",
-    "dateCreated": "2024-05-05T00:00:00\u002b00:00",
-    "datePublished": "2024-05-05T00:00:00\u002b00:00",
+    "dateCreated": "2024-05-10T00:00:00\u002b00:00",
+    "datePublished": "2024-05-10T00:00:00\u002b00:00",
     
     "dateModified": "2024-05-19T00:00:00\u002b00:00",
     
     "keywords": ["NLP","Transformer","LLM","vLLM"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "40"
+    "wordCount": "167"
   }]
   </script>
 
@@ -525,14 +525,14 @@
 
 
     </span>
-    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(1)">EN</div>
+    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM: Introduction">EN</div>
   </div>
   <div class="absolute menuhide">
     <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
       <div class="flex flex-col space-y-3">
         
         <a href="/tech/llm/vllm/" class="flex items-center">
-          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(1)">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM: Introduction">
             EN
           </p>
         </a>
@@ -612,14 +612,14 @@
 
 
     </span>
-    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(1)">EN</div>
+    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM: Introduction">EN</div>
   </div>
   <div class="absolute menuhide">
     <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
       <div class="flex flex-col space-y-3">
         
         <a href="/tech/llm/vllm/" class="flex items-center">
-          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(1)">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM: Introduction">
             EN
           </p>
         </a>
@@ -928,7 +928,7 @@
   <header id="single_header" class="mt-5 max-w-prose">
     
     <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-      vLLM(1)
+      vLLM: Introduction
     </h1>
     <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
       
@@ -981,7 +981,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-05 00:00:00 &#43;0000 UTC">2024-05-05</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">Updated: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>40 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span><span class="px-2 text-primary-500">&middot;</span><span>
+  <time datetime="2024-05-10 00:00:00 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">Updated: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>167 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span><span class="px-2 text-primary-500">&middot;</span><span>
   
   
     
@@ -1142,7 +1142,77 @@
   
   <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
     
-    
+     <div
+      class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
+      <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
+
+         <details open id="TOCView"
+  class="toc-right mt-0 overflow-y-scroll overscroll-contain scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600 rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+  <summary
+    class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    Table of Contents
+  </summary>
+  <div
+    class="min-w-[220px] py-2 border-dotted ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#background">Background</a></li>
+    <li><a href="#vllm">vLLM</a></li>
+    <li><a href="#continuous-batching">Continuous batching</a></li>
+    <li><a href="#paged-attention">Paged Attention</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+<details class="toc-inside mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 lg:hidden">
+  <summary
+    class="py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    Table of Contents
+  </summary>
+  <div
+    class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#background">Background</a></li>
+    <li><a href="#vllm">vLLM</a></li>
+    <li><a href="#continuous-batching">Continuous batching</a></li>
+    <li><a href="#paged-attention">Paged Attention</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+<script>
+
+  var margin = 200;
+  var marginError = 50;
+
+  (function () {
+    var $window = $(window);
+    var $toc = $('#TOCView');
+    var tocHeight = $toc.height();
+
+    function onResize() {
+      var windowAndMarginHeight = $window.height() - margin;
+      if(tocHeight >= windowAndMarginHeight) {
+        $toc.css("overflow-y", "scroll")
+        $toc.css("max-height", (windowAndMarginHeight + marginError) + "px")
+      } else {
+        $toc.css("overflow-y", "hidden")
+        $toc.css("max-height", "9999999px")
+      }
+    }
+
+    $window.on('resize', onResize);
+    $(document).ready(onResize);
+  })();
+
+
+
+</script>
+   </div>
+      </div>
+      
 
       <div class="min-w-0 min-h-0 max-w-fit">
         
@@ -1171,6 +1241,108 @@
         <div class="article-content max-w-prose mb-20">
           
 
+
+
+<h2 class="relative group">Background 
+    <div id="background" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#background" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>KV cache memory challenges:</p>
+<ul>
+<li>Longer sequence length and larger batch size lead to large KV cache</li>
+<li>Dynamic sequence length</li>
+<li>GPU memory limitation</li>
+<li>Memory wastes</li>
+<li>Hard to share memory</li>
+</ul>
+<p>
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/25/JtxZphoPN8b2iTL.jpg" alt="memory-waste-watermark.jpg" />
+    
+  </figure>
+</p>
+<p>
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/25/J23L4QqvBdK85na.jpg" alt="memory-waste2-watermark.jpg" />
+    
+  </figure>
+</p>
+
+
+<h2 class="relative group">vLLM 
+    <div id="vllm" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#vllm" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>vLLM is a LLM inference and serving lib designed for throughput, evolving fast, best performance
+, it provides efficient memory management for LLM serving with paged attention.</p>
+<p>
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/25/Vi4BwPjXxHvCLKO.jpg" alt="vllm-system-overview-watermark.jpg" />
+    
+  </figure>
+</p>
+<p>The key techniques of vLLM include:</p>
+<ul>
+<li>Continues batching</li>
+<li>Paged Attention</li>
+<li>Optimized CUDA kernels</li>
+</ul>
+
+
+<h2 class="relative group">Continuous batching 
+    <div id="continuous-batching" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#continuous-batching" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>As you know, Memory IO takes longer time in decoding, and the bottleneck is batch size, batching is a way to improve throughput.</p>
+<p>The naive batching(static batching) is batch-level scheduling(Fig 3), it&rsquo;s disadvantages include:</p>
+<ul>
+<li>Token padding</li>
+<li>Inefficient GPU usage</li>
+<li>High response latency</li>
+</ul>
+<p>
+    <figure>
+      <img class="my-0 rounded-md" loading="lazy" src="" alt="" />
+      
+    </figure>
+
+
+    <figure>
+      <img class="my-0 rounded-md" loading="lazy" src="" alt="" />
+      
+    </figure>
+</p>
+
+
+<h2 class="relative group">Paged Attention 
+    <div id="paged-attention" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#paged-attention" aria-label="Anchor">#</a>
+    </span>        
+    
+</h2>
+<p>More details please refer to <a href="https://chzhyang.github.io/tech/llm/paged_attention_v1/" target="_blank">Paged Attention</a></p>
 <p>Reference</p>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s?__biz=Mzg2NjcwNjcxNQ==&amp;mid=2247485614&amp;idx=1&amp;sn=5600ea665d942b7ff290caded1e2252f&amp;chksm=ce47fcdaf93075cc4582bfb15eb822840c332d56122df5b59bd8722426d07ac5b097cf032ba4&amp;scene=21#wechat_redirect" target="_blank">vLLM核心技术 PagedAttention原理</a></li>
@@ -1244,7 +1416,7 @@
       <div class="flex justify-between pt-3">
         <span>
           
-            <a class="flex group mr-3" href="/tech/llm/attention/">
+            <a class="flex group mr-3" href="/tech/llm/paged_attention_v1/">
               <span
                 class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
                 >&larr;</span
@@ -1256,11 +1428,11 @@
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >Attention and KV Cache</span
+                  >Paged Attention V1(vLLM)</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   
-                    <time datetime="2024-05-05 00:00:00 &#43;0000 UTC">2024-05-05</time>
+                    <time datetime="2024-05-20 15:15:49 &#43;0000 UTC">2024-05-20</time>
                   
                 </span>
               </span>
@@ -1269,15 +1441,15 @@
         </span>
         <span>
           
-            <a class="flex text-right group ml-3" href="/tech/llm/quantize_datatype/">
+            <a class="flex text-right group ml-3" href="/tech/llm/flash_attention/">
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >DataType in AI</span
+                  >Flash Attention</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   
-                    <time datetime="2024-04-28 00:00:00 &#43;0000 UTC">2024-04-28</time>
+                    <time datetime="2024-05-05 22:43:31 &#43;0000 UTC">2024-05-05</time>
                   
                 </span>
               </span>

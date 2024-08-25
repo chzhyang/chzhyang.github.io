@@ -100,6 +100,16 @@ The key topics discussed include #Medusa, #System co-design, #AI-infra business 
     </item>
     
     <item>
+      <title>vLLM: Introduction</title>
+      <link>https://chzhyang.github.com/tech/llm/vllm/</link>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tech/llm/vllm/</guid>
+      <description>Background # KV cache memory challenges: Longer sequence length and larger batch size lead to large KV cache Dynamic sequence</description>
+      
+    </item>
+    
+    <item>
       <title>Flash Attention</title>
       <link>https://chzhyang.github.com/tech/llm/flash_attention/</link>
       <pubDate>Sun, 05 May 2024 22:43:31 +0000</pubDate>
@@ -116,16 +126,6 @@ The key topics discussed include #Medusa, #System co-design, #AI-infra business 
       
       <guid>https://chzhyang.github.com/tech/llm/attention/</guid>
       <description>Self-Attention # 对于self-attention，由</description>
-      
-    </item>
-    
-    <item>
-      <title>vLLM(1)</title>
-      <link>https://chzhyang.github.com/tech/llm/vllm/</link>
-      <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
-      
-      <guid>https://chzhyang.github.com/tech/llm/vllm/</guid>
-      <description>Reference vLLM核心技术 PagedAttent</description>
       
     </item>
     
