@@ -190,7 +190,17 @@ The key topics discussed include #Medusa, #System co-design, #AI-infra business 
     </item>
     
     <item>
-      <title>vLLM-1: Introduction</title>
+      <title>vLLM-2: Archticture and Workflow</title>
+      <link>https://chzhyang.github.com/tech/llm/vllm-2/</link>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/tech/llm/vllm-2/</guid>
+      <description>Architecture # User Interface # Core Architecture # Workflow # Initilization # Inference # Reference # vLLM blog vLLM: Easy,</description>
+      
+    </item>
+    
+    <item>
+      <title>vLLM(1): Introduction</title>
       <link>https://chzhyang.github.com/tech/llm/vllm-1/</link>
       <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       

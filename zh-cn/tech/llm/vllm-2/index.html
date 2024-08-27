@@ -8,8 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
-  <title>vLLM(1) &middot; Victor&#39;s Blog</title>
-  <meta name="title" content="vLLM(1) &middot; Victor&#39;s Blog" />
+  <title>vLLM(2)-架构和工作流程 &middot; Victor&#39;s Blog</title>
+  <meta name="title" content="vLLM(2)-架构和工作流程 &middot; Victor&#39;s Blog" />
   
   
   <meta name="keywords" content="NLP, Transformer, LLM, vLLM, " />
@@ -63,8 +63,8 @@
   
   <meta property="og:url" content="https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
-  <meta property="og:title" content="vLLM(1)">
-  <meta property="og:description" content="Reference vLLM核心技术 PagedAttent">
+  <meta property="og:title" content="vLLM(2)-架构和工作流程">
+  <meta property="og:description" content="上一篇文章介绍了 vLLM 的背景、原理和核心技术">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="tech">
@@ -74,11 +74,12 @@
     <meta property="article:tag" content="Transformer">
     <meta property="article:tag" content="LLM">
     <meta property="article:tag" content="VLLM">
+      <meta property="og:see_also" content="https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="vLLM(1)">
-  <meta name="twitter:description" content="Reference vLLM核心技术 PagedAttent">
+  <meta name="twitter:title" content="vLLM(2)-架构和工作流程">
+  <meta name="twitter:description" content="上一篇文章介绍了 vLLM 的背景、原理和核心技术">
 
   
   <script type="application/ld+json">
@@ -86,10 +87,10 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "技术",
-    "name": "vLLM(1)",
-    "headline": "vLLM(1)",
+    "name": "vLLM(2)-架构和工作流程",
+    "headline": "vLLM(2)-架构和工作流程",
     
-    "abstract": "Reference vLLM核心技术 PagedAttent",
+    "abstract": "上一篇文章介绍了 vLLM 的背景、原理和核心技术",
     "inLanguage": "zh-cn",
     "url" : "https:\/\/chzhyang.github.com\/zh-cn\/tech\/llm\/vllm-2\/",
     "author" : {
@@ -105,7 +106,7 @@
     "keywords": ["NLP","Transformer","LLM","vLLM"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "40"
+    "wordCount": "1300"
   }]
   </script>
 
@@ -513,6 +514,41 @@
             
 
             
+<div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    <span class="mr-1">
+      
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+    <path fill="currentColor" d="M0 128C0 92.7 28.7 64 64 64H256h48 16H576c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H320 304 256 64c-35.3 0-64-28.7-64-64V128zm320 0V384H576V128H320zM178.3 175.9c-3.2-7.2-10.4-11.9-18.3-11.9s-15.1 4.7-18.3 11.9l-64 144c-4.5 10.1 .1 21.9 10.2 26.4s21.9-.1 26.4-10.2l8.9-20.1h73.6l8.9 20.1c4.5 10.1 16.3 14.6 26.4 10.2s14.6-16.3 10.2-26.4l-64-144zM160 233.2L179 276H141l19-42.8zM448 164c11 0 20 9 20 20v4h44 16c11 0 20 9 20 20s-9 20-20 20h-2l-1.6 4.5c-8.9 24.4-22.4 46.6-39.6 65.4c.9 .6 1.8 1.1 2.7 1.6l18.9 11.3c9.5 5.7 12.5 18 6.9 27.4s-18 12.5-27.4 6.9l-18.9-11.3c-4.5-2.7-8.8-5.5-13.1-8.5c-10.6 7.5-21.9 14-34 19.4l-3.6 1.6c-10.1 4.5-21.9-.1-26.4-10.2s.1-21.9 10.2-26.4l3.6-1.6c6.4-2.9 12.6-6.1 18.5-9.8l-12.2-12.2c-7.8-7.8-7.8-20.5 0-28.3s20.5-7.8 28.3 0l14.6 14.6 .5 .5c12.4-13.1 22.5-28.3 29.8-45H448 376c-11 0-20-9-20-20s9-20 20-20h52v-4c0-11 9-20 20-20z"/></svg>
+  </span>
+
+
+    </span>
+    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2)-架构和工作流程">简体中文</div>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/zh-cn/tech/llm/vllm-2/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2)-架构和工作流程">
+            简体中文
+          </p>
+        </a>
+        
+        <a href="/tech/llm/vllm-2/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM-2: Archticture and Workflow">
+            EN
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
             
@@ -565,6 +601,41 @@
             <span></span>
 
             
+<div>
+  <div class="cursor-pointer flex items-center nested-menu">
+    <span class="mr-1">
+      
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+    <path fill="currentColor" d="M0 128C0 92.7 28.7 64 64 64H256h48 16H576c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H320 304 256 64c-35.3 0-64-28.7-64-64V128zm320 0V384H576V128H320zM178.3 175.9c-3.2-7.2-10.4-11.9-18.3-11.9s-15.1 4.7-18.3 11.9l-64 144c-4.5 10.1 .1 21.9 10.2 26.4s21.9-.1 26.4-10.2l8.9-20.1h73.6l8.9 20.1c4.5 10.1 16.3 14.6 26.4 10.2s14.6-16.3 10.2-26.4l-64-144zM160 233.2L179 276H141l19-42.8zM448 164c11 0 20 9 20 20v4h44 16c11 0 20 9 20 20s-9 20-20 20h-2l-1.6 4.5c-8.9 24.4-22.4 46.6-39.6 65.4c.9 .6 1.8 1.1 2.7 1.6l18.9 11.3c9.5 5.7 12.5 18 6.9 27.4s-18 12.5-27.4 6.9l-18.9-11.3c-4.5-2.7-8.8-5.5-13.1-8.5c-10.6 7.5-21.9 14-34 19.4l-3.6 1.6c-10.1 4.5-21.9-.1-26.4-10.2s.1-21.9 10.2-26.4l3.6-1.6c6.4-2.9 12.6-6.1 18.5-9.8l-12.2-12.2c-7.8-7.8-7.8-20.5 0-28.3s20.5-7.8 28.3 0l14.6 14.6 .5 .5c12.4-13.1 22.5-28.3 29.8-45H448 376c-11 0-20-9-20-20s9-20 20-20h52v-4c0-11 9-20 20-20z"/></svg>
+  </span>
+
+
+    </span>
+    <div class="text-sm font-medium text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2)-架构和工作流程">简体中文</div>
+  </div>
+  <div class="absolute menuhide">
+    <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
+      <div class="flex flex-col space-y-3">
+        
+        <a href="/zh-cn/tech/llm/vllm-2/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2)-架构和工作流程">
+            简体中文
+          </p>
+        </a>
+        
+        <a href="/tech/llm/vllm-2/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM-2: Archticture and Workflow">
+            EN
+          </p>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
             
@@ -858,7 +929,7 @@
   <header id="single_header" class="mt-5 max-w-prose">
     
     <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-      vLLM(1)
+      vLLM(2)-架构和工作流程
     </h1>
     <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
       
@@ -911,12 +982,15 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-10 00:00:00 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">更新于: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>40 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">1 分钟</span><span class="px-2 text-primary-500">&middot;</span><span>
+  <time datetime="2024-05-10 00:00:00 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">更新于: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>1300 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">3 分钟</span><span class="px-2 text-primary-500">&middot;</span><span>
   
   
     
     
       
+      
+        
+        
       
         
         
@@ -939,6 +1013,9 @@
     
     
       
+      
+        
+        
       
         
         
@@ -1066,7 +1143,95 @@
   
   <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
     
-    
+     <div
+      class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
+      <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
+
+         <details open id="TOCView"
+  class="toc-right mt-0 overflow-y-scroll overscroll-contain scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600 rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+  <summary
+    class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    目录
+  </summary>
+  <div
+    class="min-w-[220px] py-2 border-dotted ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#架构">架构</a>
+      <ul>
+        <li><a href="#用户接口">用户接口</a></li>
+        <li><a href="#核心架构">核心架构</a></li>
+      </ul>
+    </li>
+    <li><a href="#工作流程">工作流程</a>
+      <ul>
+        <li><a href="#初始化阶段">初始化阶段</a></li>
+        <li><a href="#推理阶段">推理阶段</a></li>
+      </ul>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+<details class="toc-inside mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 lg:hidden">
+  <summary
+    class="py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
+    目录
+  </summary>
+  <div
+    class="py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#架构">架构</a>
+      <ul>
+        <li><a href="#用户接口">用户接口</a></li>
+        <li><a href="#核心架构">核心架构</a></li>
+      </ul>
+    </li>
+    <li><a href="#工作流程">工作流程</a>
+      <ul>
+        <li><a href="#初始化阶段">初始化阶段</a></li>
+        <li><a href="#推理阶段">推理阶段</a></li>
+      </ul>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+<script>
+
+  var margin = 200;
+  var marginError = 50;
+
+  (function () {
+    var $window = $(window);
+    var $toc = $('#TOCView');
+    var tocHeight = $toc.height();
+
+    function onResize() {
+      var windowAndMarginHeight = $window.height() - margin;
+      if(tocHeight >= windowAndMarginHeight) {
+        $toc.css("overflow-y", "scroll")
+        $toc.css("max-height", (windowAndMarginHeight + marginError) + "px")
+      } else {
+        $toc.css("overflow-y", "hidden")
+        $toc.css("max-height", "9999999px")
+      }
+    }
+
+    $window.on('resize', onResize);
+    $(document).ready(onResize);
+  })();
+
+
+
+</script>
+   </div>
+      </div>
+      
 
       <div class="min-w-0 min-h-0 max-w-fit">
         
@@ -1077,6 +1242,15 @@
         class="py-1 text-lg font-semibold cursor-pointer bg-primary-200 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-primary-800 dark:text-neutral-100">
         vLLM - 这篇文章属于一个选集。
     </summary>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/">
+            § 1: vLLM(1): 背景、原理和核心技术
+        </a>
+    </div>
     
     
     
@@ -1095,7 +1269,181 @@
         <div class="article-content max-w-prose mb-20">
           
 
-<p>Reference</p>
+<p>上一篇<a href="https://chzhyang.github.io/zh-cn/tech/llm/vllm-1/" target="_blank">文章</a>介绍了 vLLM 的背景、原理和核心技术，这篇文章主要介绍 vLLM 的架构和工作流程。vLLM 是一项耦合了工程调度、分布式和推理的框架，所以整体架构与以往的 ML serving system 有很大区别。本文将从调用接口和工作流程的角度去拆解。</p>
+
+
+<h2 class="relative group">架构 
+    <div id="%E6%9E%B6%E6%9E%84" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E6%9E%B6%E6%9E%84" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+
+
+<h3 class="relative group">用户接口 
+    <div id="%E7%94%A8%E6%88%B7%E6%8E%A5%E5%8F%A3" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E7%94%A8%E6%88%B7%E6%8E%A5%E5%8F%A3" aria-label="锚点">#</a>
+    </span>        
+    
+</h3>
+<p>vLLM 向用户提供了两种调用方法(Fig. 1)：</p>
+<ul>
+<li>Offline Batched Inference（同步，离线推理）</li>
+<li>API Server For Online Serving（异步，在线推理）：
+<ul>
+<li>OpenAI-Compatible API Server：兼容 OpenAI 请求格式（OpenAI Completions API， OpenAI Chat API）</li>
+<li>Simple Demo API Server</li>
+</ul>
+</li>
+</ul>
+<p>
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/25/X1AqtP4jLis2JZC.jpg" alt="vllm-interface-watermark.jpg" />
+    <figcaption>Figure 1. User Interface(vLLM 2023 first meetup)</figcaption>
+  </figure>
+</p>
+<p>vLLM 实现了一个核心模块 LLMEngine，并封装了上述两种调用，而 <strong>LLMEngine 运行时是动态的batch_size</strong>。基于 Fig. 1，同步的离线批处理，实际也是按动态 batch size 来实现的。异步的在线推理所基于的 AsyncLLMEngine 是对 LLMEngine 的继承。所以，本文以 Offline Batched Inference 为入口来分析 LLMEngine 的运作。</p>
+
+
+<h3 class="relative group">核心架构 
+    <div id="%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84" aria-label="锚点">#</a>
+    </span>        
+    
+</h3>
+<p>从 Fig. 1 可以看出 LLMEngine 是整个 vLLM 的核心，所以这部分主要分析 LLMEngine 的架构。</p>
+<p>从代码角度，LLMEngine 有 2 个重要函数：</p>
+<ul>
+<li>add_request()：负责将 req 封装成推理时调度的基本单元 SequenceGroup</li>
+<li>step()： 负责执行一次推理（prifill 和 decode 都算一次推理，但是 vllm 中 prifill 和 decode 并没有 fuse，即同一 batch 中的 seq 只能同时做 prefill或做 decode）</li>
+</ul>
+<p>从架构的角度，如 Fig. 2 所示，LLMEngine 由两大块组成：</p>
+<ul>
+<li>Scheduler(Centralized Controller)： 它和 LLMEngine 所在的进程是 CPU 上的同一进程，主要负责在每一个推理阶段选择 SequenceGroup 推送给 Distributed Workers 做推理。</li>
+<li>Distributed Workers：分布式管理系统，负责加载模型，执行推理。</li>
+</ul>
+<p>
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/25/UyDG3zp4HQ9TCNw.jpg" alt="vllm-llm-engine-arch-watermark.jpg" />
+    <figcaption>Figure 2. LLMEngine Architecture</figcaption>
+  </figure>
+</p>
+<p>Scheduler 和 Distributed Workers 的具体组成将结合工作流程这一部分详细分析。</p>
+
+
+<h2 class="relative group">工作流程 
+    <div id="%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
+<p>如前文所述，以 Offline Batched Inference 为入口来分析 LLMEngine 的工作流程，代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">vllm</span> <span class="kn">import</span> <span class="n">LLM</span><span class="p">,</span> <span class="n">SamplingParams</span>
+</span></span><span class="line"><span class="cl"><span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;Hello,&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">           <span class="s2">&#34;The president of the UK is&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">           <span class="s2">&#34;The capital of USA is&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">           <span class="s2">&#34;The future of AI is&#34;</span><span class="p">,]</span>
+</span></span><span class="line"><span class="cl"><span class="n">sampling_params</span> <span class="o">=</span> <span class="n">SamplingParams</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Initilization</span>
+</span></span><span class="line"><span class="cl"><span class="n">llm</span> <span class="o">=</span> <span class="n">LLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&#34;meta/llama2-13b&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Inference</span>
+</span></span><span class="line"><span class="cl"><span class="n">outputs</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">sampling_params</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">prompt</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">prompt</span>
+</span></span><span class="line"><span class="cl">    <span class="n">generated_text</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Prompt: </span><span class="si">{</span><span class="n">prompt</span><span class="si">!r}</span><span class="s2">, Generated text: </span><span class="si">{</span><span class="n">generated_text</span><span class="si">!r}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span></code></pre></div>
+
+<h3 class="relative group">初始化阶段 
+    <div id="%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5" aria-label="锚点">#</a>
+    </span>        
+    
+</h3>
+<p>LLMEngine 的初始化阶段（推理正式开始前），即这段代码 <code>llm = LLM(model=“meta/llama2-13b&quot;) </code>，主要做了两件事(Fig. 3)：</p>
+<ul>
+<li>加载模型</li>
+<li>预分配显存</li>
+</ul>
+<p>
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/25/tsBvq5QaEr7G24g.jpg" alt="vllm-initialization-watermark.jpg" />
+    <figcaption>Figure 3. LLMEngine Initilization</figcaption>
+  </figure>
+</p>
+<p>其中，<strong>预分配显存</strong>是指通过模拟推理来评估 gpu/cpu 上可以分配多少 显存 给 KVCache，以及 KVCache 物理块的数量。这个步骤在代码里被称为 profile_num_available_blocks，GPU 上的工作流程如下：</p>
+<p>Step 1: 模拟推理请求</p>
+<p>LLMEngine 有两个参数：
+- max_num_seqs(default=256)： LLMEngine 最多能处理的 seq 数量
+- max_num_batched_tokens(default=2048)：LLMEngine 最多能处理的 token 数量</p>
+<p>根据这两个参数，LLMEngine 可以预估平均一个 seq 要处理 max_num_batched_tokens // max_num_seqs个token 个 token，如果按照默认值，就可以模拟 8 个 token 数量为 256 的 seq。</p>
+<p>Step 2: 评估能分配给 KVCache 的显存</p>
+<p>通过对模拟的假数据执行一次推理来计算能分配给 KVCache 的显存（<code>$Mem_kvcache$</code>），公式如下：</p>
+<p>分配多少的显存给 KVCache = GPU 显存 - 不使用 KVCache 推理时占的显存</p>
+<p>Step 3：统计可分配的 KVCache 物理块数量</p>
+<p>总物理块数量 = 分配给KVCache的显存大小/ 物理块大小，其中“大小”的单位是bytes。</p>
+
+
+<h3 class="relative group">推理阶段 
+    <div id="%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5" aria-label="锚点">#</a>
+    </span>        
+    
+</h3>
+<p>
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/27/sUBgx9GuEeprV3Y.jpg" alt="scheduler.jpg" />
+    
+  </figure>
+
+
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/27/d83T7ihp46AaMrm.png" alt="scheduler.png" />
+    
+  </figure>
+</p>
+<p>
+  <figure>
+    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/27/vPuz172mgMiAJeG.jpg" alt="vllm-workers-watermark.jpg" />
+    
+  </figure>
+</p>
+
+
+<h2 class="relative group">Reference 
+    <div id="reference" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#reference" aria-label="锚点">#</a>
+    </span>        
+    
+</h2>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s?__biz=Mzg2NjcwNjcxNQ==&amp;mid=2247485614&amp;idx=1&amp;sn=5600ea665d942b7ff290caded1e2252f&amp;chksm=ce47fcdaf93075cc4582bfb15eb822840c332d56122df5b59bd8722426d07ac5b097cf032ba4&amp;scene=21#wechat_redirect" target="_blank">vLLM核心技术 PagedAttention原理</a></li>
 <li><a href="https://www.53ai.com/news/qianyanjishu/1249.html" target="_blank">大模型推理框架vLLM源码解析</a></li>
@@ -1120,6 +1468,15 @@
     
     <div
         class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+        <a href="https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/">
+            § 1: vLLM(1): 背景、原理和核心技术
+        </a>
+    </div>
+    
+    
+    
+    <div
+        class="py-1 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
         § 1: 本文
     </div>
     
@@ -1136,6 +1493,9 @@
       
       
         
+        
+          
+          
         
           
           
@@ -1165,7 +1525,7 @@
       <div class="flex justify-between pt-3">
         <span>
           
-            <a class="flex group mr-3" href="/zh-cn/tech/llm/paged_attention_v1/">
+            <a class="flex group mr-3" href="/zh-cn/tech/llm/vllm-1/">
               <span
                 class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
                 >&larr;</span
@@ -1177,11 +1537,11 @@
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >Paged Attention V1(vLLM)</span
+                  >vLLM(1): 背景、原理和核心技术</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   
-                    <time datetime="2024-05-20 15:15:49 &#43;0000 UTC">2024-05-20</time>
+                    <time datetime="2024-05-10 00:00:00 &#43;0000 UTC">2024-05-10</time>
                   
                 </span>
               </span>

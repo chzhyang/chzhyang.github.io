@@ -159,12 +159,22 @@
     </item>
     
     <item>
-      <title>vLLM(1)</title>
+      <title>vLLM(1): 背景、原理和核心技术</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/</link>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/</guid>
+      <description>这篇文章主要介绍 vLLM 的背景、原理和核心技术</description>
+      
+    </item>
+    
+    <item>
+      <title>vLLM(2)-架构和工作流程</title>
       <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</link>
       <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</guid>
-      <description>Reference vLLM核心技术 PagedAttent</description>
+      <description>上一篇文章介绍了 vLLM 的背景、原理和核心技术</description>
       
     </item>
     
