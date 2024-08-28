@@ -7,11 +7,11 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Tue, 28 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/series/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 08 Jul 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/series/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AI Quantization</title>
       <link>https://chzhyang.github.com/zh-cn/series/ai-quantization/</link>
-      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      <pubDate>Mon, 08 Jul 2024 22:43:31 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/zh-cn/series/ai-quantization/</guid>
       <description></description>
@@ -49,21 +49,21 @@
     </item>
     
     <item>
-      <title>PyTorch</title>
-      <link>https://chzhyang.github.com/zh-cn/series/pytorch/</link>
-      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
-      
-      <guid>https://chzhyang.github.com/zh-cn/series/pytorch/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
       <title>VLLM</title>
       <link>https://chzhyang.github.com/zh-cn/series/vllm/</link>
       <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/zh-cn/series/vllm/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>PyTorch</title>
+      <link>https://chzhyang.github.com/zh-cn/series/pytorch/</link>
+      <pubDate>Thu, 21 Mar 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/series/pytorch/</guid>
       <description></description>
       
     </item>

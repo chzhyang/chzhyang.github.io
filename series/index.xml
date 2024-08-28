@@ -7,23 +7,33 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Sat, 01 Jun 2024 19:15:49 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/series/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 08 Jul 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI Quantization</title>
+      <link>https://chzhyang.github.com/series/ai-quantization/</link>
+      <pubDate>Mon, 08 Jul 2024 22:43:31 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/series/ai-quantization/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>VLLM</title>
+      <link>https://chzhyang.github.com/series/vllm/</link>
+      <pubDate>Thu, 06 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/series/vllm/</guid>
+      <description></description>
+      
+    </item>
+    
     <item>
       <title>Quantitative Trading</title>
       <link>https://chzhyang.github.com/series/quantitative-trading/</link>
       <pubDate>Sat, 01 Jun 2024 19:15:49 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/series/quantitative-trading/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>AI Quantization</title>
-      <link>https://chzhyang.github.com/series/ai-quantization/</link>
-      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
-      
-      <guid>https://chzhyang.github.com/series/ai-quantization/</guid>
       <description></description>
       
     </item>
@@ -61,19 +71,9 @@
     <item>
       <title>PyTorch</title>
       <link>https://chzhyang.github.com/series/pytorch/</link>
-      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
+      <pubDate>Thu, 21 Mar 2024 15:15:49 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/series/pytorch/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>VLLM</title>
-      <link>https://chzhyang.github.com/series/vllm/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
-      
-      <guid>https://chzhyang.github.com/series/vllm/</guid>
       <description></description>
       
     </item>

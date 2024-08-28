@@ -7,11 +7,11 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Tue, 21 May 2024 15:15:49 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 21 Mar 2024 15:15:49 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/tags/ai/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PyTorch Architecture</title>
       <link>https://chzhyang.github.com/zh-cn/tech/pytorch/pytorch/</link>
-      <pubDate>Tue, 21 May 2024 15:15:49 +0000</pubDate>
+      <pubDate>Thu, 21 Mar 2024 15:15:49 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/zh-cn/tech/pytorch/pytorch/</guid>
       <description>PyTorch 代码结构 # PyTroch 主要由C10、ATen、t</description>

@@ -64,7 +64,7 @@
   <meta property="og:url" content="https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="vLLM(2)-架构和工作流程">
-  <meta property="og:description" content="上一篇文章介绍了 vLLM 的背景、原理和核心技术">
+  <meta property="og:description" content="上一篇（vLLM(1): 背景、原理和核心">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="tech">
@@ -79,7 +79,7 @@
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="vLLM(2)-架构和工作流程">
-  <meta name="twitter:description" content="上一篇文章介绍了 vLLM 的背景、原理和核心技术">
+  <meta name="twitter:description" content="上一篇（vLLM(1): 背景、原理和核心">
 
   
   <script type="application/ld+json">
@@ -90,7 +90,7 @@
     "name": "vLLM(2)-架构和工作流程",
     "headline": "vLLM(2)-架构和工作流程",
     
-    "abstract": "上一篇文章介绍了 vLLM 的背景、原理和核心技术",
+    "abstract": "上一篇（vLLM(1): 背景、原理和核心",
     "inLanguage": "zh-cn",
     "url" : "https:\/\/chzhyang.github.com\/zh-cn\/tech\/llm\/vllm-2\/",
     "author" : {
@@ -106,7 +106,7 @@
     "keywords": ["NLP","Transformer","LLM","vLLM"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1300"
+    "wordCount": "2269"
   }]
   </script>
 
@@ -532,15 +532,15 @@
     <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
       <div class="flex flex-col space-y-3">
         
-        <a href="/zh-cn/tech/llm/vllm-2/" class="flex items-center">
-          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2)-架构和工作流程">
-            简体中文
+        <a href="/tech/llm/vllm-2/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2): Archticture and Workflow">
+            EN
           </p>
         </a>
         
-        <a href="/tech/llm/vllm-2/" class="flex items-center">
-          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM-2: Archticture and Workflow">
-            EN
+        <a href="/zh-cn/tech/llm/vllm-2/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2)-架构和工作流程">
+            简体中文
           </p>
         </a>
         
@@ -619,15 +619,15 @@
     <div class="pt-2 p-5 mt-2 rounded-xl backdrop-blur shadow-2xl">
       <div class="flex flex-col space-y-3">
         
-        <a href="/zh-cn/tech/llm/vllm-2/" class="flex items-center">
-          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2)-架构和工作流程">
-            简体中文
+        <a href="/tech/llm/vllm-2/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2): Archticture and Workflow">
+            EN
           </p>
         </a>
         
-        <a href="/tech/llm/vllm-2/" class="flex items-center">
-          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM-2: Archticture and Workflow">
-            EN
+        <a href="/zh-cn/tech/llm/vllm-2/" class="flex items-center">
+          <p class="text-sm font-sm text-gray-500 hover:text-primary-600 dark:hover:text-primary-400" title="vLLM(2)-架构和工作流程">
+            简体中文
           </p>
         </a>
         
@@ -982,7 +982,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-10 00:00:00 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">更新于: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>1300 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">3 分钟</span><span class="px-2 text-primary-500">&middot;</span><span>
+  <time datetime="2024-05-10 00:00:00 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">更新于: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>2269 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">5 分钟</span><span class="px-2 text-primary-500">&middot;</span><span>
   
   
     
@@ -1269,7 +1269,7 @@
         <div class="article-content max-w-prose mb-20">
           
 
-<p>上一篇<a href="https://chzhyang.github.io/zh-cn/tech/llm/vllm-1/" target="_blank">文章</a>介绍了 vLLM 的背景、原理和核心技术，这篇文章主要介绍 vLLM 的架构和工作流程。vLLM 是一项耦合了工程调度、分布式和推理的框架，所以整体架构与以往的 ML serving system 有很大区别。本文将从调用接口和工作流程的角度去拆解。</p>
+<p>上一篇（<a href="https://chzhyang.github.io/zh-cn/tech/llm/vllm-1/" target="_blank">vLLM(1): 背景、原理和核心技术</a>）介绍了 vLLM 的背景、原理和核心技术，本文主要介绍 vLLM 的架构和工作流程。vLLM 是一项耦合了工程调度、分布式和推理的 LLM Domian Specific 框架，所以整体架构与以往的 ML serving system 有很大区别。本文将结合代码、从调用接口和工作流程的角度去拆解 vLLM 的架构和组件。</p>
 
 
 <h2 class="relative group">架构 
@@ -1324,11 +1324,6 @@
     
 </h3>
 <p>从 Fig. 1 可以看出 LLMEngine 是整个 vLLM 的核心，所以这部分主要分析 LLMEngine 的架构。</p>
-<p>从代码角度，LLMEngine 有 2 个重要函数：</p>
-<ul>
-<li>add_request()：负责将 req 封装成推理时调度的基本单元 SequenceGroup</li>
-<li>step()： 负责执行一次推理（prifill 和 decode 都算一次推理，但是 vllm 中 prifill 和 decode 并没有 fuse，即同一 batch 中的 seq 只能同时做 prefill或做 decode）</li>
-</ul>
 <p>从架构的角度，如 Fig. 2 所示，LLMEngine 由两大块组成：</p>
 <ul>
 <li>Scheduler(Centralized Controller)： 它和 LLMEngine 所在的进程是 CPU 上的同一进程，主要负责在每一个推理阶段选择 SequenceGroup 推送给 Distributed Workers 做推理。</li>
@@ -1340,7 +1335,18 @@
     <figcaption>Figure 2. LLMEngine Architecture</figcaption>
   </figure>
 </p>
-<p>Scheduler 和 Distributed Workers 的具体组成将结合工作流程这一部分详细分析。</p>
+<p>从代码角度，LLMEngine Class 有2个重要对象和2个重要方法。</p>
+<p>2个重要对象：</p>
+<ul>
+<li>scheduler</li>
+<li>model_executor，是对 Distributed Workers(<code>/vllm/worker</code>) 的封装，包括<code>cpu_executor</code>、 <code>gpu_executor</code>(单卡推理)、 <code>ray_gpu_executor</code>（基于Ray的分布式推理）、<code>openvino_executor</code>(基于Intel的Openvino推理)、<code>ray_tpu_executor</code>等。</li>
+</ul>
+<p>2个重要方法：</p>
+<ul>
+<li>add_request()：负责将 req 封装成推理时调度的基本单元 SequenceGroup</li>
+<li>step()： 负责执行一次推理（prifill 和 decode 都算一次推理，vllm 中 prifill 和 decode 并没有 fuse，所以同一 batch 中的 seq 只能同时做 prefill或做 decode）</li>
+</ul>
+<p>那么 Scheduler 和 Distributed Workers(model_executor) 的具体是怎么工作的呢？下面将结合工作流程进行详细分析。</p>
 
 
 <h2 class="relative group">工作流程 
@@ -1380,7 +1386,7 @@
     </span>        
     
 </h3>
-<p>LLMEngine 的初始化阶段（推理正式开始前），即这段代码 <code>llm = LLM(model=“meta/llama2-13b&quot;) </code>，主要做了两件事(Fig. 3)：</p>
+<p>LLMEngine 的初始化阶段（推理正式开始前），入口为这段代码 <code>llm = LLM(model=“meta/llama2-13b&quot;) </code>，主要做了两件事(Fig. 3)：</p>
 <ul>
 <li>加载模型</li>
 <li>预分配显存</li>
@@ -1391,17 +1397,72 @@
     <figcaption>Figure 3. LLMEngine Initilization</figcaption>
   </figure>
 </p>
-<p>其中，<strong>预分配显存</strong>是指通过模拟推理来评估 gpu/cpu 上可以分配多少 显存 给 KVCache，以及 KVCache 物理块的数量。这个步骤在代码里被称为 profile_num_available_blocks，GPU 上的工作流程如下：</p>
-<p>Step 1: 模拟推理请求</p>
-<p>LLMEngine 有两个参数：
-- max_num_seqs(default=256)： LLMEngine 最多能处理的 seq 数量
-- max_num_batched_tokens(default=2048)：LLMEngine 最多能处理的 token 数量</p>
-<p>根据这两个参数，LLMEngine 可以预估平均一个 seq 要处理 max_num_batched_tokens // max_num_seqs个token 个 token，如果按照默认值，就可以模拟 8 个 token 数量为 256 的 seq。</p>
-<p>Step 2: 评估能分配给 KVCache 的显存</p>
-<p>通过对模拟的假数据执行一次推理来计算能分配给 KVCache 的显存（<code>$Mem_kvcache$</code>），公式如下：</p>
-<p>分配多少的显存给 KVCache = GPU 显存 - 不使用 KVCache 推理时占的显存</p>
-<p>Step 3：统计可分配的 KVCache 物理块数量</p>
-<p>总物理块数量 = 分配给KVCache的显存大小/ 物理块大小，其中“大小”的单位是bytes。</p>
+<p>其中，<strong>预分配显存</strong>是指通过模拟推理来评估 gpu/cpu 上可以分配多少显存给 KVCache，以及 KVCache 物理块的数量。这个步骤在代码里被称为 profile_num_available_blocks，GPU 上的工作流程如下：</p>
+<ol>
+<li>
+<p>模拟推理请求
+LLMEngine 有两个参数:</p>
+<ul>
+<li><code>max_num_seqs</code>(default=256)： LLMEngine 最多能处理的 seq 数量</li>
+<li><code>max_num_batched_tokens</code>(default=2048)：LLMEngine 最多能处理的 token 数量</li>
+</ul>
+<p>根据这两个参数，LLMEngine 可以预估平均一个 seq 有 max_num_batched_tokens // max_num_seqs 个token。如果按照两个参数的默认值，就可以模拟 8 个 token 数量为 256 的 seq。</p>
+</li>
+<li>
+<p>评估能分配给 KVCache 的显存
+通过对模拟的假数据执行一次推理来计算能分配给 KVCache 的显存 \(M_{kv}\)，公式如下：
+$$
+M_{kv} = M_{gpu} - M_{infer}
+$$
+其中，\(M_{gpu}\) 表示 GPU 内存大小；\(M_{infer}\) 表示不使用 KVCache 进行推理时占用的内存</p>
+</li>
+<li>
+<p>计算可分配的 KVCache Block 总数 \(N_{block}\)
+$$
+N_{block} = \frac{M}{B}
+$$
+其中，\(M_{kv}\) 表示分配给KVCache的显存，\({B}\) 表示一个 block 占的显存，单位是 bytes。</p>
+<p>代码中的<code>block_size</code>（默认为16）表示一个 block 中可以放多少个 token 的 k 或 v。一个 block 占的显存 \({B}\) 的计算公式如下：</p>
+<pre tabindex="0"><code>B = 2* block_size * num_heads * head_size * num_layers * dtype_size
+</code></pre><p>其中, 2 表示 K 和 V；dtype_size 表示数据精度对应的大小(bytes)，例如 fp32 就是 4。</p>
+</li>
+<li>
+<p>预分配 KVCache 显存</p>
+<p>在 GPU上，以 torch.zeros tensor 的方式分配 \(M_{kv}\) bytes 的 KVCache 显存。该工作在代码中由 Worker 上的 CacheEngine 在初始化时执行，相关代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CacheEngine</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cache_config</span><span class="p">:</span> <span class="n">CacheConfig</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model_config</span><span class="p">:</span> <span class="n">ModelConfig</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parallel_config</span><span class="p">:</span> <span class="n">ParallelConfig</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">device_config</span><span class="p">:</span> <span class="n">DeviceConfig</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Initialize the cache.</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">gpu_cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allocate_kv_cache</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">num_gpu_blocks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_config</span><span class="o">.</span><span class="n">device_type</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">cpu_cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allocate_kv_cache</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_cpu_blocks</span><span class="p">,</span> <span class="s2">&#34;cpu&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">_allocate_kv_cache</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_blocks</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;Allocates KV cache on the specified device.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">kv_cache_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn_backend</span><span class="o">.</span><span class="n">get_kv_cache_shape</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">num_blocks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_kv_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pin_memory</span> <span class="o">=</span> <span class="n">is_pin_memory_available</span><span class="p">()</span> <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="s2">&#34;cpu&#34;</span> <span class="k">else</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">    <span class="n">kv_cache</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_attention_layers</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># null block in CpuGpuBlockAllocator requires at least that</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># block to be zeroed-out.</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># We zero-out everything for simplicity.</span>
+</span></span><span class="line"><span class="cl">        <span class="n">kv_cache</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">kv_cache_shape</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pin_memory</span><span class="o">=</span><span class="n">pin_memory</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">kv_cache</span>
+</span></span></code></pre></div></li>
+</ol>
 
 
 <h3 class="relative group">推理阶段 
@@ -1414,13 +1475,43 @@
     </span>        
     
 </h3>
+<p>初始化完成后，vLLM 接受到的 Request 会被 Web Server 发送给 LLMEngine（Fig. 2），入口代码是：</p>
+<pre tabindex="0"><code>outputs = llm.generate(prompts, sampling_params)
+</code></pre><p>即 /vllm/entrypoints/llm.py 的 <code>llm.generate()</code>，这个方法主要通过 LLMEngine 做两件事：</p>
+<ol>
+<li>
+<p>调用 <code>llm_engine.add_request()</code> 将 req 解析为 tokens，并封装成 SequenceGroup(SG) 对象，具体调用栈：</p>
+<p><code>self._validate_and_add_requests()</code> -&gt; <code>self._add_request()</code> -&gt; <code>self.llm_engine.add_request()</code></p>
+</li>
+<li>
+<p>迭代得调用 <code>llm_engine.step()</code>，调用栈: <code>self._run_engine()</code>-&gt;<code>self.llm_engine.step()</code></p>
+<p>在每个 step() 中：</p>
+<ul>
+<li>Scheduler 决定哪些 SG 可以进行推理，发送给 Distributed Workers，也会通过 block table 做好 logical block 与 physical block 的映射。调用栈：<code>llm_engine.step()</code>-&gt;???</li>
+<li>Distributed Workers(distributed executor) 接收 Scheduler 传来的 SG， worker 去执行推理。调用栈：<code>llm_engine.step()</code>-&gt;<code>self.model_executor.execute_model()</code></li>
+</ul>
+<blockquote>
+<p>在 1 次推理中，所有的 SG 要么一起做 prefill，要么一起做decode。</p>
+</blockquote>
+<pre tabindex="0"><code>Step 1: Schedules the sequences to be executed in the next
+iteration and the token blocks to be swapped in/out/copy.
+Depending on the scheduling policy,
+sequences may be preempted/reordered.
+
+A Sequence Group (SG) refer to a group of sequences
+that are generated from the same prompt.
+
+Step 2: Calls the distributed executor to execute the model.
+Step 3: Processes the model output. This mainly includes:
+Decodes the relevant outputs.
+Updates the scheduled sequence groups with model outputs
+based on its sampling parameters (use_beam_search or not).
+Frees the finished sequence groups.
+Finally, it creates and returns the newly generated results.
+</code></pre></li>
+</ol>
+<p>这部分只简要介绍 Scheduler 和 Distributed Workers 的工作流程，两个组件的详细分析请移步 vLLM 系列的后续文章，如 <a href="http://chzhyang.github.io/zh-cn/tech/llm/vllm-3/" target="_blank">vLLM(3)-Scheduler</a></p>
 <p>
-  <figure>
-    <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/27/sUBgx9GuEeprV3Y.jpg" alt="scheduler.jpg" />
-    
-  </figure>
-
-
   <figure>
     <img class="my-0 rounded-md" loading="lazy" src="https://s2.loli.net/2024/08/27/d83T7ihp46AaMrm.png" alt="scheduler.png" />
     

@@ -7,11 +7,11 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Tue, 28 May 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/tech/llm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 08 Jul 2024 22:43:31 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/tech/llm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PTQ Methods for LLM</title>
       <link>https://chzhyang.github.com/zh-cn/tech/llm/quantize_ptq/</link>
-      <pubDate>Tue, 28 May 2024 22:43:31 +0000</pubDate>
+      <pubDate>Mon, 08 Jul 2024 22:43:31 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/zh-cn/tech/llm/quantize_ptq/</guid>
       <description>PTQ # PTQ(Post-Training Quantization)，即后训</description>
@@ -39,16 +39,6 @@
     </item>
     
     <item>
-      <title>Paged Attention V1(vLLM)</title>
-      <link>https://chzhyang.github.com/zh-cn/tech/llm/paged_attention_v1/</link>
-      <pubDate>Mon, 20 May 2024 15:15:49 +0000</pubDate>
-      
-      <guid>https://chzhyang.github.com/zh-cn/tech/llm/paged_attention_v1/</guid>
-      <description>vLLM # vLLM是吞吐性能卓越的大模型推理框</description>
-      
-    </item>
-    
-    <item>
       <title>vLLM(1): 背景、原理和核心技术</title>
       <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/</link>
       <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
@@ -64,7 +54,7 @@
       <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</guid>
-      <description>上一篇文章介绍了 vLLM 的背景、原理和核心技术</description>
+      <description>上一篇（vLLM(1): 背景、原理和核心</description>
       
     </item>
     
@@ -105,6 +95,16 @@
       
       <guid>https://chzhyang.github.com/zh-cn/tech/llm/quantize_intro/</guid>
       <description>Introduction # LLMs的巨大模型规模和边缘设备的限</description>
+      
+    </item>
+    
+    <item>
+      <title>Paged Attention V1(vLLM)</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/paged_attention_v1/</link>
+      <pubDate>Fri, 19 Apr 2024 15:15:49 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/paged_attention_v1/</guid>
+      <description>vLLM # vLLM是吞吐性能卓越的大模型推理框</description>
       
     </item>
     
