@@ -64,7 +64,7 @@
   <meta property="og:url" content="https://chzhyang.github.com/tech/llm/vllm-1/">
   <meta property="og:site_name" content="Victor&#39;s Blog">
   <meta property="og:title" content="vLLM(1): Introduction">
-  <meta property="og:description" content="Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each">
+  <meta property="og:description" content="Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each new token depends on all the previous tokens in that sequence, specifically their key and value vectors, which are often cached for generating future tokens, known as KV cache.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="tech">
@@ -79,7 +79,7 @@
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="vLLM(1): Introduction">
-  <meta name="twitter:description" content="Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each">
+  <meta name="twitter:description" content="Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each new token depends on all the previous tokens in that sequence, specifically their key and value vectors, which are often cached for generating future tokens, known as KV cache.">
 
   
   <script type="application/ld+json">
@@ -90,7 +90,7 @@
     "name": "vLLM(1): Introduction",
     "headline": "vLLM(1): Introduction",
     
-    "abstract": "Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each",
+    "abstract": "Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each new token depends on all the previous tokens in that sequence, specifically their key and value vectors, which are often cached for generating future tokens, known as KV cache.",
     "inLanguage": "en",
     "url" : "https:\/\/chzhyang.github.com\/tech\/llm\/vllm-1\/",
     "author" : {
@@ -106,7 +106,7 @@
     "keywords": ["NLP","Transformer","LLM","vLLM"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "894"
+    "wordCount": "822"
   }]
   </script>
 
@@ -982,7 +982,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-05-10 00:00:00 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">Updated: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>894 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">2 mins</span><span class="px-2 text-primary-500">&middot;</span><span>
+  <time datetime="2024-05-10 00:00:00 &#43;0000 UTC">2024-05-10</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-05-19 00:00:00 &#43;0000 UTC">Updated: 2024-05-19</time><span class="px-2 text-primary-500">&middot;</span><span>822 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span><span class="px-2 text-primary-500">&middot;</span><span>
   
   
     
@@ -1422,12 +1422,6 @@ mapping in the block table</li>
 <li><a href="https://blog.vllm.ai/2023/06/20/vllm.html" target="_blank">vLLM blog</a></li>
 <li><a href="https://arxiv.org/pdf/2309.06180" target="_blank">vLLM: Easy, Fast, and Cheap LLM Serving with PagedAttention</a></li>
 <li>Tri Dao, Dan Fu, Stefano Ermon, Atri Rudra, and Christopher Ré. 2022. Flashattention: Fast and memory-efficient exact attention with io-awareness. Advances in Neural Information Processing Systems 35 (2022), 16344–16359</li>
-<li>
-<ul>
-<li><a href="https://mp.weixin.qq.com/s?__biz=Mzg2NjcwNjcxNQ==&amp;mid=2247485614&amp;idx=1&amp;sn=5600ea665d942b7ff290caded1e2252f&amp;chksm=ce47fcdaf93075cc4582bfb15eb822840c332d56122df5b59bd8722426d07ac5b097cf032ba4&amp;scene=21#wechat_redirect" target="_blank">vLLM核心技术 PagedAttention原理</a></li>
-</ul>
-</li>
-<li><a href="https://www.53ai.com/news/qianyanjishu/1249.html" target="_blank">大模型推理框架vLLM源码解析</a></li>
 </ul>
 
           

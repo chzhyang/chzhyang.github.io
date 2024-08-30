@@ -19,6 +19,16 @@
     </item>
     
     <item>
+      <title>VLLM</title>
+      <link>https://chzhyang.github.com/zh-cn/series/vllm/</link>
+      <pubDate>Thu, 06 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/series/vllm/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
       <title>LLM Architecture</title>
       <link>https://chzhyang.github.com/zh-cn/series/llm-architecture/</link>
       <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
@@ -44,16 +54,6 @@
       <pubDate>Thu, 23 May 2024 22:43:31 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/zh-cn/series/attention-and-optimization/</guid>
-      <description></description>
-      
-    </item>
-    
-    <item>
-      <title>VLLM</title>
-      <link>https://chzhyang.github.com/zh-cn/series/vllm/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
-      
-      <guid>https://chzhyang.github.com/zh-cn/series/vllm/</guid>
       <description></description>
       
     </item>

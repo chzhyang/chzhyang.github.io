@@ -69,6 +69,16 @@
     </item>
     
     <item>
+      <title>vLLM(2)-架构和工作流程</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</link>
+      <pubDate>Thu, 06 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</guid>
+      <description>上一篇（vLLM(1): 背景、原理和核心</description>
+      
+    </item>
+    
+    <item>
       <title>Implement Llama3 in Python and Quantitative Analysis</title>
       <link>https://chzhyang.github.com/zh-cn/tech/llm/llama3/</link>
       <pubDate>Tue, 28 May 2024 14:16:06 +0000</pubDate>
@@ -145,16 +155,6 @@
       
       <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/</guid>
       <description>这篇文章主要介绍 vLLM 的背景、原理和核心技术</description>
-      
-    </item>
-    
-    <item>
-      <title>vLLM(2)-架构和工作流程</title>
-      <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
-      
-      <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</guid>
-      <description>上一篇（vLLM(1): 背景、原理和核心</description>
       
     </item>
     

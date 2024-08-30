@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>© 2024 Victor Yang</copyright>
-    <lastBuildDate>Fri, 10 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/tags/vllm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 06 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://chzhyang.github.com/zh-cn/tags/vllm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vLLM(2)-架构和工作流程</title>
+      <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</link>
+      <pubDate>Thu, 06 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</guid>
+      <description>上一篇（vLLM(1): 背景、原理和核心</description>
+      
+    </item>
+    
     <item>
       <title>vLLM(1): 背景、原理和核心技术</title>
       <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/</link>
@@ -15,16 +25,6 @@
       
       <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-1/</guid>
       <description>这篇文章主要介绍 vLLM 的背景、原理和核心技术</description>
-      
-    </item>
-    
-    <item>
-      <title>vLLM(2)-架构和工作流程</title>
-      <link>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
-      
-      <guid>https://chzhyang.github.com/zh-cn/tech/llm/vllm-2/</guid>
-      <description>上一篇（vLLM(1): 背景、原理和核心</description>
       
     </item>
     

@@ -44,7 +44,7 @@
       <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       
       <guid>https://chzhyang.github.com/tech/llm/vllm-1/</guid>
-      <description>Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each</description>
+      <description>Background # Autoregressive generation can only sample and generate new tokens one by one, and the generation process of each new token depends on all the previous tokens in that sequence, specifically their key and value vectors, which are often cached for generating future tokens, known as KV cache.</description>
       
     </item>
     
