@@ -106,7 +106,7 @@
     "keywords": ["NLP","Transformer","LLM","vLLM"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "2207"
+    "wordCount": "2201"
   }]
   </script>
 
@@ -982,7 +982,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-06-06 00:00:00 &#43;0000 UTC">2024-06-06</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-06-19 00:00:00 &#43;0000 UTC">更新于: 2024-06-19</time><span class="px-2 text-primary-500">&middot;</span><span>2207 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">5 分钟</span><span class="px-2 text-primary-500">&middot;</span><span>
+  <time datetime="2024-06-06 00:00:00 &#43;0000 UTC">2024-06-06</time><span class="px-2 text-primary-500">&middot;</span><time datetime="2024-06-19 00:00:00 &#43;0000 UTC">更新于: 2024-06-19</time><span class="px-2 text-primary-500">&middot;</span><span>2201 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">5 分钟</span><span class="px-2 text-primary-500">&middot;</span><span>
   
   
     
@@ -1421,7 +1421,7 @@ $$
 <li>
 <p>计算可分配的 KVCache Block 总数 \(N_{block}\)
 $$
-N_{block} = \frac{M}{B}
+N_{block} = \frac{M_{kv}}{B}
 $$
 其中，\(M_{kv}\) 表示分配给KVCache的显存，\({B}\) 表示一个 block 占的显存，单位是 bytes。</p>
 <p>代码中的<code>block_size</code>（默认为16）表示一个 block 中可以放多少个 token 的 k 或 v。一个 block 占的显存 \({B}\) 的计算公式如下：</p>
@@ -1489,8 +1489,8 @@ $$
 <p>迭代得调用 <code>llm_engine.step()</code>，调用栈: <code>self._run_engine()</code>-&gt;<code>self.llm_engine.step()</code></p>
 <p>在每个 step() 中：</p>
 <ul>
-<li>Scheduler 决定哪些 SG 可以进行推理，发送给 Distributed Workers，也会通过 block table 做好 logical block 与 physical block 的映射。调用栈：<code>llm_engine.step()</code>-&gt;???</li>
-<li>Distributed Workers(distributed executor) 接收 Scheduler 传来的 SG， worker 去执行推理。调用栈：<code>llm_engine.step()</code>-&gt;<code>self.model_executor.execute_model()</code></li>
+<li>调用 Scheduler 决定哪些 SG 可以进行推理，也会通过 block table 做好 logical block 与 physical block 的映射。调用栈：<code>llm_engine.step()</code>-&gt; <code>self.scheduler[0].schedule()</code></li>
+<li>将 SchedulerOutput 封装为 ExecuteModelRequest 发送给 Distributed Workers(distributed executor)执行推理。调用栈：<code>llm_engine.step()</code>-&gt;<code>self.model_executor.execute_model()</code></li>
 </ul>
 <blockquote>
 <p>在 1 次推理中，所有的 SG 要么一起做 prefill，要么一起做decode。</p>
